@@ -1,0 +1,27 @@
+\section{Le Perceptron}
+\fancyhead[R]{\textit{\nouppercase{\leftmark}}}
+
+\subsection{Théorie du Perceptron}
+
+Le perceptron est un des algorithmes de base du machine learning. Son invention remonte aux années 70, mais a été abandonné alors, son exécution étant trop coûteuse pour les performances des ordinateurs de l’époque. Ce n’est que récemment qu’il a pu resurgir, grâce à l’amélioration des processeurs et des cartes graphiques, particulièrement adaptées aux calculs matriciels.
+Son principe est simple : 
+
+[SCHEMA]
+
+Le perceptron est composé de plusieurs couches, qui réalisent des calculs, que les couches se transmettent successivement. Pour une information X  = [X0 ; X1 ; … ; Xn ] en entrée, le perceptron va fournir ce vecteur X à la première couche, qui va calculer le produit matriciel entre X et un matrice W de coefficients appelés « poids ». Le vecteur obtenu est alors transmis à la fonction d’activation, qui applique une fonction non-linéaire à chaque coefficients du vecteur. Le vecteur ainsi obtenu en sortie est fourni à la seconde couche, qui réalise les mêmes opérations, et ainsi de suite. 
+
+… // décrire le fonctionnement du perceptron
+
+\newpage
+\subsection{Implémentation}
+
+Afin de pouvoir comprendre en détail le fonctionnement du perceptron, nous avons commencé dans un premier temps à implémenter un version de celui-çi chacun de notre côté. Cela nous a permis de commencer  à réfléchir à l’architecture du code que nous voulions, et de pouvoir comparer les performances des différentes implémentations. 
+
+Nous avons testé dans un premier temps les résultats de nos perceptrons sur la fonction XOR. Cette fonction est un bon départ pour pouvoir avoir un code fonctionnel, car il s’agit d’une fonction ne pouvant pas être répliquée par une fonction linéaire : il faut au moins une couche cachée afin de pouvoir l’implémenter grâce à un perceptron. 
+Cette prémière étape nous a permis de comparer les résultats et les performances de nos algorithmes, et de pouvoir choisir l’implémentation du perceptron que nous avons utilisé par la suite.
+
+\newpage
+
+\subsection{Résultats}
+
+
