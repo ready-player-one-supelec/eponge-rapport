@@ -31,15 +31,17 @@ On ajoute un biais pour régler l'importance accordée au niveau d'activation. O
 On pose alors $w_1 = 
 \begin{pmatrix}
   w_{1,1} & w_{1,2} & \ldots & w_{1,R}\\
-\end{pmatrix}^\intercal $ 
+\end{pmatrix}^T $ 
 et
 $ p = 
 \begin{pmatrix}
  p_1 & p_2 & \ldots & p_R \\
-\end{pmatrix}^\intercal $ 
+\end{pmatrix}^T $ 
 les vecteurs colonnes représentant respectivement l'entrée et les poids du neurone. On a alors :
 
-$$ n = \sum_{i=1}^{R} w_{1,j} p_j - b = \mathbf{w_1}^\intercal \mathbf{p} - b$$
+\begin{equation} 
+n = \sum_{i=1}^{R} w_{1,j} p_j - b = \mathbf{w_1}^T \mathbf{p} - b
+\end{equation}
 
 On cherche alors à discriminer les différentes possibilités pour le niveau d'activation. C'est le rôle de la fonction d'activation. Si l'on souhaite séparer
 le cas d'un $n$ supérieur ou non à un seuil donné alors on utilise la fonction seuil $ f : x \mapsto \mathds{1}_{n \geq 0} $. On remarquera qu'il n'est 
@@ -47,7 +49,10 @@ pas nécessaire de changer le seuil de la fonction car c'est le rôle incarné p
 du seuil telles que la sigmoide ($\sigma : x \mapsto \frac{1}{1+e^{-x}}$) ou encore $\tanh$. On préfère généralement des fonctions différentiables pour
 permettre au réseau d'apprendre sur les données fournies.
 
-On a alors : $ a = f(\mathbf{w_1}^\intercal \mathbf{p} - b) $
+On a alors : 
+\begin{equation}
+ a = f(\mathbf{w_1}^T \mathbf{p} - b)
+\end{equation}
 
 Si on revient au cas de la fonction seuil, on remarquera qu'elle permet de séparer le plan en deux espaces : l'un où la sortie est nulle, l'autre où
 la sortie est égale à 1. Puisque le niveau d'activation résulte d'un produit matriciel, alors cela définit l'équation d'un hyperplan, donc la séparation
@@ -96,7 +101,68 @@ d'entrées, le réseau devant alors les discriminer lui-même sans connaître la
 Pour réaliser cela, on présente à notre réseau une entrée et, puisqu'on dispose de la sortie attendue, on peut mesurer à quel point le réseau s'est trompé.
 C'est le rôle de la fonction d'erreur. Plus celle-ci est importante, moins le réseau est adapté pour cette donnée. Il existe différentes fonctions
 d'erreur. Une des plus utilisées est la somme des carrés des écarts entre la valeur attendue et la valeur calculée : 
-$$ F(\mathbf{x}) = (\mathbf{d(x)} - \mathbf{a(x)})^2 $$
+
+\begin{equation}
+\displaystyle F(\mathbf{x}) = \mathbf{e(x)}^T\mathbf{e(x)} 
+\end{equation}
+
+où $\displaystyle \mathbf{e(x)} = \mathbf{d(x)} - \mathbf{a(x)} $ ,
+$\mathbf{d(x)}$ la valeur attendue et $\mathbf{a(x)}$ la valeur calculée
+
+
+L'apprentissage consiste donc en la minimisation de cette fonction de coût $F$. À chaque calcul d'erreur, on modifie les différents poids du réseau.
+À une couche $k$ donnée, le poids entre l'entrée $j$ et le neurone $i$ est modifié de la manière suivante : 
+\begin{equation}
+ \Delta w^k_{i,j}(t) = - \eta \frac{\partial F}{\partial w^k_{i,j}}
+\end{equation}
+ 
+En se plaçant dans l'espace des poids (cela inclut les biais qui sont des poids particuliers), cela revient à chercher la direction dans laquelle l'erreur
+est diminuée de la manière la plus significative. Le facteur $\eta$ est le taux d'apprentissage (Learning Rate en anglais). Il représente le pas de
+chaque itération vers le minimum de la fonction de coût. C'est un paramètre du réseau que nous devons choisir en amont de l'apprentissage.
+
+Marc \textsc{Paruzeau} démontre en 2004 les formules de rétropropagation que nous avons utilisées. Pour cela il introduit un paramètre % pas vraiment un paramère quand pensez-vous ? je ne trouve aps le mot juste
+intermédiaire. Les sensibilités sont définies ainsi :
+\begin{equation}
+ \mathbf{s}^k = \frac{\partial F}{\partial \mathbf{n}^k}
+\end{equation}
+
+On note également l'utilisation du raccourci suivant : 
+
+\begin{equation}
+  \displaystyle
+ \mathbf{\dot F}^k(\mathbf{n}^k) =
+ \begin{bmatrix}
+  \dot f ^k(n^k_1) & 0 & \ldots & 0\\
+  0 & \dot f^k(n^k_2) & 0 & 0\\
+  \vdots & \vdots & \ddots & \vdots \\
+  0 & 0 & \ldots & \dot f^k(n^k_{S^k})\\
+ \end{bmatrix}
+ \text{où $S^k$ est le nombre de neurone de la couche $k$}
+\end{equation}
+
+Pour un réseau de $M$ couches, la rétropropagation se déroule de la manière suivante.
+\begin{itemize}
+ \item On propage notre entrée $\mathbf{p}$ dans le réseau
+ \begin{equation}
+   \mathbf{a}^k = \mathbf{f}^k(\mathbf{W}^k\mathbf{a}^{k-1} - \mathbf{b}^k) \text{, pour $k \in [1,M]$ et $\mathbf{a}^0 = \mathbf{p}$}
+ \end{equation}
+ 
+ \item On calcule les sensibilités 
+ \begin{align}
+  \mathbf{s}^M &= -2\mathbf{\dot F}^M(\mathbf{n}^M)\mathbf{e} \\
+  \mathbf{s}^k &= \mathbf{\dot F}^k(\mathbf{n}^k)(\mathbf{W}^{k+1})^T \mathbf{s}^{k+1} \text{, pour $k \in [1,M-1]$}
+ \end{align}
+ 
+ \item On calcule les changements de poids
+ \begin{align}
+  \Delta \mathbf{W}^k &= - \eta \mathbf{s}^k(\mathbf{a}^{k-1})^T \text{, pour $k \in [1,M]$} \\
+  \Delta \mathbf{b}^k &= \eta \mathbf{s}^k \text{, pour $k \in [1,M]$}
+ \end{align}
+
+
+
+\end{itemize}
+
 
 
 
