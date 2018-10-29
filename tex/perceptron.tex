@@ -28,26 +28,26 @@ Le neurone est composé de différents élements :
 
 Ainsi, on associe les entrées et les poids par un produit scalaire, pour en sortir une valeur qui caractérise l'entrée, le niveau d'activation.
 On ajoute un biais pour régler l'importance accordée au niveau d'activation. On peut utiliser une notation matricielle pour simplifier les calculs.
-On pose alors $w_1 = 
+On pose alors $\mathbf{w_1} = 
 \begin{pmatrix}
   w_{1,1} & w_{1,2} & \ldots & w_{1,R}\\
 \end{pmatrix}^T $ 
 et
-$ p = 
+$ \mathbf{p} = 
 \begin{pmatrix}
  p_1 & p_2 & \ldots & p_R \\
 \end{pmatrix}^T $ 
 les vecteurs colonnes représentant respectivement l'entrée et les poids du neurone. On a alors :
 
 \begin{equation} 
-n = \sum_{i=1}^{R} w_{1,j} p_j - b = \mathbf{w_1}^T \mathbf{p} - b
+n = \sum_{i=1}^{R} w_{1,i} p_i - b = \mathbf{w_1}^T \mathbf{p} - b
 \end{equation}
 
 On cherche alors à discriminer les différentes possibilités pour le niveau d'activation. C'est le rôle de la fonction d'activation. Si l'on souhaite séparer
 le cas d'un $n$ supérieur ou non à un seuil donné alors on utilise la fonction seuil $ f : x \mapsto \mathds{1}_{n \geq 0} $. On remarquera qu'il n'est 
 pas nécessaire de changer le seuil de la fonction car c'est le rôle incarné par le biais. Néanmoins, d'autres fonctions peuvent être utilisées à la place
-du seuil telles que la sigmoide ($\sigma : x \mapsto \frac{1}{1+e^{-x}}$) ou encore $\tanh$. On préfère généralement des fonctions différentiables pour
-permettre au réseau d'apprendre sur les données fournies.
+du seuil telles que la sigmoide ($\sigma : x \mapsto \frac{1}{1+e^{-x}}$) ou encore la tangente hyperbolique. 
+On préfère généralement des fonctions différentiables pour permettre au réseau d'apprendre sur les données fournies.
 
 On a alors : 
 \begin{equation}
