@@ -321,7 +321,7 @@ utilisant l'entropie croisée.
 La section \ref{subsubsection:etablissement-eq-entropiecroisee} a permis de trouver par le calcul la formule \ref{eq:formule-entropiecroisee}.
 On cherche cette fois à obtenir une explication plus intuitive pour mieux comprendre pourquoi cette fonction de coût fonctionne.
 
-La formule de l'entropie d'une variable aléatoire $X$ est 
+La formule de l'entropie d'une variable aléatoire $X$ est une somme sur les évènements non improbables :
 \begin{equation}
  H(X) = -\sum_{i=1}^{n} p_i\log\left(p_i\right)
 \end{equation}
@@ -345,11 +345,11 @@ Ainsi, si on dispose d'un jeu de données dont les sorties attendues suivent une
 \subsubsection{Estimateur de l'entropie croisée}
 
 Si on considère notre réseau dont la couche de sortie est composée d'un seul neurone (une somme de l'entropie sur les neurones peut-être faite si 
-on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoide donnant une sortie $q$, alors
+on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoide donnant une sortie $q_i$ lorsque soumis à l'exemple $x_i$, alors
 
 \begin{equation}
- \mathbb{P}\left(X=x\right) = \begin{cases}q &\text{ si $x=1$}\\1-q &\text{ si $x=0$}\end{cases} \text{, \parbox[t]{15em}{où $X$ représente notre réseau\\
- et $x$ représente les observations}}
+ \mathbb{P}\left(X=p_i\right) = \begin{cases}q_i &\text{ si $p_i=1$}\\1-q_i &\text{ si $p_i=0$}\end{cases} \text{, \parbox[t]{15em}{où $X$ représente notre réseau\\
+ et $p_i$ représente l'observation $i$}}
  \label{eq:proba}
 \end{equation}
 
@@ -357,31 +357,22 @@ $\mathbb{P}$ tel que défini équation \ref{eq:proba} représente la probabilit�
 est donné sous une forme différente à l'équation \ref{eq:ddp}
 \begin{equation}
  \label{eq:ddp}
- \mathbb{P}\left(X=x\right) = q^x\left(1-q\right)^{1-x}
+ \mathbb{P}\left(X=p_i\right) = q_i{^{p_i}}\left(1-q_i\right)^{1-p_i}
 \end{equation}
 
-Ainsi sur un jeu de donnée $\{x_1, x_2, ..., x_N\}$, l'équation \ref{eq:vraisemblance} présente la vraisemblance de notre loi, en posant
+Ainsi sur un jeu de donnée $\{x_1, x_2, ..., x_N\}$, l'équation \ref{eq:vraisemblance} présente la vraisemblance de notre loi, 
+et l'équation \ref{eq:log-vraisemblance} sa log-vraisemblance, en posant $\mathbb{L} = \mathbb{L}\left(p_1, p_2, \ldots, p_N, q_1, q_2, \ldots, q_N\right)$.
 
-\begin{equation}
- p = \frac{\sum_{i=1}^N x_i}{N} \text{, la distribution empirique observée}
-\end{equation}
-
-
-\begin{align*}
- \mathbb{L}(x_1,x_2,...,x_N,q) &= q^{\sum_{i=1}^N x_i}\left(1-q\right)^{\sum_{i=1}^N \left(1-x_i\right)}\\
- &= q^{Np}\left(1-q\right)^{N\left(1-p\right)}  
- \label{eq:vraisemblance}
- \numberthis
-\end{align*} 
-
-\begin{equation}
- \frac{1}{N}\log\left(\mathbb{L}\left(x_1,x_2,...,x_N,q\right)\right) = p\ln\left(q\right) + \left(1-p\right)\ln\left(1-q\right) 
+\begin{align}
+ \mathbb{L} &= \prod_{i=1}^N q_i{^{p_i}}\left(1-q_i\right)^{1-p_i}
+ \label{eq:vraisemblance}\\
+ \frac{1}{N}\log\left(\mathbb{L}\right) &= \sum_{i=1}^N \left(p_i\ln\left(q_i\right) + \left(1-p_i\right)\ln\left(1-q_i\right) \right)
  \label{eq:log-vraisemblance}
-\end{equation}
+\end{align}
 
-D'après \ref{eq:log-vraisemblance}, la log-vraisemblance de notre système est l'opposé de l'entropie croisée. Ainsi, on comprend que minimiser 
-l'entropie croisée revient à utiliser un estimateur de maximum de vraisemblance. Notre système est donc d'autant plus performant que son 
-entropie croisée est faible.
+D'après les équations \ref{eq:formule-entropiecroisee} et \ref{eq:log-vraisemblance}, la log-vraisemblance de notre système est l'opposé de l'entropie croisée. 
+Ainsi, on comprend que minimiser l'entropie croisée revient à utiliser un estimateur de maximum de vraisemblance. 
+Notre système est donc d'autant plus performant que son entropie croisée est faible.
 
 
 
