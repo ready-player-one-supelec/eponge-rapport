@@ -175,7 +175,6 @@ La formule de l'entropie croisée est la suivante :
 \begin{equation}
  C = -\frac{1}{n}\sum_x[y\ln(a) + (1-y)\ln(1-a)]\; \text{, \parbox[t]{15em}{$n$ la taille du batch\\ $x$ les exemples du batch\\
  $a$ la sortie calculée\\$y$ la sortie attendue}}
- \label{eq:formule-entropiecroisee}
 \end{equation}
 
 \subsubsection{Comportement pour une erreur quadratique}
@@ -206,7 +205,7 @@ un neurone qui renvoit 0.82 lorsque l'entrée vaut 1. On entraîne ce neurone et
   \caption{Courbe d'apprentissage du neurone}
   \label{fig:initialisation1-entropiecroisee-courbe}
 \end{subfigure}
-\caption{Première initialisation du réseau d'exemple utilisant l'erreur quadratique}
+\caption{Première initialisation du réseau d'exemple pour l'entropie croisée}
 \label{fig:initialisation1-entropiecroisee}
 \end{figure}
 
@@ -237,7 +236,7 @@ mais l'apprentissage est beaucoup plus lent. On doit donc réaliser un nombre d'
   \caption{Courbe d'apprentissage du neurone}
   \label{fig:initialisation2-entropiecroisee-courbe}
 \end{subfigure}
-\caption{Seconde initialisation du réseau d'exemple utilisant l'erreur quadratique}
+\caption{Seconde initialisation du réseau d'exemple pour l'entropie croisée}
 \label{fig:initialisation2-entropiecroisee}
 \end{figure}
 
@@ -260,19 +259,15 @@ partie droite de la courbe, où la pente est très faible. Cela provient du fait
  \label{fig:sigmoid_function}
 \end{figure}
 
-\subsubsection{Une solution à ce problème d'apprentissage}
-\label{subsubsection:etablissement-eq-entropiecroisee}
-
 L'apprentissage n'en est que ralenti, ce qui n'est évidemment pas souhaitable. Pour rendre le réseau moins sensible à une mauvaise initialisation,
 il faut donc changer ce comportement. Cela revient à, à nouveau, utiliser une analogie pour l'être humain, puisque l'humain a tendance à apprendre
 plus vite lorsque il commet de fortes erreurs. On veut donc garder un apprentissage plus lent lorsque l'on se rapproche du minimum de la fonction
 d'erreur. Ainsi, on aimerait obtenir ces équations :
 
 \begin{align}
-  \label{eq:comportementvoulu-poids}
   \frac{\partial C}{\partial \omega} &= (a-y)x \\
   \frac{\partial C}{\partial b} &= (a-y)
-  \label{eq:comportementvoulu-biais}
+  \label{eq:comportementvoulu}
 \end{align}
 
 La formule de la chaîne nous donne 
@@ -280,46 +275,6 @@ La formule de la chaîne nous donne
  \frac{\partial C}{\partial b} = \frac{\partial C}{\partial a} \frac{\partial a}{\partial b} = \frac{\partial C}{\partial a} a(1-a)
 \end{equation}
 
-En utilisant l'expression voulue (équation \ref{eq:comportementvoulu-biais}), on obtient 
-\begin{align}
- \frac{\partial C}{\partial a} &= \frac{a-y}{a(1-a)} = \frac{-y}{a} + \frac{1-y}{1-a} \\
- C &= -y\ln(a) - (1-y)\ln(1-a) + Const
-\end{align}
-
-On comprend alors que la formule de l'entropie croisée n'est pas une formule qui se trouve avoir des propriétés intéressantes, mais que l'on peut
-construire cette fonction de coût pour respecter les conditions des équations \ref{eq:comportementvoulu-poids} et \ref{eq:comportementvoulu-biais}. 
-L'expression \ref{eq:formule-entropiecroisee} est alors une condition suffisante et quasiment nécessaire au respect desdites contraintes. 
-Le ``quasiment'' provient de la constante d'intégration. Puisque ce n'est pas la fonction de coût en elle-même qui est intéressante mais plutôt
-ses variations et ses dérivées partielles, alors on peut se contenter d'une constante nulle, ce qui conserve la positivité de $C$. On s'attend alors
-à une amélioration considérable de l'apprentissage observé figure \ref{fig:initialisation2-entropiecroisee}. La courbe d'apprentissage
-\ref{fig:initialisation3-entropiecroisee-schema} montre un comportement beaucoup plus intéressant. La pente à l'origine est bien plus importante
-lorsque le réseau commet une forte erreur. On a ainsi un réseau qui est moins sensible à l'initialisation et qui apprend d'autant plus qu'il commet une
-grosse erreur. Ce comportement est parfois obtenu en faisant varier le taux d'apprentissage au cours du temps. Sur ces exemples, le taux d'apprentissage
-est constant. Ce comportement souhaité étant un artéfact de la fonction de coût, on s'attend à des performances supérieures de la part des réseaux
-utilisant l'entropie croisée.
-
-\begin{figure}[h]
-\centering
-\begin{subfigure}{.5\textwidth}
-  \centering
-  \includegraphics[width=.6\linewidth]{img/entropiecroisee_reseau_utilise_init2.png}
-  \caption{Réseau utilisé et initialisation identique à la figure \ref{fig:initialisation2-entropiecroisee}}
-  \label{fig:initialisation3-entropiecroisee-schema}
-\end{subfigure}%
-\begin{subfigure}{.4\textwidth}
-  \centering
-  \includegraphics[width=.4\linewidth]{img/entropiecroisee_apprentissage3.png}
-  \caption{Courbe d'apprentissage du neurone}
-  \label{fig:initialisation3-entropiecroisee-courbe}
-\end{subfigure}
-\caption{Seconde initialisation du réseau d'exemple en utilisant l'entropie croisée}
-\label{fig:initialisation3-entropiecroisee}
-\end{figure}
-
-\subsubsection{Une explication intuitive}
-
-La section \ref{subsubsection:etablissement-eq-entropiecroisee} a permis de trouver par le calcul la formule \ref{eq:formule-entropiecroisee}.
-On cherche cette fois à obtenir une explication plus intuitive pour mieux comprendre pourquoi cette fonction de coût fonctionne.
 
 
 
