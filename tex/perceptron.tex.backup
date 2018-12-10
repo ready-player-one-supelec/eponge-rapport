@@ -175,6 +175,7 @@ La formule de l'entropie croisée est la suivante :
 \begin{equation}
  C = -\frac{1}{n}\sum_x[y\ln(a) + (1-y)\ln(1-a)]\; \text{, \parbox[t]{15em}{$n$ la taille du batch\\ $x$ les exemples du batch\\
  $a$ la sortie calculée\\$y$ la sortie attendue}}
+ \label{eq:formule-entropiecroisee}
 \end{equation}
 
 \subsubsection{Comportement pour une erreur quadratique}
@@ -205,7 +206,7 @@ un neurone qui renvoit 0.82 lorsque l'entrée vaut 1. On entraîne ce neurone et
   \caption{Courbe d'apprentissage du neurone}
   \label{fig:initialisation1-entropiecroisee-courbe}
 \end{subfigure}
-\caption{Première initialisation du réseau d'exemple pour l'entropie croisée}
+\caption{Première initialisation du réseau d'exemple utilisant l'erreur quadratique}
 \label{fig:initialisation1-entropiecroisee}
 \end{figure}
 
@@ -236,7 +237,7 @@ mais l'apprentissage est beaucoup plus lent. On doit donc réaliser un nombre d'
   \caption{Courbe d'apprentissage du neurone}
   \label{fig:initialisation2-entropiecroisee-courbe}
 \end{subfigure}
-\caption{Seconde initialisation du réseau d'exemple pour l'entropie croisée}
+\caption{Seconde initialisation du réseau d'exemple utilisant l'erreur quadratique}
 \label{fig:initialisation2-entropiecroisee}
 \end{figure}
 
@@ -259,21 +260,126 @@ partie droite de la courbe, où la pente est très faible. Cela provient du fait
  \label{fig:sigmoid_function}
 \end{figure}
 
+\subsubsection{Une solution à ce problème d'apprentissage}
+\label{subsubsection:etablissement-eq-entropiecroisee}
+
 L'apprentissage n'en est que ralenti, ce qui n'est évidemment pas souhaitable. Pour rendre le réseau moins sensible à une mauvaise initialisation,
 il faut donc changer ce comportement. Cela revient à, à nouveau, utiliser une analogie pour l'être humain, puisque l'humain a tendance à apprendre
 plus vite lorsque il commet de fortes erreurs. On veut donc garder un apprentissage plus lent lorsque l'on se rapproche du minimum de la fonction
 d'erreur. Ainsi, on aimerait obtenir ces équations :
 
 \begin{align}
+  \label{eq:comportementvoulu-poids}
   \frac{\partial C}{\partial \omega} &= (a-y)x \\
   \frac{\partial C}{\partial b} &= (a-y)
-  \label{eq:comportementvoulu}
+  \label{eq:comportementvoulu-biais}
 \end{align}
 
 La formule de la chaîne nous donne 
 \begin{equation}
  \frac{\partial C}{\partial b} = \frac{\partial C}{\partial a} \frac{\partial a}{\partial b} = \frac{\partial C}{\partial a} a(1-a)
 \end{equation}
+
+En utilisant l'expression voulue (équation \ref{eq:comportementvoulu-biais}), on obtient 
+\begin{align}
+ \frac{\partial C}{\partial a} &= \frac{a-y}{a(1-a)} = \frac{-y}{a} + \frac{1-y}{1-a} \\
+ C &= -y\ln(a) - (1-y)\ln(1-a) + Const
+\end{align}
+
+On comprend alors que la formule de l'entropie croisée n'est pas simplement une formule qui se trouve avoir des propriétés intéressantes, mais que l'on peut
+construire cette fonction de coût pour respecter les conditions des équations \ref{eq:comportementvoulu-poids} et \ref{eq:comportementvoulu-biais}. 
+L'expression \ref{eq:formule-entropiecroisee} est alors une condition suffisante et quasiment nécessaire au respect desdites contraintes. 
+Le ``quasiment'' provient de la constante d'intégration. Puisque ce n'est pas la fonction de coût en elle-même qui est intéressante mais plutôt
+ses variations et ses dérivées partielles, alors on peut se contenter d'une constante nulle, ce qui conserve la positivité de $C$. On s'attend alors
+à une amélioration considérable de l'apprentissage observé figure \ref{fig:initialisation2-entropiecroisee}. La courbe d'apprentissage
+\ref{fig:initialisation3-entropiecroisee-courbe} montre un comportement beaucoup plus intéressant. La pente à l'origine est bien plus importante
+lorsque le réseau commet une forte erreur. On a ainsi un réseau qui est moins sensible à l'initialisation et qui apprend d'autant plus qu'il commet une
+grosse erreur. Ce comportement est parfois obtenu en faisant varier le taux d'apprentissage au cours du temps. Sur ces exemples, le taux d'apprentissage
+est constant. Ce comportement souhaité étant un artéfact de la fonction de coût, on s'attend à des performances supérieures de la part des réseaux
+utilisant l'entropie croisée.
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.6\linewidth]{img/entropiecroisee_reseau_utilise_init2.png}
+  \caption{Réseau utilisé et initialisation identique à la figure \ref{fig:initialisation2-entropiecroisee}}
+  \label{fig:initialisation3-entropiecroisee-schema}
+\end{subfigure}%
+\begin{subfigure}{.4\textwidth}
+  \centering
+  \includegraphics[width=.4\linewidth]{img/entropiecroisee_apprentissage3.png}
+  \caption{Courbe d'apprentissage du neurone}
+  \label{fig:initialisation3-entropiecroisee-courbe}
+\end{subfigure}
+\caption{Seconde initialisation du réseau d'exemple en utilisant l'entropie croisée}
+\label{fig:initialisation3-entropiecroisee}
+\end{figure}
+
+\subsubsection{Une explication intuitive}
+
+La section \ref{subsubsection:etablissement-eq-entropiecroisee} a permis de trouver par le calcul la formule \ref{eq:formule-entropiecroisee}.
+On cherche cette fois à obtenir une explication plus intuitive pour mieux comprendre pourquoi cette fonction de coût fonctionne.
+
+La formule de l'entropie d'une variable aléatoire $X$ est 
+\begin{equation}
+ H(X) = -\sum_{i=1}^{n} p_i\log(p_i)
+\end{equation}
+
+L'entropie est une mesure de l'incertitude d'une loi de probabilité. Par exemple, si on réalise une expérience de boules et que l'on considère
+la couleur de la boule tirée, alors l'entropie sera maximale lorsque les différentes éventualités sont équiprobables.
+
+En traitement de l'information, cette grandeur permet de coder efficacement les symboles à transmettre. Si on a des symboles équiprobables alors
+l'entropie est maximale. On a alors que le nombre de bits nécessaires pour définir le symbole avec certitude est $\log_2(N)$ où $N$ est le nombre
+de symboles différents. Si on considère un texte en français, les lettres RSTLNE sont par exemple bien plus courantes que WXYZ. La diminution de l'entropie
+caractérise le fait qu'un système de codage malin utilise en moyenne moins de bits pour transmettre l'information avec certitude.
+
+L'entropie croisée $-q\log(p)$ est, en mathématiques, une mesure de la distance entre deux distributions. On peut là encore y retrouver une interprétation
+en traitement de signal. En effet, si on considère un système de codage adapté à un texte où chaque lettre apparaît selon une distribution $q$, alors
+l'entropie croisée $-q\log(p)$ mesure à quel point ce même système est adapté pour chiffrer un texte où chaque lettre apparaît selon la distribution $p$.
+
+Ainsi, si on dispose d'un jeu de données dont les sorties attendues suivent une distribution empirique $p$, et d'un réseau neuronal dont les sorties
+à ces données suivent une distribution $q$, alors adapter le réseau pour qu'il puisse reproduire fidèlement les observations $p$ revient 
+à diminuer l'entropie croisée de ces deux distributions.
+
+\subsubsection{Estimateur de l'entropie croisée}
+
+Si on considère notre réseau dont la couche de sortie est composée d'un seul neurone (une somme de l'entropie sur les neurones peut-être faite si 
+on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoide donnant une sortie $q$, alors
+
+\begin{equation}
+ \mathbb{P}(X=x) = \begin{cases}q &\text{ si $x=1$}\\1-q &\text{ si $x=0$}\end{cases} \text{, \parbox[t]{15em}{où $X$ représente notre réseau\\
+ et $x$ représente les observations}}
+ \label{eq:proba}
+\end{equation}
+
+$\mathbb{P}$ tel que défini équation \ref{eq:proba} représente la probabilité que notre réseau trouve la bonne solution. Sa densité de probabilité
+est donné sous une forme différente à l'équation \ref{eq:ddp}
+\begin{equation}
+ \label{eq:ddp}
+ \mathbb{P}(X=x) = q^x(1-q)^{1-x}
+\end{equation}
+
+Ainsi sur un jeu de donnée $\{x_1, x_2, ..., x_N\}$, l'équation \ref{eq:vraisemblance} présente la vraisemblance de notre loi, en posant
+
+\begin{equation}
+ p = \frac{\sum_{i=1}^N x_i}{N} \text{, la distribution empirique observée}
+\end{equation}
+
+
+\begin{align*}
+ \mathbb{L}(x_1,x_2,...,x_N,q) &= q^{\sum_{i=1}^N x_i}(1-q)^{\sum_{i=1}^N (1-x_i)}\\
+ &= q^{Np}(1-q)^{N(1-p)}  
+ \label{eq:vraisemblance}
+  \numberthis \\
+  
+  \frac{1}{N}\log(\mathbb{L}(x_1,x_2,...,x_N,q)) &= p\ln(q) + (1-p)\ln(1-q) 
+  \label{eq:log-vraisemblance}
+  \numberthis
+\end{align*}
+
+
+
 
 
 

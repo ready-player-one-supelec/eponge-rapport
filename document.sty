@@ -19,6 +19,8 @@
 \renewcommand{\contentsname}{Table des matières}
 \renewcommand{\listfigurename}{Table des figures}
 
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}} % permet de choisir sur un align* (package amsmath) quelle équation sera numérotée
+
 \newenvironment{bloc infos}[1]{
     \tcolorbox[beamer,%
     noparskip,breakable, oversize,
