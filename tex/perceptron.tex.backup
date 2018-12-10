@@ -51,7 +51,7 @@ On préfère généralement des fonctions différentiables pour permettre au ré
 
 On a alors : 
 \begin{equation}
- a = f(\mathbf{w_1}^T \mathbf{p} - b)
+ a = f\left(\mathbf{w_1}^T \mathbf{p} - b\right)
 \end{equation}
 
 Si on revient au cas de la fonction seuil, on remarquera qu'elle permet de séparer le plan en deux espaces : l'un où la sortie est nulle, l'autre où
@@ -103,17 +103,17 @@ C'est le rôle de la fonction d'erreur. Plus celle-ci est importante, moins le r
 d'erreur. Une des plus utilisées est la somme des carrés des écarts entre la valeur attendue et la valeur calculée : 
 
 \begin{equation}
-\displaystyle F(\mathbf{x}) = \mathbf{e(x)}^T\mathbf{e(x)} 
+\displaystyle F\left(\mathbf{x}\right) = \mathbf{e\left(x\right)}^T\mathbf{e\left(x\right)} 
 \end{equation}
 
-où $\displaystyle \mathbf{e(x)} = \mathbf{d(x)} - \mathbf{a(x)} $ ,
-$\mathbf{d(x)}$ la valeur attendue et $\mathbf{a(x)}$ la valeur calculée
+où $\displaystyle \mathbf{e\left(x\right)} = \mathbf{d\left(x\right)} - \mathbf{a\left(x\right)} $ ,
+$\mathbf{d\left(x\right)}$ la valeur attendue et $\mathbf{a\left(x\right)}$ la valeur calculée
 
 
 L'apprentissage consiste donc en la minimisation de cette fonction de coût $F$. À chaque calcul d'erreur, on modifie les différents poids du réseau.
 À une couche $k$ donnée, le poids entre l'entrée $j$ et le neurone $i$ est modifié de la manière suivante : 
 \begin{equation}
- \Delta w^k_{i,j}(t) = - \eta \frac{\partial F}{\partial w^k_{i,j}}
+ \Delta w^k_{i,j}\left(t\right) = - \eta \frac{\partial F}{\partial w^k_{i,j}}
 \end{equation}
  
 En se plaçant dans l'espace des poids (cela inclut les biais qui sont des poids particuliers), cela revient à chercher la direction dans laquelle l'erreur
@@ -130,12 +130,12 @@ On note également l'utilisation du raccourci suivant :
 
 \begin{equation}
   \displaystyle
- \mathbf{\dot F}^k(\mathbf{n}^k) =
+ \mathbf{\dot F}^k\left(\mathbf{n}^k\right) =
  \begin{bmatrix}
-  \dot f ^k(n^k_1) & 0 & \ldots & 0\\
-  0 & \dot f^k(n^k_2) & 0 & 0\\
+  \dot f ^k\left(n^k_1\right) & 0 & \ldots & 0\\
+  0 & \dot f^k\left(n^k_2\right) & 0 & 0\\
   \vdots & \vdots & \ddots & \vdots \\
-  0 & 0 & \ldots & \dot f^k(n^k_{S^k})\\
+  0 & 0 & \ldots & \dot f^k\left(n^k_{S^k}\right)\\
  \end{bmatrix}
  \text{où $S^k$ est le nombre de neurone de la couche $k$}
 \end{equation}
@@ -144,19 +144,19 @@ Pour un réseau de $M$ couches, la rétropropagation se déroule de la manière 
 \begin{itemize}
  \item On propage notre entrée $\mathbf{p}$ dans le réseau
  \begin{equation}
-   \mathbf{a}^k = \mathbf{f}^k(\mathbf{W}^k\mathbf{a}^{k-1} - \mathbf{b}^k) \text{, pour $k \in [1,M]$ et $\mathbf{a}^0 = \mathbf{p}$}
+   \mathbf{a}^k = \mathbf{f}^k\left(\mathbf{W}^k\mathbf{a}^{k-1} - \mathbf{b}^k\right) \text{, pour $k \in \intervalle{[}{1}{M}{]}$ et $\mathbf{a}^0 = \mathbf{p}$}
  \end{equation}
  
  \item On calcule les sensibilités 
  \begin{align}
-  \mathbf{s}^M &= -2\mathbf{\dot F}^M(\mathbf{n}^M)\mathbf{e} \\
-  \mathbf{s}^k &= \mathbf{\dot F}^k(\mathbf{n}^k)(\mathbf{W}^{k+1})^T \mathbf{s}^{k+1} \text{, pour $k \in [1,M-1]$}
+  \mathbf{s}^M &= -2\mathbf{\dot F}^M\left(\mathbf{n}^M\right)\mathbf{e} \\
+  \mathbf{s}^k &= \mathbf{\dot F}^k\left(\mathbf{n}^k\right)\left(\mathbf{W}^{k+1}\right)^T \mathbf{s}^{k+1} \text{, pour $k \in \intervalle{[}{1}{M-1}{]}$}
  \end{align}
  
  \item On calcule les changements de poids
  \begin{align}
-  \Delta \mathbf{W}^k &= - \eta \mathbf{s}^k(\mathbf{a}^{k-1})^T \text{, pour $k \in [1,M]$} \\
-  \Delta \mathbf{b}^k &= \eta \mathbf{s}^k \text{, pour $k \in [1,M]$}
+  \Delta \mathbf{W}^k &= - \eta \mathbf{s}^k\left(\mathbf{a}^{k-1}\right)^T \text{, pour $k \in \intervalle{[}{1}{M}{]}$} \\
+  \Delta \mathbf{b}^k &= \eta \mathbf{s}^k \text{, pour $k \in \intervalle{[}{1}{M}{]}$}
  \end{align}
 
 \end{itemize}
@@ -173,7 +173,7 @@ cette fonction possède de meilleures propriétés que l'erreur quadratique.
 
 La formule de l'entropie croisée est la suivante : 
 \begin{equation}
- C = -\frac{1}{n}\sum_x[y\ln(a) + (1-y)\ln(1-a)]\; \text{, \parbox[t]{15em}{$n$ la taille du batch\\ $x$ les exemples du batch\\
+ C = -\frac{1}{n}\sum_x\left[y\ln\left(a\right) + \left(1-y\right)\ln\left(1-a\right)\right]\; \text{, \parbox[t]{15em}{$n$ la taille du batch\\ $x$ les exemples du batch\\
  $a$ la sortie calculée\\$y$ la sortie attendue}}
  \label{eq:formule-entropiecroisee}
 \end{equation}
@@ -245,13 +245,13 @@ mais l'apprentissage est beaucoup plus lent. On doit donc réaliser un nombre d'
 
 Puisque $C = \frac{(y-a)^2}{2}$, alors on peut vérifier que l'on a :
 \begin{align}
- \frac{\partial C}{\partial \omega} &= (a-y)\sigma'(z)x \text{, \parbox[t]{15em}{où $z$ est l'antécédant de $a$ par la fonction d'activation}}\\
- \frac{\partial C}{\partial b} &= (a-y)\sigma'(z) 
+ \frac{\partial C}{\partial \omega} &= \left(a-y\right)\sigma'\left(z\right)x \text{, \parbox[t]{15em}{où $z$ est l'antécédant de $a$ par la fonction d'activation}}\\
+ \frac{\partial C}{\partial b} &= \left(a-y\right)\sigma'\left(z\right) 
 \end{align}
 
-En observant la fonction sigmoide figure \ref{fig:sigmoid_function}, on se rend compte que le problème provient de $\sigma'(z)$.
+En observant la fonction sigmoide figure \ref{fig:sigmoid_function}, on se rend compte que le problème provient de $\sigma'\left(z\right)$.
 En effet, puisque la seconde initialisation avait une erreur initiale très importante ($a$ proche de 1), alors on se retrouve dans la 
-partie droite de la courbe, où la pente est très faible. Cela provient du fait que $\sigma'(z) = a(1-a)$.
+partie droite de la courbe, où la pente est très faible. Cela provient du fait que $\sigma'\left(z\right) = a\left(1-a\right)$.
 
 \begin{figure}[h]
  \centering
@@ -371,14 +371,17 @@ Ainsi sur un jeu de donnée $\{x_1, x_2, ..., x_N\}$, l'équation \ref{eq:vraise
  \mathbb{L}(x_1,x_2,...,x_N,q) &= q^{\sum_{i=1}^N x_i}(1-q)^{\sum_{i=1}^N (1-x_i)}\\
  &= q^{Np}(1-q)^{N(1-p)}  
  \label{eq:vraisemblance}
-  \numberthis \\
-  
-  \frac{1}{N}\log(\mathbb{L}(x_1,x_2,...,x_N,q)) &= p\ln(q) + (1-p)\ln(1-q) 
-  \label{eq:log-vraisemblance}
-  \numberthis
-\end{align*}
+ \numberthis
+\end{align*} 
 
+\begin{equation}
+ \frac{1}{N}\log(\mathbb{L}(x_1,x_2,...,x_N,q)) = p\ln(q) + (1-p)\ln(1-q) 
+ \label{eq:log-vraisemblance}
+\end{equation}
 
+D'après \ref{eq:log-vraisemblance}, la log-vraisemblance de notre système est l'opposé de l'entropie croisée. Ainsi, on comprend que minimiser 
+l'entropie croisée revient à utiliser un estimateur de maximum de vraisemblance. Notre système est donc d'autant plus performant que son 
+entropie croisée est faible.
 
 
 
