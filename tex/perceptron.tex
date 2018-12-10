@@ -286,13 +286,13 @@ En utilisant l'expression voulue (équation \ref{eq:comportementvoulu-biais}), o
  C &= -y\ln(a) - (1-y)\ln(1-a) + Const
 \end{align}
 
-On comprend alors que la formule de l'entropie croisée n'est pas une formule qui se trouve avoir des propriétés intéressantes, mais que l'on peut
+On comprend alors que la formule de l'entropie croisée n'est pas simplement une formule qui se trouve avoir des propriétés intéressantes, mais que l'on peut
 construire cette fonction de coût pour respecter les conditions des équations \ref{eq:comportementvoulu-poids} et \ref{eq:comportementvoulu-biais}. 
 L'expression \ref{eq:formule-entropiecroisee} est alors une condition suffisante et quasiment nécessaire au respect desdites contraintes. 
 Le ``quasiment'' provient de la constante d'intégration. Puisque ce n'est pas la fonction de coût en elle-même qui est intéressante mais plutôt
 ses variations et ses dérivées partielles, alors on peut se contenter d'une constante nulle, ce qui conserve la positivité de $C$. On s'attend alors
 à une amélioration considérable de l'apprentissage observé figure \ref{fig:initialisation2-entropiecroisee}. La courbe d'apprentissage
-\ref{fig:initialisation3-entropiecroisee-schema} montre un comportement beaucoup plus intéressant. La pente à l'origine est bien plus importante
+\ref{fig:initialisation3-entropiecroisee-courbe} montre un comportement beaucoup plus intéressant. La pente à l'origine est bien plus importante
 lorsque le réseau commet une forte erreur. On a ainsi un réseau qui est moins sensible à l'initialisation et qui apprend d'autant plus qu'il commet une
 grosse erreur. Ce comportement est parfois obtenu en faisant varier le taux d'apprentissage au cours du temps. Sur ces exemples, le taux d'apprentissage
 est constant. Ce comportement souhaité étant un artéfact de la fonction de coût, on s'attend à des performances supérieures de la part des réseaux
