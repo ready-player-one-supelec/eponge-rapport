@@ -241,7 +241,7 @@ mais l'apprentissage est beaucoup plus lent. On doit donc réaliser un nombre d'
 \label{fig:initialisation2-entropiecroisee}
 \end{figure}
 
-\subsubsection{D'où provient ce comportement ?}
+\subsubsection{Origine de cet échec}
 
 Puisque $C = \frac{(y-a)^2}{2}$, alors on peut vérifier que l'on a :
 \begin{align}
@@ -334,9 +334,9 @@ l'entropie est maximale. On a alors que le nombre de bits nécessaires pour déf
 de symboles différents. Si on considère un texte en français, les lettres RSTLNE sont par exemple bien plus courantes que WXYZ. La diminution de l'entropie
 caractérise le fait qu'un système de codage malin utilise en moyenne moins de bits pour transmettre l'information avec certitude.
 
-L'entropie croisée $-q\log\left(p\right)$ est, en mathématiques, une mesure de la distance entre deux distributions. On peut là encore y retrouver une interprétation
+L'entropie croisée $-p\log\left(q\right)$ est, en mathématiques, une mesure de la distance entre deux distributions. On peut là encore y retrouver une interprétation
 en traitement de signal. En effet, si on considère un système de codage adapté à un texte où chaque lettre apparaît selon une distribution $q$, alors
-l'entropie croisée $-q\log\left(p\right)$ mesure à quel point ce même système est adapté pour chiffrer un texte où chaque lettre apparaît selon la distribution $p$.
+l'entropie croisée $-p\log\left(q\right)$ mesure à quel point ce même système est adapté pour chiffrer un texte où chaque lettre apparaît selon la distribution $p$.
 
 Ainsi, si on dispose d'un jeu de données dont les sorties attendues suivent une distribution empirique $p$, et d'un réseau neuronal dont les sorties
 à ces données suivent une distribution $q$, alors adapter le réseau pour qu'il puisse reproduire fidèlement les observations $p$ revient 
@@ -372,7 +372,8 @@ Les équations \ref{eq:vraisemblance} et \ref{eq:log-vraisemblance} présentent 
  \label{eq:log-vraisemblance}
 \end{align}
 
-D'après les équations \ref{eq:formule-entropiecroisee} et \ref{eq:log-vraisemblance}, la log-vraisemblance de notre système est l'opposé de l'entropie croisée. 
+D'après les équations \ref{eq:formule-entropiecroisee} et \ref{eq:log-vraisemblance}, la log-vraisemblance de notre système est 
+proportionnelle à l'opposé de l'entropie croisée. 
 Ainsi, on comprend que minimiser l'entropie croisée revient à utiliser un estimateur de maximum de vraisemblance. 
 Notre système est donc d'autant plus performant que son entropie croisée est faible.
 
