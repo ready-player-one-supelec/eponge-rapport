@@ -144,19 +144,19 @@ Pour un réseau de $M$ couches, la rétropropagation se déroule de la manière 
 \begin{itemize}
  \item On propage notre entrée $\mathbf{p}$ dans le réseau
  \begin{equation}
-   \mathbf{a}^k = \mathbf{f}^k\left(\mathbf{W}^k\mathbf{a}^{k-1} - \mathbf{b}^k\right) \text{, pour $k \in \intervalle{[}{1}{M}{]}$ et $\mathbf{a}^0 = \mathbf{p}$}
+   \mathbf{a}^k = \mathbf{f}^k\left(\mathbf{W}^k\mathbf{a}^{k-1} - \mathbf{b}^k\right) \text{, pour $k \in \intervalle{\llbracket}{1}{M}{\rrbracket}$ et $\mathbf{a}^0 = \mathbf{p}$}
  \end{equation}
  
  \item On calcule les sensibilités 
  \begin{align}
   \mathbf{s}^M &= -2\mathbf{\dot F}^M\left(\mathbf{n}^M\right)\mathbf{e} \\
-  \mathbf{s}^k &= \mathbf{\dot F}^k\left(\mathbf{n}^k\right)\left(\mathbf{W}^{k+1}\right)^T \mathbf{s}^{k+1} \text{, pour $k \in \intervalle{[}{1}{M-1}{]}$}
+  \mathbf{s}^k &= \mathbf{\dot F}^k\left(\mathbf{n}^k\right)\left(\mathbf{W}^{k+1}\right)^T \mathbf{s}^{k+1} \text{, pour $k \in \intervalle{\llbracket}{1}{M-1}{\rrbracket}$}
  \end{align}
  
  \item On calcule les changements de poids
  \begin{align}
-  \Delta \mathbf{W}^k &= - \eta \mathbf{s}^k\left(\mathbf{a}^{k-1}\right)^T \text{, pour $k \in \intervalle{[}{1}{M}{]}$} \\
-  \Delta \mathbf{b}^k &= \eta \mathbf{s}^k \text{, pour $k \in \intervalle{[}{1}{M}{]}$}
+  \Delta \mathbf{W}^k &= - \eta \mathbf{s}^k\left(\mathbf{a}^{k-1}\right)^T \text{, pour $k \in \intervalle{\llbracket}{1}{M}{\rrbracket}$} \\
+  \Delta \mathbf{b}^k &= \eta \mathbf{s}^k \text{, pour $k \in \intervalle{\llbracket}{1}{M}{\rrbracket}$}
  \end{align}
 
 \end{itemize}
@@ -344,12 +344,15 @@ Ainsi, si on dispose d'un jeu de données dont les sorties attendues suivent une
 
 \subsubsection{Estimateur de l'entropie croisée}
 
-Si on considère notre réseau dont la couche de sortie est composée d'un seul neurone (une somme de l'entropie sur les neurones peut-être faite si 
-on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoide donnant une sortie $q_i$ lorsque soumis à l'exemple $x_i$, alors
+On considère un batch de taille $n$ contenant $N$ données distinctes $\{x_1, x_2, \ldots, x_N\}$, chaque observation $x_i$ 
+(pour $i \in \intervalle{\llbracket}{1}{N}{\rrbracket}$) apparaît dans le batch $np_i$ fois.
+
+Voici notre réseau : la couche de sortie est composée d'un seul neurone (une somme de l'entropie sur les neurones peut-être faite si 
+on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoide donnant une sortie $q_i$ lorsque soumis à l'exemple $x_i$. On a alors :
 
 \begin{equation}
- \mathbb{P}\left(X=p_i\right) = \begin{cases}q_i &\text{ si $p_i=1$}\\1-q_i &\text{ si $p_i=0$}\end{cases} \text{, \parbox[t]{15em}{où $X$ représente notre réseau\\
- et $p_i$ représente l'observation $i$}}
+ \mathbb{P}\left(X=y_i\right) = \begin{cases}q_i &\text{ si $y_i=1$}\\1-q_i &\text{ si $y_i=0$}\end{cases} \text{, \parbox[t]{20em}{où $X$ représente notre réseau\\
+ et $y_i$ représente l'observation à la donnée $x_i$}}
  \label{eq:proba}
 \end{equation}
 
@@ -357,16 +360,15 @@ $\mathbb{P}$ tel que défini équation \ref{eq:proba} représente la probabilit�
 est donné sous une forme différente à l'équation \ref{eq:ddp}
 \begin{equation}
  \label{eq:ddp}
- \mathbb{P}\left(X=p_i\right) = q_i{^{p_i}}\left(1-q_i\right)^{1-p_i}
+ \mathbb{P}\left(X=y_i\right) = q_i{^{y_i}}\left(1-q_i\right)^{1-y_i}
 \end{equation}
 
-Ainsi sur un jeu de donnée $\{x_1, x_2, ..., x_N\}$, l'équation \ref{eq:vraisemblance} présente la vraisemblance de notre loi, 
-et l'équation \ref{eq:log-vraisemblance} sa log-vraisemblance, en posant $\mathbb{L} = \mathbb{L}\left(p_1, p_2, \ldots, p_N, q_1, q_2, \ldots, q_N\right)$.
+Les équations \ref{eq:vraisemblance} et \ref{eq:log-vraisemblance} présentent respectivement la vraisemblance de notre loi et sa log-vraisemblance.
 
 \begin{align}
- \mathbb{L} &= \prod_{i=1}^N q_i{^{p_i}}\left(1-q_i\right)^{1-p_i}
+ \mathbb{L} &= \prod_{i=1}^N q_i{^{np_i}}\left(1-q_i\right)^{n(1-p_i)}
  \label{eq:vraisemblance}\\
- \frac{1}{N}\log\left(\mathbb{L}\right) &= \sum_{i=1}^N \left(p_i\ln\left(q_i\right) + \left(1-p_i\right)\ln\left(1-q_i\right) \right)
+ \frac{1}{n}\log\left(\mathbb{L}\right) &= \sum_{i=1}^N \left(p_i\ln\left(q_i\right) + \left(1-p_i\right)\ln\left(1-q_i\right) \right)
  \label{eq:log-vraisemblance}
 \end{align}
 

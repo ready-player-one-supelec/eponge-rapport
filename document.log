@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.12.9)  10 DEC 2018 23:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.12.9)  11 DEC 2018 12:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -568,6 +568,12 @@ Package: amssymb 2013/01/14 v3.01 AMS font symbols
 )
 (/usr/share/texlive/texmf-dist/tex/latex/doublestroke/dsfont.sty
 Package: dsfont 1995/08/01 v0.1 Double stroke roman fonts
+)
+(/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/stmaryrd.sty
+Package: stmaryrd 1994/03/03 St Mary's Road symbol package
+\symstmry=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `stmry' in version `bold'
+(Font)                  U/stmry/m/n --> U/stmry/b/n on input line 89.
 ))
 (./document.aux (./tex/presentation.aux) (./tex/introduction.aux)
 (./tex/perceptron.aux))
@@ -691,7 +697,10 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 18.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)) [1
+)
+LaTeX Font Info:    Try loading font information for U+stmry on input line 18.
+
+(/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)) [1
 
 
 {/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map} <./img/logo_
@@ -782,7 +791,7 @@ line 236.
 (pdftex.def)             Requested size: 78.25406pt x 42.19933pt.
  [8 <./img/entropiecroisee_reseau_utilise.png> <./img/entropiecroisee_apprentis
 sage1.png>]
-<img/sigmoid_function.png, id=175, 438.63875pt x 274.02374pt>
+<img/sigmoid_function.png, id=176, 438.63875pt x 274.02374pt>
 File: img/sigmoid_function.png Graphic file (type png)
 <use img/sigmoid_function.png>
 Package pdftex.def Info: img/sigmoid_function.png  used on input line 258.
@@ -794,7 +803,7 @@ File: img/entropiecroisee_reseau_utilise_init2.png Graphic file (type png)
 Package pdftex.def Info: img/entropiecroisee_reseau_utilise_init2.png  used on 
 input line 305.
 (pdftex.def)             Requested size: 146.73235pt x 33.63556pt.
-<img/entropiecroisee_apprentissage3.png, id=200, 400.49625pt x 213.79875pt>
+<img/entropiecroisee_apprentissage3.png, id=201, 400.49625pt x 213.79875pt>
 File: img/entropiecroisee_apprentissage3.png Graphic file (type png)
 <use img/entropiecroisee_apprentissage3.png>
 Package pdftex.def Info: img/entropiecroisee_apprentissage3.png  used on input 
@@ -813,11 +822,11 @@ Package rerunfilecheck Info: File `document.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 16.
  ) 
 Here is how much of TeX's memory you used:
- 17409 strings out of 492678
- 319418 string characters out of 6133535
- 403479 words of memory out of 5000000
- 20907 multiletter control sequences out of 15000+600000
- 21018 words of font info for 59 fonts, out of 8000000 for 9000
+ 17563 strings out of 492678
+ 321287 string characters out of 6133535
+ 403710 words of memory out of 5000000
+ 21050 multiletter control sequences out of 15000+600000
+ 22242 words of font info for 65 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
  61i,15n,75p,999b,504s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr
@@ -841,11 +850,12 @@ ts/type1/public/cm-super/sfbx2488.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/cm-super/sfcc1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
 c/cm-super/sfrm0900.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-su
 per/sfrm1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sft
-i1000.pfb>
-Output written on document.pdf (12 pages, 588931 bytes).
+i1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stmaryrd/stmary10.p
+fb>
+Output written on document.pdf (12 pages, 591421 bytes).
 PDF statistics:
- 314 PDF objects out of 1000 (max. 8388607)
- 252 compressed objects within 3 object streams
+ 318 PDF objects out of 1000 (max. 8388607)
+ 255 compressed objects within 3 object streams
  59 named destinations out of 1000 (max. 500000)
  164 words of extra memory for PDF output out of 10000 (max. 10000000)
 
