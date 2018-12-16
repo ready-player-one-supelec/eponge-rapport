@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.12.9)  11 DEC 2018 13:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.12.9)  15 DEC 2018 18:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -768,46 +768,46 @@ line 88.
 File: img/entropiecroisee_reseau_utilise.png Graphic file (type png)
 <use img/entropiecroisee_reseau_utilise.png>
 Package pdftex.def Info: img/entropiecroisee_reseau_utilise.png  used on input 
-line 199.
+line 200.
 (pdftex.def)             Requested size: 146.73235pt x 36.24052pt.
 <img/entropiecroisee_apprentissage1.png, id=155, 466.74374pt x 247.92625pt>
 File: img/entropiecroisee_apprentissage1.png Graphic file (type png)
 <use img/entropiecroisee_apprentissage1.png>
 Package pdftex.def Info: img/entropiecroisee_apprentissage1.png  used on input 
-line 205.
+line 206.
 (pdftex.def)             Requested size: 78.25406pt x 41.56432pt.
 <img/entropiecroisee_reseau_utilise_init2.png, id=159, 652.4375pt x 149.55875pt
 >
 File: img/entropiecroisee_reseau_utilise_init2.png Graphic file (type png)
 <use img/entropiecroisee_reseau_utilise_init2.png>
 Package pdftex.def Info: img/entropiecroisee_reseau_utilise_init2.png  used on 
-input line 230.
+input line 231.
 (pdftex.def)             Requested size: 146.73235pt x 33.63556pt.
 <img/entropiecroisee_apprentissage2.png, id=160, 383.4325pt x 206.7725pt>
 File: img/entropiecroisee_apprentissage2.png Graphic file (type png)
 <use img/entropiecroisee_apprentissage2.png>
 Package pdftex.def Info: img/entropiecroisee_apprentissage2.png  used on input 
-line 236.
+line 237.
 (pdftex.def)             Requested size: 78.25406pt x 42.19933pt.
  [8 <./img/entropiecroisee_reseau_utilise.png> <./img/entropiecroisee_apprentis
 sage1.png>]
 <img/sigmoid_function.png, id=176, 438.63875pt x 274.02374pt>
 File: img/sigmoid_function.png Graphic file (type png)
 <use img/sigmoid_function.png>
-Package pdftex.def Info: img/sigmoid_function.png  used on input line 258.
+Package pdftex.def Info: img/sigmoid_function.png  used on input line 259.
 (pdftex.def)             Requested size: 146.73235pt x 91.66576pt.
  [9 <./img/entropiecroisee_reseau_utilise_init2.png> <./img/entropiecroisee_app
 rentissage2.png> <./img/sigmoid_function.png>]
 File: img/entropiecroisee_reseau_utilise_init2.png Graphic file (type png)
 <use img/entropiecroisee_reseau_utilise_init2.png>
 Package pdftex.def Info: img/entropiecroisee_reseau_utilise_init2.png  used on 
-input line 305.
+input line 306.
 (pdftex.def)             Requested size: 146.73235pt x 33.63556pt.
 <img/entropiecroisee_apprentissage3.png, id=201, 400.49625pt x 213.79875pt>
 File: img/entropiecroisee_apprentissage3.png Graphic file (type png)
 <use img/entropiecroisee_apprentissage3.png>
 Package pdftex.def Info: img/entropiecroisee_apprentissage3.png  used on input 
-line 311.
+line 312.
 (pdftex.def)             Requested size: 78.25406pt x 41.77377pt.
  [10 <./img/entropiecroisee_apprentissage3.png>]
 [11]) [12]
@@ -824,7 +824,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 16.
 Here is how much of TeX's memory you used:
  17563 strings out of 492678
  321287 string characters out of 6133535
- 403710 words of memory out of 5000000
+ 403711 words of memory out of 5000000
  21050 multiletter control sequences out of 15000+600000
  22242 words of font info for 65 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
@@ -852,7 +852,7 @@ c/cm-super/sfrm0900.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-su
 per/sfrm1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sft
 i1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stmaryrd/stmary10.p
 fb>
-Output written on document.pdf (12 pages, 590920 bytes).
+Output written on document.pdf (12 pages, 591190 bytes).
 PDF statistics:
  318 PDF objects out of 1000 (max. 8388607)
  255 compressed objects within 3 object streams
