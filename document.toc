@@ -2,5 +2,11 @@
 \contentsline {section}{\numberline {1}Le Perceptron}{5}{section.1}
 \contentsline {subsection}{\numberline {1.1}Mod\IeC {\`e}le du perceptron}{5}{subsection.1.1}
 \contentsline {subsection}{\numberline {1.2}Apprentissage}{7}{subsection.1.2}
-\contentsline {subsection}{\numberline {1.3}Impl\IeC {\'e}mentation}{9}{subsection.1.3}
-\contentsline {subsection}{\numberline {1.4}R\IeC {\'e}sultats}{9}{subsection.1.4}
+\contentsline {subsection}{\numberline {1.3}La fonction d'erreur}{8}{subsection.1.3}
+\contentsline {subsubsection}{\numberline {1.3.1}Comportement pour une erreur quadratique}{8}{subsubsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.3.2}Origine de cet \IeC {\'e}chec}{9}{subsubsection.1.3.2}
+\contentsline {subsubsection}{\numberline {1.3.3}Une solution \IeC {\`a} ce probl\IeC {\`e}me d'apprentissage}{9}{subsubsection.1.3.3}
+\contentsline {subsubsection}{\numberline {1.3.4}Une explication intuitive}{10}{subsubsection.1.3.4}
+\contentsline {subsubsection}{\numberline {1.3.5}Estimateur de l'entropie crois\IeC {\'e}e}{10}{subsubsection.1.3.5}
+\contentsline {subsection}{\numberline {1.4}Impl\IeC {\'e}mentation}{12}{subsection.1.4}
+\contentsline {subsection}{\numberline {1.5}R\IeC {\'e}sultats}{12}{subsection.1.5}

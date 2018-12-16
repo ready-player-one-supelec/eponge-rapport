@@ -10,13 +10,18 @@
 \usepackage{indentfirst} % en français tous les paragraphes commencent par un alinéa
 \usepackage{caption} % pour que cliquer sur la table des figures renvoient à l'image et non au titre
 \usepackage{tcolorbox} % box bleue très fancy
+\usepackage{subcaption} % permet de mettre des figures côtes à côtes
 
 % mathématiques classiques
 \usepackage{amsmath,amsfonts,amssymb} 
 \usepackage{dsfont} 
+\usepackage{stmaryrd}
 
 \renewcommand{\contentsname}{Table des matières}
 \renewcommand{\listfigurename}{Table des figures}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}} % permet de choisir sur un align* (package amsmath) quelle équation sera numérotée
+\newcommand{\intervalle}[4]{\mathopen{#1}#2\,;#3\mathclose{#4}} % un intervalle joli
 
 \newenvironment{bloc infos}[1]{
     \tcolorbox[beamer,%
