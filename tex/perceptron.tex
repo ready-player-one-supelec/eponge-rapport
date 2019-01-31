@@ -381,26 +381,102 @@ Ainsi, on comprend que minimiser l'entropie croisée revient à utiliser un esti
 Notre système est donc d'autant plus performant que son entropie croisée est faible.
 
 
+\subsection{La fonction XOR}
+
+Pour tester notre perceptron, nous utilisons la fonction XOR prenant deux valeurs binaires et retournant 1 si et seulement si les deux valeurs binaires sont
+différentes. XOR est une fonction relativement simple qui a la particularité d'être non linéaire. Ainsi, on ne peut se contenter d'un réseau qui ne contient aucune
+couche cachée. Cela nous permet donc d'en tirer nos premières conclusions.
+
+Pour cela, nous configurons notre réseau de la manière suivante. La couche d'entrée ainsi que la couche cachée contiennent 2 neurones tandis que la couche externe
+est constituée d'un neurone. La couche cachée et la couche de sortie sont chacun suivie d'une fonction d'activation. Nous avons utilisé une tangente hyperbolique
+pondérée, reprenant des valeurs utilisées par Yann LeCun et al : $ x \mapsto 1.7159\tanh{\frac{2x}{3}}$. Nous avons évalué l'apprentissage en utilisant différents
+taux d'apprentissage.
+
+\begin{figure}[h]
+ \centering
+ \begin{subfigure}{0.5\textwidth}
+  \centering
+  \includegraphics[width=0.6\linewidth]{img/XOR2D.png}
+  \caption{XOR avec 2 neurones cachés}
+  \label{fig:xor2D-2}
+ \end{subfigure}
+ \begin{subfigure}{0.4\textwidth}
+  \centering
+  \includegraphics[width=0.8\linewidth]{img/XOR30.png}
+  \caption{XOR avec 30 neurones cachés}
+  \label{fig:xor2D-30}
+ \end{subfigure}
+ \caption{Étude du XOR avec différents taux d'apprentissage}
+ \label{fig:xor2D}
+\end{figure}
+ 
+La figure \ref{fig:xor2D-2} représente l'évolution de la norme euclidienne de l'erreur du réseau en fonction du nombre d'itérations. On remarque qu'un taux 
+d'apprentissage trop faible ralentit fortement la vitesse d'apprentissage. Au contraire, un taux d'apprentissage trop important peut faire échouer l'apprentissage.
+Cela s'explique par le fait que le réseau n'arrive pas à converger vers le minimum global car ses pas sont trop importants. Il oscille alors autour du minimum sans
+s'en rapprocher suffisamment. Si le taux d'apprentissage est trop important, on peut même s'écarter de la solution ! On comprend alors que le choix du taux 
+d'apprentissage est un facteur important de la convergence de notre réseau.
+
+La figure \ref{fig:xor2D-30} a, quant à elle, été tracée en utilisant 30 neurones dans la couche cachée. Cela nous permet d'étudier les capacités d'un réseau
+``trop intelligent'' par rapport à la tâche qu'il doit apprendre. On remarque que le réseau a beaucoup plus de difficulté à trouver le minimum. Les courbes sont
+globalement très bruitées. Néanmoins, cette fois-ci, tous les réseaux ont convergé même à haut taux d'apprentissage. Mais ce sont les taux les plus bas qui ont été
+le moins affecté par cette modification. Augmenter la taille du réseau permettrait alors de contrer les problèmes de divergence. Le bruit introduit peut être atténué
+avec un taux d'apprentissage relativement faible (la convergence est alors même accélérée).
+
+\subsection{MNIST}
+
+MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d'apprendre à notre perception à reconnaître le chiffre en analysant les 784 pixels
+de l'image. Nous avons utilisé la configuration suivante : la couche d'entrée (784 neurones) est reliée à une première couche intermédiaire de 16 neurones. Celle-ci
+mène à une autre couche de même configuration. Enfin la sortie se fait par une couche de 10 neurones. Nous avons conservé la fonction d'activation tanh pondérée utilisée
+sur le XOR puisque celle-ci avait donné des résultats très satisfaisants (meilleure convergence que la sigmoïde).
+Pour tester notre perceptron, nous avons tracé le taux d'erreur sur l'échantillon test en fonction du nombre d'itérations. Afin de ``moyenner'' la courbe et 
+d'annuler les fluctuations statistiques de l'apprentissage (provenant de l'initialisation aléatoire du réseau et de l'ordre de présentation aléatoire des exemples),
+nous avons réalisé cet apprentissage 280 fois. Le taux d'apprentissage utilisé est 0.005.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.5\textwidth]{img/MNIST.png}
+ \caption{Taux d'erreur sur MNIST}
+ \label{fig:MNIST}
+\end{figure}
+
+D'après la figure \ref{fig:MNIST}, le taux d'erreur sur l'échantillon d'apprentissage est toujours inférieur que celui sur l'échantillon de test. Cela est normal car
+l'apprentissage du réseau consiste à coller au mieux aux données. Afin d'éviter le sur-apprentissage (on apprend par coeur les exemples mais n'est plus capable de
+généraliser les propriétés), on cherche à minimiser l'erreur sur l'échantillon de test. Sur MNIST, cela a relativement peu d'incidence car la base de données contient
+beaucoup d'exemples variés ce qui nous protège de la sur-interprétation. On converge assez rapidement (une dizaine d'itérations) vers 94\% de réussite, ce qui est
+un résultat très satisfaisant de notre perceptron. Un réseau avec 32 neurones sur la première couche cachée change assez peu le résultat, si ce n'est que 
+l'on converge vers une valeur légèrement meilleure : 96\% de réussite sur l'échantillon de test.
+
+Afin d'évaluer l'influence du taux d'apprentissage, nous réalisons l'apprentissage sur 19 taux différents (régulièrement placés de 0.001 à 0.01). Chaque apprentissage
+étant constitué de 50 itérations et étant moyenné sur 140 réalisations. Nous obtenons alors la figure \ref{fig:MNIST_difLR} avec un intervalle de confiance à 95\%.
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=\textwidth]{img/MNIST_difLR.png}
+ \caption{Apprentissage MNIST avec différents taux d'apprentissage}
+ \label{fig:MNIST_difLR}
+\end{figure}
+
+On remarque qu'un fort taux d'apprentissage augmente également l'écart-type des données. L'apprentissage est alors plus sensible à l'initialisation. On préfère
+naturellement éviter un faible taux pour garder une vitesse de convergence convenable. En comparant toutes ces données, nous avons évalué que 0.003 était un des taux 
+les plus intéressants de ces points de vue, la convergence étant rapide et avec un faible écart-type. Néanmoins, l'impact sur les performances est assez négligeable
+(moins de 1\% de différences).
+
+
+\subsection{Un laïus sur les différents optimiseurs Paul ?}
 
 
 
 
-\newpage
 
 
-\subsection{Implémentation}
-
-Afin de pouvoir comprendre en détail le fonctionnement du perceptron, nous avons commencé dans un premier temps à implémenter un version 
-de celui-çi chacun de notre côté. Cela nous a permis de commencer  à réfléchir à l’architecture du code que nous voulions, et de pouvoir 
-comparer les performances des différentes implémentations. 
-
-Nous avons testé dans un premier temps les résultats de nos perceptrons sur la fonction XOR. Cette fonction est un bon départ pour pouvoir 
-avoir un code fonctionnel, car il s’agit d’une fonction ne pouvant pas être répliquée par une fonction linéaire : il faut au moins une couche 
-cachée afin de pouvoir l’implémenter grâce à un perceptron. 
-Cette prémière étape nous a permis de comparer les résultats et les performances de nos algorithmes, et de pouvoir choisir l’implémentation 
-du perceptron que nous avons utilisé par la suite.
 
 
-\subsection{Résultats}
+
+
+
+
+
+
+
 
 

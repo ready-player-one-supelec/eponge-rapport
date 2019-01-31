@@ -333,11 +333,13 @@ la couleur de la boule tirée, alors l'entropie sera maximale lorsque les diffé
 En traitement de l'information, cette grandeur permet de coder efficacement les symboles à transmettre. Si on a des symboles équiprobables,
 l'entropie est maximale. Dans ce cas, le nombre de bits nécessaires pour définir un symbole avec certitude est $\log_2\left(N\right)$, où $N$ est le nombre
 de symboles différents. Cependant, si l'on considère un texte en français, les lettres RSTLNE sont beaucoup plus fréquentes que WXYZ. La diminution de l'entropie
-caractérise le fait qu'un système de codage malin utilise en moyenne moins de bits pour transmettre l'information avec certitude.
+caractérise le fait qu'un système de codage ingénieux utilise en moyenne moins de bits pour transmettre l'information avec certitude.
 
-L'entropie croisée $-p\log\left(q\right)$ est, en mathématiques, une mesure de la distance entre deux distributions. On peut là encore y retrouver une interprétation
-en traitement de signal. En effet, si on considère un système de codage adapté à un texte où chaque lettre apparaît selon une distribution $q$, alors
-l'entropie croisée $-p\log\left(q\right)$ mesure à quel point ce même système est adapté pour chiffrer un texte où chaque lettre apparaît selon la distribution $p$.
+L'entropie croisée $-p\log\left(q\right)$ est, en mathématiques, une mesure de la distance entre deux distributions $p$ et $q$. On peut là encore y 
+retrouver une interprétation dans le domaine du traitement de signal. 
+En effet, si on considère un système de codage adapté à un texte dans lequel chaque lettre apparaît selon une distribution $q$, alors
+l'entropie croisée $-p\log\left(q\right)$ quantifie l'adaptation de ce même système pour chiffrer un texte dans lequel 
+chaque lettre apparaît selon la distribution $p$.
 
 Ainsi, si on dispose d'un jeu de données dont les sorties attendues suivent une distribution empirique $p$, et d'un réseau neuronal dont les sorties
 à ces données suivent une distribution $q$, alors adapter le réseau pour qu'il puisse reproduire fidèlement les observations $p$ revient 
@@ -348,8 +350,8 @@ Ainsi, si on dispose d'un jeu de données dont les sorties attendues suivent une
 On considère un batch de taille $n$ contenant $N$ données distinctes $\{x_1, x_2, \ldots, x_N\}$, chaque observation $x_i$ 
 (pour $i \in \intervalle{\llbracket}{1}{N}{\rrbracket}$) apparaît dans le batch $np_i$ fois.
 
-Voici notre réseau : la couche de sortie est composée d'un seul neurone (une somme de l'entropie sur les neurones peut-être faite si 
-on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoide donnant une sortie $q_i$ lorsque soumis à l'exemple $x_i$. On a alors :
+Notre réseau est alors ainsi constitué : la couche de sortie est composée d'un seul neurone (une somme de l'entropie sur les neurones peut être faite si 
+on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoïde donnant une sortie $q_i$ lorsque soumise à l'exemple $x_i$. On a alors :
 
 \begin{equation}
  \mathbb{P}\left(X=y_i\right) = \begin{cases}q_i &\text{ si $y_i=1$}\\1-q_i &\text{ si $y_i=0$}\end{cases} \text{, \parbox[t]{20em}{où $X$ représente notre réseau\\
@@ -357,14 +359,14 @@ on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoide d
  \label{eq:proba}
 \end{equation}
 
-$\mathbb{P}$ tel que défini équation \ref{eq:proba} représente la probabilité que notre réseau trouve la bonne solution. Sa densité de probabilité
-est donné sous une forme différente à l'équation \ref{eq:ddp}
+$\mathbb{P}$, tel que défini par l'équation \ref{eq:proba}, représente la probabilité que notre réseau trouve la bonne solution. Sa densité de probabilité
+est donnée sous une forme différente par l'équation \ref{eq:ddp}
 \begin{equation}
  \label{eq:ddp}
  \mathbb{P}\left(X=y_i\right) = q_i{^{y_i}}\left(1-q_i\right)^{1-y_i}
 \end{equation}
 
-Les équations \ref{eq:vraisemblance} et \ref{eq:log-vraisemblance} présentent respectivement la vraisemblance de notre loi et sa log-vraisemblance.
+Les équations \ref{eq:vraisemblance} et \ref{eq:log-vraisemblance} ci-dessous présentent respectivement la vraisemblance et la log-vraisemblance de notre loi.
 
 \begin{align}
  \mathbb{L} &= \prod_{i=1}^N q_i{^{np_i}}\left(1-q_i\right)^{n(1-p_i)}
@@ -374,31 +376,90 @@ Les équations \ref{eq:vraisemblance} et \ref{eq:log-vraisemblance} présentent 
 \end{align}
 
 D'après les équations \ref{eq:formule-entropiecroisee} et \ref{eq:log-vraisemblance}, la log-vraisemblance de notre système est 
-proportionnelle à l'opposé de l'entropie croisée. 
+ainsi proportionnelle à l'opposé de l'entropie croisée. 
 Ainsi, on comprend que minimiser l'entropie croisée revient à utiliser un estimateur de maximum de vraisemblance. 
 Notre système est donc d'autant plus performant que son entropie croisée est faible.
 
 
+\subsection{La fonction XOR}
+
+Pour tester notre perceptron, nous utilisons la fonction XOR prenant deux valeurs binaires et retournant 1 si et seulement si les deux valeurs binaires sont
+différentes. XOR est une fonction relativement simple qui a la particularité d'être non linéaire. Ainsi, on ne peut se contenter d'un réseau qui ne contient aucune
+couche cachée. Cela nous permet donc d'en tirer nos premières conclusions.
+
+Pour cela, nous configurons notre réseau de la manière suivante. La couche d'entrée ainsi que la couche cachée contiennent 2 neurones tandis que la couche externe
+est constituée d'un neurone. La couche cachée et la couche de sortie sont chacun suivie d'une fonction d'activation. Nous avons utilisé une tangente hyperbolique
+pondérée, reprenant des valeurs utilisées par Yann LeCun et al : $ x \mapsto 1.7159\tanh{\frac{2x}{3}}$. Nous avons évalué l'apprentissage en utilisant différents
+taux d'apprentissage.
+
+\begin{figure}[h]
+ \centering
+ \begin{subfigure}{0.5\textwidth}
+  \centering
+  \includegraphics[width=0.6\linewidth]{img/XOR2D.png}
+  \caption{XOR avec 2 neurones cachés}
+  \label{fig:xor2D-2}
+ \end{subfigure}
+ \begin{subfigure}{0.4\textwidth}
+  \centering
+  \includegraphics[width=0.8\linewidth]{img/XOR30.png}
+  \caption{XOR avec 30 neurones cachés}
+  \label{fig:xor2D-30}
+ \end{subfigure}
+ \caption{Étude du XOR avec différents taux d'apprentissage}
+ \label{fig:xor2D}
+\end{figure}
+ 
+La figure \ref{fig:xor2D-2} représente l'évolution de la norme euclidienne de l'erreur du réseau en fonction du nombre d'itérations. On remarque qu'un taux 
+d'apprentissage trop faible ralentit fortement la vitesse d'apprentissage. Au contraire, un taux d'apprentissage trop important peut faire échouer l'apprentissage.
+Cela s'explique par le fait que le réseau n'arrive pas à converger vers le minimum global car ses pas sont trop importants. Il oscille alors autour du minimum sans
+s'en rapprocher suffisamment. Si le taux d'apprentissage est trop important, on peut même s'écarter de la solution ! On comprend alors que le choix du taux 
+d'apprentissage est un facteur important de la convergence de notre réseau.
+
+La figure \ref{fig:xor2D-30} a, quant à elle, été tracée en utilisant 30 neurones dans la couche cachée. Cela nous permet d'étudier les capacités d'un réseau
+``trop intelligent'' par rapport à la tâche qu'il doit apprendre. On remarque que le réseau a beaucoup plus de difficulté à trouver le minimum. Les courbes sont
+globalement très bruitées. Néanmoins, cette fois-ci, tous les réseaux ont convergé même à haut taux d'apprentissage. Mais ce sont les taux les plus bas qui ont été
+le moins affecté par cette modification. Augmenter la taille du réseau permettrait alors de contrer les problèmes de divergence. Le bruit introduit peut être atténué
+avec un taux d'apprentissage relativement faible (la convergence est alors même accélérée).
+
+\subsection{MNIST}
+
+MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d'apprendre à notre perception à reconnaître le chiffre en analysant les 784 pixels
+de l'image. Nous avons utilisé la configuration suivante : la couche d'entrée (784 neurones) est reliée à une première couche intermédiaire de 16 neurones. Celle-ci
+mène à une autre couche de même configuration. Enfin la sortie se fait par une couche de 10 neurones. Nous avons conservé la fonction d'activation tanh pondérée utilisée
+sur le XOR puisque celle-ci avait donné des résultats très satisfaisants (meilleure convergence que la sigmoïde).
+Pour tester notre perceptron, nous avons tracé le taux d'erreur sur l'échantillon test en fonction du nombre d'itérations. Afin de ``moyenner'' la courbe et 
+d'annuler les fluctuations statistiques de l'apprentissage (provenant de l'initialisation aléatoire du réseau et de l'ordre de présentation aléatoire des exemples),
+nous avons réalisé cet apprentissage 280 fois. Le taux d'apprentissage utilisé est 0.005.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.5\textwidth]{img/MNIST.png}
+ \caption{Taux d'erreur sur MNIST}
+ \label{fig:MNIST}
+\end{figure}
+
+D'après la figure \ref{fig:MNIST}, le taux d'erreur sur l'échantillon d'apprentissage est toujours inférieur que celui sur l'échantillon de test. Cela est normal car
+l'apprentissage du réseau consiste à coller au mieux aux données. Afin d'éviter le sur-apprentissage (on apprend par coeur les exemples mais n'est plus capable de
+généraliser les propriétés), on cherche à minimiser l'erreur sur l'échantillon de test. Sur MNIST, cela a relativement peu d'incidence car la base de données contient
+beaucoup d'exemples variés ce qui nous protège de la sur-interprétation. On converge assez rapidement (une dizaine d'itérations) vers 94\% de réussite, ce qui est
+un résultat très satisfaisant de notre perceptron.
 
 
 
 
-\newpage
 
 
-\subsection{Implémentation}
-
-Afin de pouvoir comprendre en détail le fonctionnement du perceptron, nous avons commencé dans un premier temps à implémenter un version 
-de celui-çi chacun de notre côté. Cela nous a permis de commencer  à réfléchir à l’architecture du code que nous voulions, et de pouvoir 
-comparer les performances des différentes implémentations. 
-
-Nous avons testé dans un premier temps les résultats de nos perceptrons sur la fonction XOR. Cette fonction est un bon départ pour pouvoir 
-avoir un code fonctionnel, car il s’agit d’une fonction ne pouvant pas être répliquée par une fonction linéaire : il faut au moins une couche 
-cachée afin de pouvoir l’implémenter grâce à un perceptron. 
-Cette prémière étape nous a permis de comparer les résultats et les performances de nos algorithmes, et de pouvoir choisir l’implémentation 
-du perceptron que nous avons utilisé par la suite.
 
 
-\subsection{Résultats}
+
+
+
+
+
+
+
+
+
 
 

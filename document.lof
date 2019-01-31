@@ -6,3 +6,10 @@
 \contentsline {figure}{\numberline {6}{\ignorespaces Seconde initialisation du r\IeC {\'e}seau d'exemple utilisant l'erreur quadratique\relax }}{9}{figure.caption.9}
 \contentsline {figure}{\numberline {7}{\ignorespaces Graphe de la fonction sigmo\IeC {\"\i }de\relax }}{9}{figure.caption.10}
 \contentsline {figure}{\numberline {8}{\ignorespaces Seconde initialisation du r\IeC {\'e}seau d'exemple en utilisant l'entropie crois\IeC {\'e}e\relax }}{10}{figure.caption.11}
+\contentsline {figure}{\numberline {9}{\ignorespaces \IeC {\'E}tude du XOR avec diff\IeC {\'e}rents taux d'apprentissage\relax }}{11}{figure.caption.12}
+\contentsline {figure}{\numberline {10}{\ignorespaces Taux d'erreur sur MNIST\relax }}{12}{figure.caption.13}
+\contentsline {figure}{\numberline {11}{\ignorespaces Apprentissage MNIST avec diff\IeC {\'e}rents taux d'apprentissage\relax }}{13}{figure.caption.14}
+\contentsline {figure}{\numberline {12}{\ignorespaces Apprentissage contre une autre IA apprenant en m\IeC {\^e}me temps\relax }}{15}{figure.caption.15}
+\contentsline {figure}{\numberline {13}{\ignorespaces Apprentissage contre un joueur jouant al\IeC {\'e}atoirement\relax }}{16}{figure.caption.16}
+\contentsline {figure}{\numberline {14}{\ignorespaces Apprentissage contre un joueur appliquant la strat\IeC {\'e}gie gagnante\relax }}{16}{figure.caption.17}
+\contentsline {figure}{\numberline {15}{\ignorespaces Chemin choisi par l'IA lorsque confront\IeC {\'e}e \IeC {\`a} un labyrinthe donn\IeC {\'e}\relax }}{17}{figure.caption.18}
