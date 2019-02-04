@@ -16,3 +16,15 @@
 \BOOKMARK [2][-]{subsection.2.2}{Calculer la fonction Q}{section.2}% 16
 \BOOKMARK [2][-]{subsection.2.3}{Jeu des b\342tonnets}{section.2}% 17
 \BOOKMARK [2][-]{subsection.2.4}{Le labyrinthe}{section.2}% 18
+\BOOKMARK [1][-]{section.3}{Deep Q-Learning}{}% 19
+\BOOKMARK [2][-]{subsection.3.1}{Principe du Deep Q-Learning}{section.3}% 20
+\BOOKMARK [2][-]{subsection.3.2}{Jeu des b\342tonnets}{section.3}% 21
+\BOOKMARK [2][-]{subsection.3.3}{Changements effectu\351s pour le passage \340 Pong}{section.3}% 22
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Deux Deep Q-Networks}{subsection.3.3}% 23
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Optimiseur RMSProp}{subsection.3.3}% 24
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Changement de configuration de r\351seau}{subsection.3.3}% 25
+\BOOKMARK [3][-]{subsubsection.3.3.4}{Apprentissage}{subsection.3.3}% 26
+\BOOKMARK [3][-]{subsubsection.3.3.5}{Probl\350mes de m\351moire}{subsection.3.3}% 27
+\BOOKMARK [2][-]{subsection.3.4}{Pong}{section.3}% 28
+\BOOKMARK [3][-]{subsubsection.3.4.1}{Apprentissage sur 3000 parties}{subsection.3.4}% 29
+\BOOKMARK [3][-]{subsubsection.3.4.2}{Apprentissage sur 7000 parties}{subsection.3.4}% 30
