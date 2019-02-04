@@ -15,6 +15,13 @@ le nombre d'évaluations du réseau est égal au nombre d'actions possibles. Cel
 régulièrement. Pour régler ce problème, notre réseau ne reçoit plus que l'état en question en entrée. En sortie, le réseau nous donne les satisfactions associées à chaque 
 état, de sorte qu'une seule évaluation du réseau suffise à choisir l'action à effectuer.
 
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.7\textwidth]{img/schema_dql.png}
+ \caption{Schéma du Deep $Q$-Network}
+\end{figure}
+
+
 Lorsque nous réalisons l'apprentissage, nous sélectionnons une transition qui contient l'action choisie à l'instant de la transition. Puisque notre réseau renvoie
 toutes les satisfactions, il est important de veiller à ce que le réseau ne réalise la rétropropagation que sur l'action de la transition. Cela peut être 
 effectué en remplaçant la valeur voulue pour les autres actions par la valeur calculée, de sorte que l'erreur soit nulle, sauf pour l'action de la transition.
