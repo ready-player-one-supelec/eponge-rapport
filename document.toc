@@ -24,7 +24,7 @@
 \contentsline {subsubsection}{\numberline {3.3.2}Optimiseur RMSProp}{20}{subsubsection.3.3.2}
 \contentsline {subsubsection}{\numberline {3.3.3}Changement de configuration de r\IeC {\'e}seau}{20}{subsubsection.3.3.3}
 \contentsline {subsubsection}{\numberline {3.3.4}Apprentissage}{20}{subsubsection.3.3.4}
-\contentsline {subsubsection}{\numberline {3.3.5}Probl\IeC {\`e}me de m\IeC {\'e}moires}{20}{subsubsection.3.3.5}
+\contentsline {subsubsection}{\numberline {3.3.5}Probl\IeC {\`e}mes de m\IeC {\'e}moire}{20}{subsubsection.3.3.5}
 \contentsline {subsection}{\numberline {3.4}Pong}{20}{subsection.3.4}
 \contentsline {subsubsection}{\numberline {3.4.1}Apprentissage sur 3000 parties}{21}{subsubsection.3.4.1}
 \contentsline {subsubsection}{\numberline {3.4.2}Apprentissage sur 7000 parties}{21}{subsubsection.3.4.2}
