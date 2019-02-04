@@ -2,9 +2,65 @@
 
 \subsection{Principe du Deep Q-Learning}
 
-Le Q-Learning requiert de stocker les valeurs de la Q-function de quelque manière que ce soit. Notamment, on a utilisé un tableau (la Q-table) dans le jeu des
+Le $Q$-Learning requiert de stocker les valeurs de la $Q$-function de quelque manière que ce soit. Notamment, on a utilisé un tableau (la $Q$-table) dans le jeu des
 bâtonnets. Néanmoins, on peut être confronté à des espaces des états de très grande taille : par exemple si les états sont des images (même de tailles raisonnables), 
 alors on peut imaginer des milliards d'états possibles. Bien que généralement plus restreint, le nombre d'actions est également à l'origine de ce problème puisque la
 taille de la matrice est le produit entre le nombre d'états différents et le nombre d'actions possibles. Puisque notre IA jouant à Pong doit recevoir des images du jeu,
-il est impensable de stocker chaque valeur en mémoire. Le Deep Q-Learning résout ce problème en remplaçant la Q-table par un réseau neuronal. Son objectif est alors 
+il est impensable de stocker chaque valeur en mémoire. Le Deep $Q$-Learning résout ce problème en remplaçant la $Q$-table par un réseau neuronal. Son objectif est alors 
 d'interpoler la fonction de satisfaction. Cette approximation nous permet d'économiser une importante quantité de mémoire.
+
+On a alors un réseau neuronal qui reçoit en entrée un état et une action pour retourner la satisfaction qui y est associée. Pour pouvoir choisir une action selon
+notre algorithme favorisant la plus grande satisfaction, il est nécessaire de connaître la valeur du réseau lorsqu'excité par toutes les actions. Ainsi
+le nombre d'évaluations du réseau est égal au nombre d'actions possibles. Cela est d'autant plus inefficace qu'il sera nécessaire d'exécuter cette opération très
+régulièrement. Pour régler ce problème, notre réseau ne reçoit plus que l'état en question en entrée. En sortie, le réseau nous donne les satisfactions associées à chaque 
+état, de sorte qu'une seule évaluation du réseau suffise à choisir l'action à effectuer.
+
+Lorsque nous réalisons l'apprentissage, nous sélectionnons une transition qui contient l'action choisie à l'instant de la transition. Puisque notre réseau renvoie
+toutes les satisfactions, il est important de veiller à ce que le réseau ne réalise la rétropropagation que sur l'action de la transition. Cela peut être 
+effectué en remplaçant la valeur voulue pour les autres actions par la valeur calculée, de sorte que l'erreur soit nulle, sauf pour l'action de la transition.
+Pour cette dernière, on conserve l'équation \ref{eq:bellman} pour l'expression voulue de la fonction de satisfaction.
+
+\subsection{Jeu des bâtonnets}
+
+Pour valider notre implémentation du Deep $Q$-Learning, on le teste sur un jeu simple que l'on sait résoudre : le jeu des bâtonnets. Les règles du jeu sont les mêmes 
+que précedemment. Pour la rétropropagation, nous utilisons l'optimiseur Adam particulièrement efficace, avec le taux d'apprentissage 0.001. Le facteur d'actualisation
+est conservé, de même que les taux d'exploration. On stocke un maximum de 10000 transitions. Après chaque partie jouée, on apprend sur \emph{toutes} les transitions
+enregistrées jusqu'à lors (par minibatch de 32 transitions). Le réseau utilisé possède 4 neurones d'entrée (chaque état est codé binairement), 10 neurones de couche cachée
+puis 3 neurones de sortie pour les 3 différentes actions fournies par le jeu. Ce réseau sert à la fois à apprendre sur les transitions et à générer la cible, 
+conformément à l'équation \ref{eq:bellman}. Bien que cela ne soit pas l'implémentation la plus optimale, elle suffit pour un jeu aussi simple que celui des bâtonnets.
+
+Notre réseau apprend sur 2000 parties (contre une IA qui est également en train d'apprendre). Pour nous persuader de l'efficacité de notre algorithme, nous reconstituons
+la $Q$-table à l'issue de l'apprentissage en interrogeant le réseau sur les différents états accessibles lors d'une partie. Le résultat est le suivant :
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+Bâtonnets restants & Prendre 1 bâtonnet & Prendre 2 bâtonnets & Prendre 3 bâtonnets\\
+\hline
+2 & \cellcolor{green} 1.0102367 & -0.9285556 & -0.9973395\\
+\hline
+3 & 0.1279521 & \cellcolor{green} 1.0385635 & -1.001752\\
+\hline
+4 & -0.17204374 & -0.1530217 & \cellcolor{green} 1.0058613\\
+\hline
+5 & -0.509134 & -0.48264277 & -0.49259257\\
+\hline
+6 & \cellcolor{green} 0.9031452 & -0.11602497 & -0.24787879\\
+\hline
+7 & 0.10454643 & \cellcolor{green} 0.92308414 & -0.1744315\\
+\hline
+8 & 0.12821698 & 0.2924267 & \cellcolor{green} 0.9102776\\
+\hline
+9 & -0.06348622 & -0.0588069 & -0.05864894\\
+\hline
+10 & \cellcolor{green} 0.82183206 & 0.18388963 & 0.5014814\\
+\hline
+11 & 0.3764193 & \cellcolor{green} 0.82838273 & 0.14708841\\
+\hline
+12 & 0.26232004 & 0.44059992 & \cellcolor{green} 0.8352009\\
+\hline
+\end{tabular}
+\caption{Fonction de satisfaction $Q$ approximée par le réseau neuronal}
+\end{figure}
+

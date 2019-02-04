@@ -13,3 +13,4 @@
 \contentsline {figure}{\numberline {13}{\ignorespaces Apprentissage contre un joueur jouant al\IeC {\'e}atoirement\relax }}{16}{figure.caption.16}
 \contentsline {figure}{\numberline {14}{\ignorespaces Apprentissage contre un joueur appliquant la strat\IeC {\'e}gie gagnante\relax }}{16}{figure.caption.17}
 \contentsline {figure}{\numberline {15}{\ignorespaces Chemin choisi par l'IA lorsque confront\IeC {\'e}e \IeC {\`a} un labyrinthe donn\IeC {\'e}\relax }}{17}{figure.caption.18}
+\contentsline {figure}{\numberline {16}{\ignorespaces Fonction de satisfaction $Q$ approxim\IeC {\'e}e par le r\IeC {\'e}seau neuronal\relax }}{18}{figure.caption.19}

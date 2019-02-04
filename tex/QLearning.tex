@@ -2,10 +2,10 @@
 
 \subsection{Qu'est-ce que le Q-Learning ?}
 
-L'objectif du Q-Learning est de permettre à un agent (notre IA) d'évoluer efficacement dans un environnement (par exemple un jeu). Pour cela, on utilise un système de
+L'objectif du $Q$-Learning est de permettre à un agent (notre IA) d'évoluer efficacement dans un environnement (par exemple un jeu). Pour cela, on utilise un système de
 récompense. Dans un état donné, l'IA choisit l'action qui lui rapporte le plus de récompense. Néanmoins, on ne veut pas que notre IA choisisse une action parce qu'elle
 lui offre une récompense immédiatement. L'IA doit prendre en compte les récompenses qu'elle obtiendrait plus tard en effectuant certaines actions. Cette 
-caractéristique du Q-Learning permet l'établissement de stratégies.
+caractéristique du $Q$-Learning permet l'établissement de stratégies.
 
 Pour pouvoir suivre ces stratégies, notre IA se donne des récompenses $Q$ (imaginaires) qui reflètent à la fois la satisfaction obtenue immédiatement mais également
 la satisfaction que l'on peut obtenir à l'avenir. Il faut alors que notre système de récompense satisfasse l'équation suivante : 
@@ -22,7 +22,7 @@ d'actualisation. Il mesure la préférence d'obtenir une récompense à l'instan
 soit plus petit que 1. Plus il est proche de 1, plus le réseau prend en compte les instants éloignés et établis des stratégies sur le long terme. La valeur du facteur
 d'actualisation dépend alors de l'environnement dans lequel est plongé notre agent.
 
-Le principe du Q-Learning est que l'IA apprenne seule ces différentes valeurs de Q (que nous autres humains ne connaissons pas). Pour cela, on distingue deux phases.
+Le principe du $Q$-Learning est que l'IA apprenne seule ces différentes valeurs de $Q$ (que nous autres humains ne connaissons pas). Pour cela, on distingue deux phases.
 La phase d'exploration correspond à agir de manière aléatoire sans prendre en compte la satisfaction. Cela permet de découvrir des voies jusqu'à lors inconnues et 
 potentiellement trouver de meilleures stratégies que celles connues à cet instant. Puis, lors de l'exploitation, on utilise les valeurs de satisfaction trouvées
 pour choisir notre action. Dans les deux cas, on modifie notre réseau en conséquence (l'exploitation permet de préciser les valeurs de la fonction de satisfaction $Q$).
@@ -61,7 +61,7 @@ c'est pourquoi la transition sur laquelle on apprend est choisie aléatoirement 
 
 \subsection{Jeu des bâtonnets}
 
-Pour tester le Q-Learning, on utilise le jeu des bâtonnets. Il y a deux joueurs et douze bâtonnets sur la table. Alternativement, chaque joueur peut prendre
+Pour tester le $Q$-Learning, on utilise le jeu des bâtonnets. Il y a deux joueurs et douze bâtonnets sur la table. Alternativement, chaque joueur peut prendre
 1, 2 ou 3 bâtonnets. Le joueur contraint de prendre le dernier bâtonnet a perdu. Ce jeu a l'avantage d'avoir un petit espace des états. En effet, l'état est entièrement
 décrit par le nombre restant de bâtonnets qui est un entier entre 1 et 12. Le nombre d'action est également très faible (3). Ainsi ce jeu se prête parfaitement à
 l'utilisation d'une $Q$-table pour représenter la fonction $Q$.
