@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.2.3)  4 FEB 2019 22:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.2.3)  5 FEB 2019 00:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -699,7 +699,7 @@ Package caption Info: End \AtBeginDocument code.
 
 
 (./tex/presentation.tex
-<img/logo_cs.png, id=91, 250.0542pt x 128.3997pt>
+<img/logo_cs.png, id=127, 250.0542pt x 128.3997pt>
 File: img/logo_cs.png Graphic file (type png)
 <use img/logo_cs.png>
 Package pdftex.def Info: img/logo_cs.png  used on input line 6.
@@ -741,7 +741,7 @@ cs.png>]
 
 
 (./tex/perceptron.tex
-<img/neurone.png, id=176, 786.94pt x 637.38126pt>
+<img/neurone.png, id=226, 786.94pt x 637.38126pt>
 File: img/neurone.png Graphic file (type png)
 <use img/neurone.png>
 Package pdftex.def Info: img/neurone.png  used on input line 14.
@@ -760,19 +760,19 @@ File: Udsrom.fd 1995/08/01 v0.1 Double stroke roman font definitions
 
 
  <./img/neurone.png>]
-<img/separation_lineaire_du_plan.png, id=196, 740.7675pt x 699.61375pt>
+<img/separation_lineaire_du_plan.png, id=245, 740.7675pt x 699.61375pt>
 File: img/separation_lineaire_du_plan.png Graphic file (type png)
 <use img/separation_lineaire_du_plan.png>
 Package pdftex.def Info: img/separation_lineaire_du_plan.png  used on input lin
 e 63.
 (pdftex.def)             Requested size: 244.55144pt x 230.95865pt.
-<img/couche.png, id=197, 786.94pt x 551.05875pt>
+<img/couche.png, id=246, 786.94pt x 551.05875pt>
 File: img/couche.png Graphic file (type png)
 <use img/couche.png>
 Package pdftex.def Info: img/couche.png  used on input line 77.
 (pdftex.def)             Requested size: 269.00807pt x 188.3665pt.
  [6 <./img/separation_lineaire_du_plan.png> <./img/couche.png>]
-<img/modele_perceptron_multicouches.png, id=205, 1526.70375pt x 457.71pt>
+<img/modele_perceptron_multicouches.png, id=254, 1526.70375pt x 457.71pt>
 File: img/modele_perceptron_multicouches.png Graphic file (type png)
 <use img/modele_perceptron_multicouches.png>
 Package pdftex.def Info: img/modele_perceptron_multicouches.png  used on input 
@@ -780,26 +780,26 @@ line 88.
 (pdftex.def)             Requested size: 489.10287pt x 146.63083pt.
 
 [7 <./img/modele_perceptron_multicouches.png>]
-<img/entropiecroisee_reseau_utilise.png, id=218, 666.49pt x 164.615pt>
+<img/entropiecroisee_reseau_utilise.png, id=267, 666.49pt x 164.615pt>
 File: img/entropiecroisee_reseau_utilise.png Graphic file (type png)
 <use img/entropiecroisee_reseau_utilise.png>
 Package pdftex.def Info: img/entropiecroisee_reseau_utilise.png  used on input 
 line 200.
 (pdftex.def)             Requested size: 146.73235pt x 36.24052pt.
-<img/entropiecroisee_apprentissage1.png, id=219, 466.74374pt x 247.92625pt>
+<img/entropiecroisee_apprentissage1.png, id=268, 466.74374pt x 247.92625pt>
 File: img/entropiecroisee_apprentissage1.png Graphic file (type png)
 <use img/entropiecroisee_apprentissage1.png>
 Package pdftex.def Info: img/entropiecroisee_apprentissage1.png  used on input 
 line 206.
 (pdftex.def)             Requested size: 78.25406pt x 41.56432pt.
-<img/entropiecroisee_reseau_utilise_init2.png, id=223, 652.4375pt x 149.55875pt
+<img/entropiecroisee_reseau_utilise_init2.png, id=272, 652.4375pt x 149.55875pt
 >
 File: img/entropiecroisee_reseau_utilise_init2.png Graphic file (type png)
 <use img/entropiecroisee_reseau_utilise_init2.png>
 Package pdftex.def Info: img/entropiecroisee_reseau_utilise_init2.png  used on 
 input line 231.
 (pdftex.def)             Requested size: 146.73235pt x 33.63556pt.
-<img/entropiecroisee_apprentissage2.png, id=224, 383.4325pt x 206.7725pt>
+<img/entropiecroisee_apprentissage2.png, id=273, 383.4325pt x 206.7725pt>
 File: img/entropiecroisee_apprentissage2.png Graphic file (type png)
 <use img/entropiecroisee_apprentissage2.png>
 Package pdftex.def Info: img/entropiecroisee_apprentissage2.png  used on input 
@@ -807,7 +807,7 @@ line 237.
 (pdftex.def)             Requested size: 78.25406pt x 42.19933pt.
  [8 <./img/entropiecroisee_reseau_utilise.png> <./img/entropiecroisee_apprentis
 sage1.png>]
-<img/sigmoid_function.png, id=240, 438.63875pt x 274.02374pt>
+<img/sigmoid_function.png, id=289, 438.63875pt x 274.02374pt>
 File: img/sigmoid_function.png Graphic file (type png)
 <use img/sigmoid_function.png>
 Package pdftex.def Info: img/sigmoid_function.png  used on input line 259.
@@ -819,37 +819,31 @@ File: img/entropiecroisee_reseau_utilise_init2.png Graphic file (type png)
 Package pdftex.def Info: img/entropiecroisee_reseau_utilise_init2.png  used on 
 input line 306.
 (pdftex.def)             Requested size: 146.73235pt x 33.63556pt.
-<img/entropiecroisee_apprentissage3.png, id=264, 400.49625pt x 213.79875pt>
+<img/entropiecroisee_apprentissage3.png, id=313, 400.49625pt x 213.79875pt>
 File: img/entropiecroisee_apprentissage3.png Graphic file (type png)
 <use img/entropiecroisee_apprentissage3.png>
 Package pdftex.def Info: img/entropiecroisee_apprentissage3.png  used on input 
 line 312.
 (pdftex.def)             Requested size: 78.25406pt x 41.77377pt.
  [10 <./img/entropiecroisee_apprentissage3.png>]
-<img/XOR2D.png, id=281, 462.528pt x 346.896pt>
+<img/XOR2D.png, id=330, 462.528pt x 346.896pt>
 File: img/XOR2D.png Graphic file (type png)
 <use img/XOR2D.png>
 Package pdftex.def Info: img/XOR2D.png  used on input line 399.
 (pdftex.def)             Requested size: 146.73235pt x 110.0509pt.
-<img/XOR30.png, id=282, 462.528pt x 346.896pt>
+<img/XOR30.png, id=331, 462.528pt x 346.896pt>
 File: img/XOR30.png Graphic file (type png)
 <use img/XOR30.png>
 Package pdftex.def Info: img/XOR30.png  used on input line 405.
 (pdftex.def)             Requested size: 156.51111pt x 117.38199pt.
 
 [11 <./img/XOR2D.png> <./img/XOR30.png>]
-<img/MNIST.png, id=294, 462.528pt x 346.896pt>
+<img/MNIST.png, id=344, 462.528pt x 346.896pt>
 File: img/MNIST.png Graphic file (type png)
 <use img/MNIST.png>
 Package pdftex.def Info: img/MNIST.png  used on input line 437.
 (pdftex.def)             Requested size: 244.55144pt x 183.41466pt.
-
-Overfull \hbox (6.72415pt too wide) in paragraph at lines 449--451
-[]\T1/cmr/m/n/10 Afin d'évaluer l'influence du taux d'apprentissage, nous réal-
-isons l'apprentissage sur 19 taux dif-férents (régulière-
- []
-
-<img/MNIST_difLR.png, id=297, 1387.584pt x 709.6914pt>
+<img/MNIST_difLR.png, id=347, 1387.584pt x 709.6914pt>
 File: img/MNIST_difLR.png Graphic file (type png)
 <use img/MNIST_difLR.png>
 Package pdftex.def Info: img/MNIST_difLR.png  used on input line 454.
@@ -857,18 +851,17 @@ Package pdftex.def Info: img/MNIST_difLR.png  used on input line 454.
 ) [12 <./img/MNIST.png>] [13 <./img/MNIST_difLR.png>]
 \openout2 = `tex/QLearning.aux'.
 
- (./tex/QLearning.tex
-[14
+ (./tex/QLearning.tex [14
 
 
 ]
-<img/learnWithAI_testRandom.png, id=320, 1387.584pt x 709.6914pt>
+<img/learnWithAI_testRandom.png, id=369, 1387.584pt x 709.6914pt>
 File: img/learnWithAI_testRandom.png Graphic file (type png)
 <use img/learnWithAI_testRandom.png>
 Package pdftex.def Info: img/learnWithAI_testRandom.png  used on input line 85.
 
 (pdftex.def)             Requested size: 440.18959pt x 225.13501pt.
-<img/learnRandomly.png, id=322, 1387.584pt x 709.6914pt>
+<img/learnRandomly.png, id=371, 1387.584pt x 709.6914pt>
 File: img/learnRandomly.png Graphic file (type png)
 <use img/learnRandomly.png>
 Package pdftex.def Info: img/learnRandomly.png  used on input line 102.
@@ -878,13 +871,13 @@ Package pdftex.def Info: img/learnRandomly.png  used on input line 102.
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [15 <./img/learnWithAI_testRandom.png>]
-<img/learnWithGod.png, id=329, 1387.584pt x 709.6914pt>
+<img/learnWithGod.png, id=378, 1387.584pt x 709.6914pt>
 File: img/learnWithGod.png Graphic file (type png)
 <use img/learnWithGod.png>
 Package pdftex.def Info: img/learnWithGod.png  used on input line 115.
 (pdftex.def)             Requested size: 440.18959pt x 225.13501pt.
  [16 <./img/learnRandomly.png> <./img/learnWithGod.png>]
-<img/labyrinthe.png, id=337, 728.7225pt x 552.0625pt>
+<img/labyrinthe.png, id=386, 728.7225pt x 552.0625pt>
 File: img/labyrinthe.png Graphic file (type png)
 <use img/labyrinthe.png>
 Package pdftex.def Info: img/labyrinthe.png  used on input line 141.
@@ -893,7 +886,7 @@ Package pdftex.def Info: img/labyrinthe.png  used on input line 141.
 \openout2 = `tex/DQL.aux'.
 
  (./tex/DQL.tex
-<img/schema_dql.png, id=344, 944.52875pt x 324.21124pt>
+<img/schema_dql.png, id=393, 944.52875pt x 324.21124pt>
 File: img/schema_dql.png Graphic file (type png)
 <use img/schema_dql.png>
 Package pdftex.def Info: img/schema_dql.png  used on input line 20.
@@ -905,7 +898,20 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [18
 
 
- <./img/schema_DQL.png>]) [19]
+ <./img/schema_DQL.png>] [19] [20]
+<img/DQL_7000_withoutMax.png, id=413, 1445.4pt x 722.7pt>
+File: img/DQL_7000_withoutMax.png Graphic file (type png)
+<use img/DQL_7000_withoutMax.png>
+Package pdftex.def Info: img/DQL_7000_withoutMax.png  used on input line 188.
+(pdftex.def)             Requested size: 489.10287pt x 244.54582pt.
+ [21 <./img/DQL_7000_withoutMax.png>]
+<img/DQL_7000_withMax.png, id=420, 1445.4pt x 722.7pt>
+File: img/DQL_7000_withMax.png Graphic file (type png)
+<use img/DQL_7000_withMax.png>
+Package pdftex.def Info: img/DQL_7000_withMax.png  used on input line 209.
+(pdftex.def)             Requested size: 489.10287pt x 244.54582pt.
+)
+[22 <./img/DQL_7000_withMax.png>]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 18.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 18.
  (./document.aux (./tex/presentation.aux)
@@ -914,14 +920,14 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 18.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 18.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 18.
 Package rerunfilecheck Info: File `document.out' has not changed.
-(rerunfilecheck)             Checksum: D47BE5F9889C8A5B35570BAF5A37E115;1519.
+(rerunfilecheck)             Checksum: 861EBE0F36D923E2DA4434FA4A4B4A0F;2270.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 18.
  ) 
 Here is how much of TeX's memory you used:
- 17772 strings out of 492671
- 324343 string characters out of 6133226
- 408732 words of memory out of 5000000
- 21204 multiletter control sequences out of 15000+600000
+ 17807 strings out of 492671
+ 325070 string characters out of 6133226
+ 408928 words of memory out of 5000000
+ 21223 multiletter control sequences out of 15000+600000
  22242 words of font info for 65 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
  61i,15n,75p,999b,504s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -948,10 +954,10 @@ c/cm-super/sfrm0900.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-su
 per/sfrm1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sft
 i1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stmaryrd/stmary10.p
 fb>
-Output written on document.pdf (19 pages, 1205853 bytes).
+Output written on document.pdf (22 pages, 1811519 bytes).
 PDF statistics:
- 453 PDF objects out of 1000 (max. 8388607)
- 364 compressed objects within 4 object streams
- 86 named destinations out of 1000 (max. 500000)
- 281 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 526 PDF objects out of 1000 (max. 8388607)
+ 429 compressed objects within 5 object streams
+ 100 named destinations out of 1000 (max. 500000)
+ 363 words of extra memory for PDF output out of 10000 (max. 10000000)
 

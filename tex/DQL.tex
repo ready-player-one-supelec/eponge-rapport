@@ -27,6 +27,11 @@ toutes les satisfactions, il est important de veiller à ce que le réseau ne r�
 effectué en remplaçant la valeur voulue pour les autres actions par la valeur calculée, de sorte que l'erreur soit nulle, sauf pour l'action de la transition.
 Pour cette dernière, on conserve l'équation \ref{eq:bellman} pour l'expression voulue de la fonction de satisfaction.
 
+Pour faciliter la réalisation de notre algorithme et nous débarasser des grosses difficultés posées par le réseau neuronal telles que la rétropropagation, il 
+a été convenu d'utiliser TensorFlow. Cette bibliothèque Python simplifie considérablement la conception d'un tel algorithme. Néanmoins, pour ne pas trop occulter 
+ce qu'il se passe dans le réseau, nous voulons rester suffisamment bas niveau. Ainsi, nous nous interdisons toute surcouche de TensorFlow telle que Keras.
+
+
 \subsection{Jeu des bâtonnets}
 
 Pour valider notre implémentation du Deep $Q$-Learning, on le teste sur un jeu simple que l'on sait résoudre : le jeu des bâtonnets. Les règles du jeu sont les mêmes 
@@ -79,5 +84,161 @@ récompense est l'objectif final, mais peut s'expliquer par le fait que le rése
 Néanmoins l'erreur reste assez faible. Enfin, on remarque que la satisfaction accordée aux bons coups est meilleure lorsque l'on est proche de la fin de la partie.
 Cela provient du fait que la propagation de la récompense favorise les états proches de celui où la satisfaction est effectivement attribuée. Quoiqu'il en soit, notre IA
 respecte parfaitement la stratégie, qu'elle a pu apprendre en moins de 10 minutes malgré une implémentation imparfaite.
+
+
+\subsection{Changements effectués pour le passage à Pong}
+
+Maintenant que nous nous sommes assurés de la fiabilité de notre implémentation du Deep $Q$-Learning sur le jeu des bâtonnets, nous voulons l'appliquer sur Pong.
+Pong est bien plus compliqué que le jeu des bâtonnets, ainsi plusieurs modifications seront nécessaires.
+
+\subsubsection{Deux Deep Q-Networks}
+
+Lorsque nous réalisons la rétropropagation, nous devons connaître l'objectif de notre réseau. Celui-ci est donné par l'équation \ref{eq:bellman}. Ainsi, il est
+nécessaire de faire une propagation vers l'avant pour évaluer l'objectif de notre réseau. Notre réseau se ``pourchasse'' donc lui-même. Cela peut mener à de gros 
+problèmes de convergence, voire à une instabilité du réseau. Cela n'avait pas été observé précédemment à cause de la simplicité du jeu en question.
+
+L'instabilité du réseau se caractérise par deux choses d'après nos observations. Tout d'abord, le Deep $Q$-Network ignore totalement l'entrée qui lui est donnée,
+il retourne toujours les mêmes satisfactions (précision de $10^{-6}$ pourtant !). De plus, les satisfactions accordées à chaque action diffèrent très peu
+(une différence de quelques unités de $10^{-6}$). Ainsi, notre réseau ne sait pas quelle action choisie, l'une est choisie par défaut. Et pourtant, notre réseau
+décide de s'y tenir quoiqu'il arrive. Cela se conclut par, ou bien, une immobilité de notre IA, ou bien, une insistance sur l'un des mouvements (c'est-à-dire notre
+IA se coince sur l'un des rebords du plateau de jeu et y reste quoiqu'il arrive).
+
+Pour éviter ce problème, nous considérons deux réseaux différents. Le réseau principal est celui qui apprend, sur lequel on réalise la rétropropagation et celui
+qui choisit l'action à effectuer. Le second réseau a pour rôle de donner l'objectif à atteindre par le premier réseau. Son seul but est de calculer la valeur
+de l'expression \ref{eq:bellman}. Il est basé sur le premier réseau (copie conforme). Mais pour éviter les problèmes de stabilité du fait que le réseau principal 
+joue au chat et à la souris avec lui même, le second réseau n'est synchronisé sur le premier que de temps en temps. Le nombre de coups séparant deux 
+synchronisations est un hyperparamètre à déterminer. Nous avons repris celui utilisé par DeepMind, avec une synchronisation tous les 10000 coups.
+
+Pong étant un jeu de durée bien plus long que le jeu des bâtonnets, il fallait, pour permettre l'établissement de stratégies, renforcer l'appréciation d'une
+récompense future. Ainsi le facteur d'actualisation utilisé était 0.99. Une autre constante a changé : le taux d'exploration. Auparavant de décroissance exponentielle,
+le taux d'exploration varie dorénavant linéairement de 1 à 0.1 sur l'ensemble des parties.
+
+\subsubsection{Optimiseur RMSProp}
+
+À chaque apprentissage, nous devons calculer la satisfaction visée grâce au second réseau neuronal, synchronisé régulièrement sur le premier. Cela implique
+que les données d'apprentissage changent constamment. Précédemment, nous utilisions l'optimiseur Adam. Nous avons découvert dans différents articles qu'Adam tolérait
+mal les changements de données d'apprentissage. Il était alors recommandé d'utiliser l'optimiseur RMSProp. Ainsi, nous avons pris cet optimiseur avec un 
+taux d'apprentissage de 0.00025.
+
+\subsubsection{Changement de configuration de réseau}
+
+Le jeu étant beaucoup plus complexe, il est nécessaire de complexifier également notre réseau. Ainsi, bien que nous gardons une couche dense de 3 neurones en sortie,
+nous introduisons une couche de plusieurs centaines de neurones (256 ou 512 selon les tests) précédant la sortie. 
+
+En outre le réseau reçoit désormais une photographie de la table de jeu pour représenter l'état. Nous traitons donc cette donnée via un réseau à convolution précédant
+les couches denses. Celui-ci est formé de trois couches à convolutions : une couche de 32 filtres de taille 8 par pas de 4, une couche de 64 filtres de taille 4 par pas
+de 2 puis une couche de 32 filtres de taille 3 par pas de 1. Nous avons testé une configuration alternative où chaque couche convolutionnelle est suivie d'une
+couche de max pooling (taille 2 par pas de 2).
+
+Ce réseau ne reçoit pas les images directement. En effet, la couleur est retirée par un grayscale. Et chaque image (initialement de taille $210 \times 160$) est rognée,
+sous-échantillonnée et retaillée de sorte à obtenir une image de taille $80 \times 80$. Pour aider notre réseau, un état n'est pas formé de la dernière image traitée, mais
+des quatre dernières images reçues, traitées, puis superposées. Cela permet au réseau d'identifier le mouvement de la balle grâce à des images prises à des instants
+différents.
+
+\subsubsection{Apprentissage}
+
+Nous retenons un échantillon d'un million de transitions sur lesquelles nous effectuons notre apprentissage. Lorsque nous dépassons ce quotat, les transitions les 
+plus anciennes sont oubliées. À chaque coup réalisé, nous apprenons sur un minibatch de 32 transitions choisies aléatoirement parmi toutes les transitions disponibles.
+L'apprentissage n'est réalisé qu'à partir de la 50000ème transition, nous jugeons ne pas avoir assez de données pour apprendre avant ce seuil.
+
+
+\subsubsection{Problème de mémoires}
+
+N'ayant pas l'habitude de réaliser des algorithmes aussi gourmands en temps de calcul et en RAM utilisée, nous nous sommes laissés piégé par la consommation de RAM de 
+notre IA. En effet, le stockage d'un million de transition, chacune formée de deux images (une de départ et une d'arrivée) de taille $80\times80\times4$, chaque pixel
+étant sous forme d'un flottant 32 bits, demande des ressources excessives : presque 200 GB de RAM. Pour lutter contre cet utilisation déraisonnable des ressources de
+la machine, nous avons stocké chaque image sous la forme d'un entier non signé sur un octet, ce qui permet exactement de sauvegarder la valeur d'un pixel (entre 0 et 255).
+Ainsi, notre programme consomme moins de 50 GB de RAM par processus lancé. 
+
+Une autre méthode consisterait à corriger le fait que la plupart des images sont stockées deux fois. En effet, l'état d'arrivée d'une transition correspond à l'état
+de départ de la transition suivante. Il y aurait moyen de diviser les ressources consommées par deux en corrigeant ce problème. Toute façon, cela risquait d'entraîner
+d'autres problèmes. Il fallait en effet s'assurer du bon stockage de la transition sans trop complexifier l'accès au donnée. Finalement, les ressources du serveur le
+permettant, cette solution n'a pas été mise en place bien que nous aurions pu y avoir recours si nécessaire.
+
+Enfin, il aurait suffi de diminuer le nombre de transitions enregistrées (passer d'un million à cent mille par exemple) pour limiter les problèmes de mémoire. L'impact
+de ce changement sur les performances de l'algorithme nous était inconnu. Ainsi, une telle modification est concevable pour aller plus loin, mais nous restons de garder
+des hyperparamètres similaires à ceux des scientifiques en attendant de faire fonctionner correctement notre réseau (soi un million de transitions).
+
+
+\subsection{Pong}
+
+Après avoir réalisé les multiples modifications citées ci-dessus, nous avons pu tester notre IA sur Pong. Pour simuler l'environnement du jeu, nous utilisons
+la bibliothèque Python Atari[gym].
+
+\subsubsection{Apprentissage sur 3000 parties}
+
+Tout d'abord nous avons entraîné notre IA sur 3000 parties. Bien que celle-ci n'arrive pas à vaincre son adversaire, les résultats au bout de 2000 parties sont
+encourageants. En effet, vers environ 2000 parties apprises, notre IA marque entre 7 et 12 points à chaque partie. Elle a même réussi à marquer 16 points lors d'une
+partie. Ces résultats encourageants tendent à valider notre algorithme bien que très imparfait. On remarque que ces résultats sont tirés de l'apprentissage, 
+ansi notre IA obtient ces scores malgré qu'elle soit handicapée par un fort taux d'exploration (40\%).
+
+\subsubsection{Apprentissage sur 7000 parties}
+
+Nous entraînons maintenant notre IA sur 7000 parties. Pour la tester, nous n'utilisons plus les logs de l'apprentissage car ceux-ci sont très imparfaits (handicapé par 
+un taux d'exploration qui évolue constamment, et le réseau change à chaque coup). Nous utilisons alors une session de test séparée. Pour cela, nous reprenons le réseau
+obtenu à l'issu de l'apprentissage et le testons sur 5000 parties sans exploration et sans entraînement. Cela nous permet d'évaluer plus justement les capacités
+de notre Deep $Q$-Network. Pour obtenir une mesure des résultats plus fine que le simple taux de victoire, nous nous intéressons à un score ``relatif''. Celui-ci 
+est défini par le nombre de buts marqués auquel on retire le nombre de buts concédés. Ainsi, une défaite totale donne un score relatif de -21 et une victoire totale 
+de +21. Entre les deux, chaque entier relatif peut être atteint sauf 0 (il faut obligatoirement un vainqueur). Les résultats sont présentés sous forme d'histogramme.
+
+Nous étudions deux configurations de réseaux : sans maxpooling avec une couche dense de 512 neurones puis avec maxpooling et une couche dense de 256 neurones.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width = \textwidth]{img/DQL_7000_withoutMax.png}
+ \caption{Entraînement du Deep Q-Network sur 7000 parties sans Max pooling}
+ \label{fig:DQL_7000_withoutMax}
+\end{figure}
+
+La figure \ref{fig:DQL_7000_withoutMax} nous présente l'histogramme obtenu. On constate qu'en moyenne notre réseau perd en marquant environ 7 ou 8 buts. Au delà de 
+10 buts marqués, la densité décroit fortement. On remarque cependant que cette décroissance n'empêche pas notre réseau d'avoir eu quelques très bons résultats.
+Ainsi le repérage du maximum (6) nous permet de conclure que notre réseau a réussi à gagner une partie avec le score 21--15. Nous avons donc là notre premier cas 
+de victoires de notre IA ! Bien que celle-ci subit de nombreuses défaites (parfois cuisantes), ce résultat très encourageant confirme que nous sommes sur la bonne voie 
+et que notre implémentation est correcte et relativement performante.
+
+Le nombre important de défaites peut être expliqué par la grande dimension de notre espace. En effet, notre réseau est extrêmenent complexe et peut ajuster énormément 
+de poids pour interpoler correctement notre fonction de satisfaction $Q$. Pour pouvoir entraîner correctement un tel réseau, il faudrait avoir un apprentissage assez 
+long ou un taux d'apprentissage plus élevé. Nous n'augmentons pas le taux d'apprentissage pour ne pas altérer la stabilité de notre système. Une piste que nous
+allons explorer par la suite est de rallonger l'apprentissage (à 15000 parties jouées). 
+
+Avant cela, nous voulons étudier dans le même contexte (donc 7000 parties) un réseau plus modeste. Il s'agit du réseau avec les couches de max pooling. La dimension
+de l'espace étant beaucoup plus faible, nous espérons une convergence plus rapide, et donc de meilleures résultats après 7000 parties.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width  = \textwidth]{img/DQL_7000_withMax.png}
+ \caption{Entraînement du Deep Q-Network sur 7000 parties avec Max pooling}
+ \label{fig:DQL_7000_withMax}
+\end{figure}
+
+Nos attentes sont confirmées par la figure \ref{fig:DQL_7000_withMax}. D'une part, le maximum est bien plus important : 12. Cela signifie que notre IA a 
+réussi à remporter la victoire 21--9 face à son adversaire ! D'autre part, c'est la totalité de la distribution des scores qui est modifiée. En effet, on situe 
+plus la moyenne vers -8 (soit une défaite 13--21). En outre, les scores relatifs positifs (correspondant donc à une victoire) sont bien plus fréquents. Ils
+étaient totalement négligeables sur la figure \ref{fig:DQL_7000_withoutMax}. Ils sont désormais, certes minoritaires, mais non négligeables. Cette IA se comporte
+globalement mieux dans l'environnement Pong. Elle a mieux appris (probablement car la dimension de l'espace est bien plus faible) et est par suite bien plus forte
+à ce jeu.
+
+Notre objectif principal de ce projet est accompli ! Nous avons réussi à gagner à Pong grâce au Deep Q-Learning. Nos résultats demeurant toutefois imparfaits, nous
+allons étudier plus en profondeur l'apprentissage. Par exemple, nous pouvons prolonger ce dernier. Ou alors nous pouvons tester notre réseau plus régulièrement. Jusqu'à
+présent, les tests sont réalisés avec le réseau final et nous laissent peu d'informations pour interpréter la totalité de l'apprentissage. Une solution serait de 
+récupérer le réseau à différentes étapes de l'entraînement et de le tester de la sorte pour obtenir des informations plus riches sur l'entraînement de notre IA.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

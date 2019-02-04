@@ -15,3 +15,5 @@
 \contentsline {figure}{\numberline {15}{\ignorespaces Chemin choisi par l'IA lorsque confront\IeC {\'e}e \IeC {\`a} un labyrinthe donn\IeC {\'e}\relax }}{17}{figure.caption.18}
 \contentsline {figure}{\numberline {16}{\ignorespaces Sch\IeC {\'e}ma du Deep $Q$-Network\relax }}{18}{figure.caption.19}
 \contentsline {figure}{\numberline {17}{\ignorespaces Fonction de satisfaction $Q$ approxim\IeC {\'e}e par le r\IeC {\'e}seau neuronal\relax }}{19}{figure.caption.20}
+\contentsline {figure}{\numberline {18}{\ignorespaces Entra\IeC {\^\i }nement du Deep Q-Network sur 7000 parties sans Max pooling\relax }}{21}{figure.caption.21}
+\contentsline {figure}{\numberline {19}{\ignorespaces Entra\IeC {\^\i }nement du Deep Q-Network sur 7000 parties avec Max pooling\relax }}{22}{figure.caption.22}
