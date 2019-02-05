@@ -188,13 +188,13 @@ Nous étudions deux configurations de réseaux : sans maxpooling avec une couche
 \begin{figure}[h]
  \centering
  \includegraphics[width = \textwidth]{img/DQL_7000_withoutMax.png}
- \caption{Entraînement du Deep Q-Network sur 7000 parties sans Max pooling}
+ \caption{Entraînement du Deep $Q$-Network sur 7000 parties sans Max pooling}
  \label{fig:DQL_7000_withoutMax}
 \end{figure}
 
 La figure \ref{fig:DQL_7000_withoutMax} nous présente l'histogramme obtenu. On constate qu'en moyenne notre réseau perd en marquant environ 7 ou 8 buts. Au delà de 
 10 buts marqués, la densité décroit fortement. On remarque cependant que cette décroissance n'empêche pas notre réseau d'avoir eu quelques très bons résultats.
-Ainsi le repérage du maximum (6) nous permet de conclure que notre réseau a réussi à gagner une partie avec le score 21--15. Nous avons donc là notre premier cas 
+Ainsi le repérage du maximum ($+\num{6}$) nous permet de conclure que notre réseau a réussi à gagner une partie avec le score 21--15. Nous avons donc là notre premier cas 
 de victoires de notre IA ! Bien que celle-ci subit de nombreuses défaites (parfois cuisantes), ce résultat très encourageant confirme que nous sommes sur la bonne voie 
 et que notre implémentation est correcte et relativement performante.
 
@@ -209,18 +209,18 @@ de l'espace étant beaucoup plus faible, nous espérons une convergence plus rap
 \begin{figure}[h]
  \centering
  \includegraphics[width  = \textwidth]{img/DQL_7000_withMax.png}
- \caption{Entraînement du Deep Q-Network sur 7000 parties avec Max pooling}
+ \caption{Entraînement du Deep $Q$-Network sur 7000 parties avec Max pooling}
  \label{fig:DQL_7000_withMax}
 \end{figure}
 
-Nos attentes sont confirmées par la figure \ref{fig:DQL_7000_withMax}. D'une part, le maximum est bien plus important : 12. Cela signifie que notre IA a 
+Nos attentes sont confirmées par la figure \ref{fig:DQL_7000_withMax}. D'une part, le maximum est bien plus important : $+\num{12}$. Cela signifie que notre IA a 
 réussi à remporter la victoire 21--9 face à son adversaire ! D'autre part, c'est la totalité de la distribution des scores qui est modifiée. En effet, on situe 
-plus la moyenne vers -8 (soit une défaite 13--21). En outre, les scores relatifs positifs (correspondant donc à une victoire) sont bien plus fréquents. Ils
+plus la moyenne vers $\num{-8}$ (soit une défaite 13--21). En outre, les scores relatifs positifs (correspondant donc à une victoire) sont bien plus fréquents. Ils
 étaient totalement négligeables sur la figure \ref{fig:DQL_7000_withoutMax}. Ils sont désormais, certes minoritaires, mais non négligeables. Cette IA se comporte
 globalement mieux dans l'environnement Pong. Elle a mieux appris (probablement car la dimension de l'espace est bien plus faible) et est par suite bien plus forte
 à ce jeu.
 
-Notre objectif principal de ce projet est accompli ! Nous avons réussi à gagner à Pong grâce au Deep Q-Learning. Nos résultats demeurant toutefois imparfaits, nous
+Notre objectif principal de ce projet est accompli ! Nous avons réussi à gagner à Pong grâce au Deep $Q$-Learning. Nos résultats demeurant toutefois imparfaits, nous
 allons étudier plus en profondeur l'apprentissage. Par exemple, nous pouvons prolonger ce dernier. Ou alors nous pouvons tester notre réseau plus régulièrement. Jusqu'à
 présent, les tests sont réalisés avec le réseau final et nous laissent peu d'informations pour interpréter la totalité de l'apprentissage. Une solution serait de 
 récupérer le réseau à différentes étapes de l'entraînement et de le tester de la sorte pour obtenir des informations plus riches sur l'entraînement de notre IA.
