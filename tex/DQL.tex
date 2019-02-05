@@ -3,7 +3,7 @@
 \subsection{Principe du Deep Q-Learning}
 
 Le $Q$-Learning requiert de stocker les valeurs de la $Q$-function de quelque manière que ce soit. Notamment, on a utilisé un tableau (la $Q$-table) dans le jeu des
-bâtonnets. Néanmoins, on peut être confronté à des espaces des états de très grande taille : par exemple si les états sont des images (même de tailles raisonnables), 
+bâtonnets. Néanmoins, on peut être confronté à des espaces des états de très grande taille : par exemple si les états sont des images (même de taille raisonnable), 
 alors on peut imaginer des milliards d'états possibles. Bien que généralement plus restreint, le nombre d'actions est également à l'origine de ce problème puisque la
 taille de la matrice est le produit entre le nombre d'états différents et le nombre d'actions possibles. Puisque notre IA jouant à Pong doit recevoir des images du jeu,
 il est impensable de stocker chaque valeur en mémoire. Le Deep $Q$-Learning résout ce problème en remplaçant la $Q$-table par un réseau neuronal. Son objectif est alors 
@@ -81,7 +81,7 @@ Bâtonnets restants & Prendre 1 bâtonnet & Prendre 2 bâtonnets & Prendre 3 bâ
 
 Le tableau \ref{tab:Qfunction} nous prouve que le réseau neuronal a compris la stratégie et l'applique. En effet, pour chaque état, la satisfaction maximale est donnée
 au coup prédit par la stratégie. Certaines lignes n'ont pas de maximum évident, car cela correspond à des états où la stratégie nous donne perdant, ainsi les différents
-coups se valent. On remarque la satisfaction dépasse parfois en valeur absolue la récompense effectivement perçue par l'IA, cela peut paraître absurde puisque cette 
+coups se valent. On remarque que la satisfaction dépasse parfois en valeur absolue la récompense effectivement perçue par l'IA, cela peut paraître absurde puisque cette 
 récompense est l'objectif final, mais peut s'expliquer par le fait que le réseau ne fait qu'une approximation, et ne calcule donc pas la $Q$-function exactement.
 Néanmoins l'erreur reste assez faible. Enfin, on remarque que la satisfaction accordée aux bons coups est meilleure lorsque l'on est proche de la fin de la partie.
 Cela provient du fait que la propagation de la récompense favorise les états proches de celui où la satisfaction est effectivement attribuée. Quoiqu'il en soit, notre IA
@@ -101,9 +101,9 @@ problèmes de convergence, voire à une instabilité du réseau. Cela n'avait pa
 
 L'instabilité du réseau se caractérise par deux choses d'après nos observations. Tout d'abord, le Deep $Q$-Network ignore totalement l'entrée qui lui est donnée,
 il retourne toujours les mêmes satisfactions (précision de $10^{-6}$ pourtant !). De plus, les satisfactions accordées à chaque action diffèrent très peu
-(une différence de quelques unités de $10^{-6}$). Ainsi, notre réseau ne sait pas quelle action choisie, l'une est choisie par défaut. Et pourtant, notre réseau
+(une différence de quelques unités de $10^{-6}$). Ainsi, notre réseau ne sait pas quelle action choisir, l'une est choisie par défaut. Et pourtant, notre réseau
 décide de s'y tenir quoiqu'il arrive. Cela se conclut par, ou bien, une immobilité de notre IA, ou bien, une insistance sur l'un des mouvements (c'est-à-dire notre
-IA se coince sur l'un des rebords du plateau de jeu et y reste quoiqu'il arrive).
+IA se coince sur l'un des rebords du plateau de jeu et y reste pendant toute la partie).
 
 Pour éviter ce problème, nous considérons deux réseaux différents. Le réseau principal est celui qui apprend, sur lequel on réalise la rétropropagation et celui
 qui choisit l'action à effectuer. Le second réseau a pour rôle de donner l'objectif à atteindre par le premier réseau. Son seul but est de calculer la valeur
@@ -125,10 +125,10 @@ taux d'apprentissage de 0.00025.
 \subsubsection{Changement de configuration de réseau}
 
 Le jeu étant beaucoup plus complexe, il est nécessaire de complexifier également notre réseau. Ainsi, bien que nous gardons une couche dense de 3 neurones en sortie,
-nous introduisons une couche de dense plusieurs centaines de neurones (256 ou 512 selon les tests) précédant la sortie. 
+nous introduisons une couche dense de plusieurs centaines de neurones (256 ou 512 selon les tests) précédant la sortie. 
 
 En outre le réseau reçoit désormais une photographie de la table de jeu pour représenter l'état. Nous traitons donc cette donnée via un réseau à convolution précédant
-les couches denses. Celui-ci est formé de trois couches à convolutions : une couche de 32 filtres de taille 8 par pas de 4, une couche de 64 filtres de taille 4 par pas
+les couches denses. Celui-ci est formé de trois couches à convolution : une couche de 32 filtres de taille 8 par pas de 4, une couche de 64 filtres de taille 4 par pas
 de 2 puis une couche de 32 filtres de taille 3 par pas de 1. Nous avons testé une configuration alternative où chaque couche convolutionnelle est suivie d'une
 couche de max pooling (taille 2 par pas de 2).
 
@@ -146,20 +146,20 @@ L'apprentissage n'est réalisé qu'à partir de la 50000ème transition, nous ju
 
 \subsubsection{Problèmes de mémoire}
 
-N'ayant pas l'habitude de réaliser des algorithmes aussi gourmands en temps de calcul et en RAM utilisée, nous nous sommes laissés piégé par la consommation de RAM de 
-notre IA. En effet, le stockage d'un million de transition, chacune formée de deux images (une de départ et une d'arrivée) de taille $80\times80\times4$, chaque pixel
-étant sous forme d'un flottant 32 bits, demande des ressources excessives : presque 200 GB de RAM. Pour lutter contre cet utilisation déraisonnable des ressources de
+N'ayant pas l'habitude de réaliser des algorithmes aussi gourmands en temps de calcul et en RAM, nous nous sommes laissés piéger par la consommation de RAM de 
+notre IA. En effet, le stockage d'un million de transitions, chacune formée de deux images (une de départ et une d'arrivée) de taille $80\times80\times4$, chaque pixel
+étant sous forme d'un flottant 32 bits, demande des ressources excessives : presque 200 GB de RAM. Pour lutter contre cette utilisation déraisonnable des ressources de
 la machine, nous avons stocké chaque image sous la forme d'un entier non signé sur un octet, ce qui permet exactement de sauvegarder la valeur d'un pixel (entre 0 et 255).
 Ainsi, notre programme consomme moins de 50 GB de RAM par processus lancé. 
 
-Une autre méthode consisterait à corriger le fait que la plupart des images sont stockées deux fois. En effet, l'état d'arrivée d'une transition correspond à l'état
-de départ de la transition suivante. Il y aurait moyen de diviser les ressources consommées par deux en corrigeant ce problème. Toute façon, cela risquait d'entraîner
-d'autres problèmes. Il fallait en effet s'assurer du bon stockage de la transition sans trop complexifier l'accès au donnée. Finalement, les ressources du serveur le
-permettant, cette solution n'a pas été mise en place bien que nous aurions pu y avoir recours si nécessaire.
+Une autre méthode consisterait à corriger le fait que la plupart des images sont stockées deux fois. En effet, l'état final d'une transition correspond à l'état
+initial de la transition suivante. Il y aurait moyen de diviser les ressources consommées par deux en corrigeant ce problème. Toute façon, cela risquait d'en entraîner
+d'autres. Il faut en effet s'assurer du bon stockage de la transition sans trop complexifier l'accès aux données pour ne pas sacrifier la vitesse de calcul. 
+Finalement, les ressources du serveur le permettant, cette solution n'a pas été mise en place bien que nous aurions pu y avoir recours si nécessaire.
 
-Enfin, il aurait suffi de diminuer le nombre de transitions enregistrées (passer d'un million à cent mille par exemple) pour limiter les problèmes de mémoire. L'impact
-de ce changement sur les performances de l'algorithme nous était inconnu. Ainsi, une telle modification est concevable pour aller plus loin, mais nous restons de garder
-des hyperparamètres similaires à ceux des scientifiques en attendant de faire fonctionner correctement notre réseau (soi un million de transitions).
+Enfin, il aurait suffit de diminuer le nombre de transitions enregistrées (passer d'un million à cent mille par exemple) pour limiter les problèmes de mémoire. L'impact
+de ce changement sur les performances de l'algorithme nous était inconnu. Ainsi, une telle modification est concevable pour aller plus loin, mais nous conservons
+des hyperparamètres similaires à ceux des scientifiques en attendant de faire fonctionner correctement notre réseau (soit un million de transitions).
 
 
 \subsection{Pong}
@@ -172,16 +172,17 @@ la bibliothèque Python Atari[gym].
 Tout d'abord nous avons entraîné notre IA sur 3000 parties. Bien que celle-ci n'arrive pas à vaincre son adversaire, les résultats au bout de 2000 parties sont
 encourageants. En effet, vers environ 2000 parties apprises, notre IA marque entre 7 et 12 points à chaque partie. Elle a même réussi à marquer 16 points lors d'une
 partie. Ces résultats encourageants tendent à valider notre algorithme bien que très imparfait. On remarque que ces résultats sont tirés de l'apprentissage, 
-ansi notre IA obtient ces scores malgré qu'elle soit handicapée par un fort taux d'exploration (40\%).
+ansi notre IA obtient ces scores malgré le fait qu'elle soit handicapée par un fort taux d'exploration (40\%).
 
 \subsubsection{Apprentissage sur 7000 parties}
 
-Nous entraînons maintenant notre IA sur 7000 parties. Pour la tester, nous n'utilisons plus les logs de l'apprentissage car ceux-ci sont très imparfaits (handicapé par 
+Nous entraînons maintenant notre IA sur 7000 parties. Pour la tester, nous n'utilisons plus les logs de l'apprentissage car ceux-ci sont très imparfaits (IA handicapée par 
 un taux d'exploration qui évolue constamment, et le réseau change à chaque coup). Nous utilisons alors une session de test séparée. Pour cela, nous reprenons le réseau
 obtenu à l'issu de l'apprentissage et le testons sur 5000 parties sans exploration et sans entraînement. Cela nous permet d'évaluer plus justement les capacités
 de notre Deep $Q$-Network. Pour obtenir une mesure des résultats plus fine que le simple taux de victoire, nous nous intéressons à un score ``relatif''. Celui-ci 
 est défini par le nombre de buts marqués auquel on retire le nombre de buts concédés. Ainsi, une défaite totale donne un score relatif de $\num{-21}$ et une victoire totale 
-de $+\num{21}$. Entre les deux, chaque entier relatif peut être atteint sauf 0 (il faut obligatoirement un vainqueur). Les résultats sont présentés sous forme d'histogramme.
+de $+\num{21}$. Entre les deux, chaque entier relatif peut être atteint sauf 0 (il faut obligatoirement un vainqueur). Les résultats sont présentés sous la forme
+d'un histogramme.
 
 Nous étudions deux configurations de réseaux : sans maxpooling avec une couche dense de 512 neurones puis avec maxpooling et une couche dense de 256 neurones.
 
@@ -192,7 +193,7 @@ Nous étudions deux configurations de réseaux : sans maxpooling avec une couche
  \label{fig:DQL_7000_withoutMax}
 \end{figure}
 
-La figure \ref{fig:DQL_7000_withoutMax} nous présente l'histogramme obtenu. On constate qu'en moyenne notre réseau perd en marquant environ 7 ou 8 buts. Au delà de 
+La figure \ref{fig:DQL_7000_withoutMax} nous présente l'histogramme obtenu. On constate qu'en moyenne notre réseau perd en marquant environ 7 ou 8 buts. Au-delà de 
 10 buts marqués, la densité décroit fortement. On remarque cependant que cette décroissance n'empêche pas notre réseau d'avoir eu quelques très bons résultats.
 Ainsi le repérage du maximum ($+\num{6}$) nous permet de conclure que notre réseau a réussi à gagner une partie avec le score 21--15. Nous avons donc là notre premier cas 
 de victoires de notre IA ! Bien que celle-ci subit de nombreuses défaites (parfois cuisantes), ce résultat très encourageant confirme que nous sommes sur la bonne voie 
@@ -216,7 +217,7 @@ de l'espace étant beaucoup plus faible, nous espérons une convergence plus rap
 Nos attentes sont confirmées par la figure \ref{fig:DQL_7000_withMax}. D'une part, le maximum est bien plus important : $+\num{12}$. Cela signifie que notre IA a 
 réussi à remporter la victoire 21--9 face à son adversaire ! D'autre part, c'est la totalité de la distribution des scores qui est modifiée. En effet, on situe 
 plus la moyenne vers $\num{-8}$ (soit une défaite 13--21). En outre, les scores relatifs positifs (correspondant donc à une victoire) sont bien plus fréquents. Ils
-étaient totalement négligeables sur la figure \ref{fig:DQL_7000_withoutMax}. Ils sont désormais, certes minoritaires, mais non négligeables. Cette IA se comporte
+étaient totalement négligeables sur la figure \ref{fig:DQL_7000_withoutMax}. Ils sont désormais visibles bien que minoritaires. Cette IA se comporte
 globalement mieux dans l'environnement Pong. Elle a mieux appris (probablement car la dimension de l'espace est bien plus faible) et est par suite bien plus forte
 à ce jeu.
 

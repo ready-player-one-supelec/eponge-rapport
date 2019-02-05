@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.2.3)  5 FEB 2019 10:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2019.2.3)  5 FEB 2019 17:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1269,29 +1269,25 @@ Package pdftex.def Info: img/MNIST_difLR.png  used on input line 454.
 <img/learnWithAI_testRandom.png, id=369, 1387.584pt x 709.6914pt>
 File: img/learnWithAI_testRandom.png Graphic file (type png)
 <use img/learnWithAI_testRandom.png>
-Package pdftex.def Info: img/learnWithAI_testRandom.png  used on input line 85.
+Package pdftex.def Info: img/learnWithAI_testRandom.png  used on input line 86.
 
 (pdftex.def)             Requested size: 440.18959pt x 225.13501pt.
 <img/learnRandomly.png, id=371, 1387.584pt x 709.6914pt>
 File: img/learnRandomly.png Graphic file (type png)
 <use img/learnRandomly.png>
-Package pdftex.def Info: img/learnRandomly.png  used on input line 102.
+Package pdftex.def Info: img/learnRandomly.png  used on input line 103.
 (pdftex.def)             Requested size: 440.18959pt x 225.13501pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[15 <./img/learnWithAI_testRandom.png>]
+ [15 <./img/learnWithAI_testRandom.png>]
 <img/learnWithGod.png, id=378, 1387.584pt x 709.6914pt>
 File: img/learnWithGod.png Graphic file (type png)
 <use img/learnWithGod.png>
-Package pdftex.def Info: img/learnWithGod.png  used on input line 115.
+Package pdftex.def Info: img/learnWithGod.png  used on input line 116.
 (pdftex.def)             Requested size: 440.18959pt x 225.13501pt.
  [16 <./img/learnRandomly.png> <./img/learnWithGod.png>]
 <img/labyrinthe.png, id=386, 728.7225pt x 552.0625pt>
 File: img/labyrinthe.png Graphic file (type png)
 <use img/labyrinthe.png>
-Package pdftex.def Info: img/labyrinthe.png  used on input line 141.
+Package pdftex.def Info: img/labyrinthe.png  used on input line 142.
 (pdftex.def)             Requested size: 244.55144pt x 185.26428pt.
 ) [17 <./img/labyrinthe.png>]
 \openout2 = `tex/DQL.aux'.
@@ -1313,13 +1309,13 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <img/DQL_7000_withoutMax.png, id=413, 1445.4pt x 722.7pt>
 File: img/DQL_7000_withoutMax.png Graphic file (type png)
 <use img/DQL_7000_withoutMax.png>
-Package pdftex.def Info: img/DQL_7000_withoutMax.png  used on input line 190.
+Package pdftex.def Info: img/DQL_7000_withoutMax.png  used on input line 191.
 (pdftex.def)             Requested size: 489.10287pt x 244.54582pt.
  [21 <./img/DQL_7000_withoutMax.png>]
 <img/DQL_7000_withMax.png, id=420, 1445.4pt x 722.7pt>
 File: img/DQL_7000_withMax.png Graphic file (type png)
 <use img/DQL_7000_withMax.png>
-Package pdftex.def Info: img/DQL_7000_withMax.png  used on input line 211.
+Package pdftex.def Info: img/DQL_7000_withMax.png  used on input line 212.
 (pdftex.def)             Requested size: 489.10287pt x 244.54582pt.
 )
 [22 <./img/DQL_7000_withMax.png>]
@@ -1365,7 +1361,7 @@ c/cm-super/sfrm0900.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-su
 per/sfrm1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sft
 i1000.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/stmaryrd/stmary10.p
 fb>
-Output written on document.pdf (22 pages, 1811650 bytes).
+Output written on document.pdf (22 pages, 1812002 bytes).
 PDF statistics:
  526 PDF objects out of 1000 (max. 8388607)
  429 compressed objects within 5 object streams

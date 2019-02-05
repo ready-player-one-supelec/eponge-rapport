@@ -389,7 +389,7 @@ couche cachée. Cela nous permet donc d'en tirer nos premières conclusions.
 
 Pour cela, nous configurons notre réseau de la manière suivante. La couche d'entrée ainsi que la couche cachée contiennent 2 neurones tandis que la couche externe
 est constituée d'un neurone. La couche cachée et la couche de sortie sont chacun suivie d'une fonction d'activation. Nous avons utilisé une tangente hyperbolique
-pondérée, reprenant des valeurs utilisées par Yann LeCun et al : $ x \mapsto 1.7159\tanh{\frac{2x}{3}}$. Nous avons évalué l'apprentissage en utilisant différents
+pondérée, reprenant des valeurs utilisées par Yann \textsc{LeCun} et al : $ x \mapsto 1.7159\tanh{\frac{2x}{3}}$. Nous avons évalué l'apprentissage en utilisant différents
 taux d'apprentissage.
 
 \begin{figure}[h]
@@ -414,7 +414,7 @@ La figure \ref{fig:xor2D-2} représente l'évolution de la norme euclidienne de 
 d'apprentissage trop faible ralentit fortement la vitesse d'apprentissage. Au contraire, un taux d'apprentissage trop important peut faire échouer l'apprentissage.
 Cela s'explique par le fait que le réseau n'arrive pas à converger vers le minimum global car ses pas sont trop importants. Il oscille alors autour du minimum sans
 s'en rapprocher suffisamment. Si le taux d'apprentissage est trop important, on peut même s'écarter de la solution ! On comprend alors que le choix du taux 
-d'apprentissage est un facteur important de la convergence de notre réseau.
+d'apprentissage est un facteur déterminant de la convergence de notre réseau.
 
 La figure \ref{fig:xor2D-30} a, quant à elle, été tracée en utilisant 30 neurones dans la couche cachée. Cela nous permet d'étudier les capacités d'un réseau
 ``trop intelligent'' par rapport à la tâche qu'il doit apprendre. On remarque que le réseau a beaucoup plus de difficulté à trouver le minimum. Les courbes sont
@@ -426,7 +426,7 @@ avec un taux d'apprentissage relativement faible (la convergence est alors même
 
 MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d'apprendre à notre perception à reconnaître le chiffre en analysant les 784 pixels
 de l'image. Nous avons utilisé la configuration suivante : la couche d'entrée (784 neurones) est reliée à une première couche intermédiaire de 16 neurones. Celle-ci
-mène à une autre couche de même configuration. Enfin la sortie se fait par une couche de 10 neurones. Nous avons conservé la fonction d'activation tanh pondérée utilisée
+mène à une autre couche de même configuration. Enfin la sortie se fait par une couche de 10 neurones. Nous avons conservé la fonction d'activation $\tanh$ pondérée utilisée
 sur le XOR puisque celle-ci avait donné des résultats très satisfaisants (meilleure convergence que la sigmoïde).
 Pour tester notre perceptron, nous avons tracé le taux d'erreur sur l'échantillon test en fonction du nombre d'itérations. Afin de ``moyenner'' la courbe et 
 d'annuler les fluctuations statistiques de l'apprentissage (provenant de l'initialisation aléatoire du réseau et de l'ordre de présentation aléatoire des exemples),
@@ -439,7 +439,7 @@ nous avons réalisé cet apprentissage 280 fois. Le taux d'apprentissage utilis�
  \label{fig:MNIST}
 \end{figure}
 
-D'après la figure \ref{fig:MNIST}, le taux d'erreur sur l'échantillon d'apprentissage est toujours inférieur que celui sur l'échantillon de test. Cela est normal car
+D'après la figure \ref{fig:MNIST}, le taux d'erreur sur l'échantillon d'apprentissage est toujours inférieur à celui sur l'échantillon de test. Cela est normal car
 l'apprentissage du réseau consiste à coller au mieux aux données. Afin d'éviter le sur-apprentissage (on apprend par coeur les exemples mais n'est plus capable de
 généraliser les propriétés), on cherche à minimiser l'erreur sur l'échantillon de test. Sur MNIST, cela a relativement peu d'incidence car la base de données contient
 beaucoup d'exemples variés ce qui nous protège de la sur-interprétation. On converge assez rapidement (une dizaine d'itérations) vers 94\% de réussite, ce qui est
