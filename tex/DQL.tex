@@ -123,7 +123,7 @@ taux d'apprentissage de 0.00025.
 \subsubsection{Changement de configuration de réseau}
 
 Le jeu étant beaucoup plus complexe, il est nécessaire de complexifier également notre réseau. Ainsi, bien que nous gardons une couche dense de 3 neurones en sortie,
-nous introduisons une couche de plusieurs centaines de neurones (256 ou 512 selon les tests) précédant la sortie. 
+nous introduisons une couche de dense plusieurs centaines de neurones (256 ou 512 selon les tests) précédant la sortie. 
 
 En outre le réseau reçoit désormais une photographie de la table de jeu pour représenter l'état. Nous traitons donc cette donnée via un réseau à convolution précédant
 les couches denses. Celui-ci est formé de trois couches à convolutions : une couche de 32 filtres de taille 8 par pas de 4, une couche de 64 filtres de taille 4 par pas
