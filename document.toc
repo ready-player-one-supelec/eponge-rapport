@@ -16,7 +16,7 @@
 \contentsline {subsection}{\numberline {2.2}Calculer la fonction Q}{14}{subsection.2.2}
 \contentsline {subsection}{\numberline {2.3}Jeu des b\IeC {\^a}tonnets}{15}{subsection.2.3}
 \contentsline {subsection}{\numberline {2.4}Le labyrinthe}{17}{subsection.2.4}
-\contentsline {section}{\numberline {3}Deep Q-Learning}{18}{section.3}
+\contentsline {section}{\numberline {3}Le Deep Q-Learning}{18}{section.3}
 \contentsline {subsection}{\numberline {3.1}Principe du Deep Q-Learning}{18}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}Jeu des b\IeC {\^a}tonnets}{18}{subsection.3.2}
 \contentsline {subsection}{\numberline {3.3}Changements effectu\IeC {\'e}s pour le passage \IeC {\`a} Pong}{19}{subsection.3.3}

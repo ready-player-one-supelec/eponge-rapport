@@ -5,7 +5,7 @@
 
 Le perceptron est un des algorithmes de base du machine learning. Son invention remonte aux années 70, mais l'algorithme a été abandonné en 
 raison de son exécution trop coûteuse pour les performances des ordinateurs de l’époque. Ce n’est que récemment qu’il a pu resurgir, grâce 
-à l’amélioration des processeurs et des cartes graphiques, particulièrement adaptées aux calculs matriciels.
+à l’amélioration des processeurs et des cartes graphiques particulièrement adaptées aux calculs matriciels.
 
 Le modèle du neurone est le suivant : 
 
@@ -46,7 +46,7 @@ n = \sum_{i=1}^{R} w_{1,i} p_i - b = \mathbf{w_1}^T \mathbf{p} - b
 On cherche alors à discriminer les différentes possibilités pour le niveau d'activation. C'est le rôle de la fonction d'activation. Si l'on souhaite séparer
 le cas d'un $n$ supérieur ou non à un seuil donné, alors on utilise la fonction seuil $ f : x \mapsto \mathds{1}_{n \geq 0} $. On remarquera qu'il n'est 
 pas nécessaire de changer le seuil de la fonction car c'est le rôle incarné par le biais. Néanmoins, d'autres fonctions peuvent être utilisées à la place
-du seuil telles que la sigmoide ($\sigma : x \mapsto \frac{1}{1+e^{-x}}$) ou encore la tangente hyperbolique. 
+du seuil telles que la sigmoïde ($\sigma : x \mapsto \frac{1}{1+e^{-x}}$) ou encore la tangente hyperbolique. 
 On préfère généralement des fonctions différentiables pour permettre au réseau d'apprendre sur les données fournies.
 
 On a alors : 
@@ -168,7 +168,7 @@ Puisque l'on réalise un apprentissage supervisé, on suppose qu'à chaque jeu d
 de mesurer l'erreur entre la sortie attendue et la sortie calculée par le réseau neuronal.
 
 Il existe plusieurs formulations de cette erreur, telles que l'erreur quadratique (norme euclidienne du vecteur d'erreur), l'erreur moyenne (norme 1 du vecteur d'erreur)... 
-Pour obtenir l'erreur d'un groupe de données (batch), on somme les erreurs de chaque données. Par soucis de simplicité, nous avons décidé d'utiliser
+Pour obtenir l'erreur d'un groupe de données (batch), on somme les erreurs de chaque donnée. Par souci de simplicité, nous avons décidé d'utiliser
 l'erreur quadratique pour notre perceptron. Néanmoins il existe une autre fonction d'erreur : l'entropie croisée. Nous allons voir dans ce rapport pourquoi 
 cette fonction possède de meilleures propriétés que l'erreur quadratique.
 
@@ -188,7 +188,7 @@ considère souvent que l'entropie correspond naturellement à une fonction d'act
 Pour simplifier le raisonnement, nous utilisons un réseau neuronal trivial (un neurone à une entrée et une sortie) de fonction d'erreur quadratique. 
 Néanmoins, les phénomènes observés sur ce neurone unique restent vrais pour des réseaux plus complexes. On dispose donc d'un neurone, avec une entrée (et un biais) et 
 une sortie, auquel on souhaite apprendre le comportement suivant~: lorsque l'entrée vaut 1, la sortie doit valoir 0.
-Les poids du neurone sont initialisés de manière aléatoire. D'après la figure \ref{fig:initialisation1-entropiecroisee-schema}, on a après initialisation 
+Les poids du neurone sont initialisés de manière aléatoire. D'après la figure \ref{fig:initialisation1-entropiecroisee-schema}, on a, après initialisation,
 un neurone qui renvoit 0.82 lorsque l'entrée vaut 1. On entraîne ce neurone et obtient la courbe d'apprentissage 
 \ref{fig:initialisation1-entropiecroisee-courbe}.
 
@@ -246,13 +246,14 @@ mais l'apprentissage est beaucoup plus lent. On doit donc réaliser un nombre d'
 
 Puisque $C = \frac{(y-a)^2}{2}$, on peut vérifier que l'on a :
 \begin{align}
- \frac{\partial C}{\partial \omega} &= \left(a-y\right)\sigma'\left(z\right)x \text{, \parbox[t]{15em}{où $z$ est l'antécédant de $a$ par la fonction d'activation}}\\
+ \frac{\partial C}{\partial \omega} &= \left(a-y\right)\sigma'\left(z\right)x \text{, \parbox[t]{15em}{où $z$ est l'antécédent de $a$ par la fonction d'activation}}\\
  \frac{\partial C}{\partial b} &= \left(a-y\right)\sigma'\left(z\right) 
 \end{align}
 
 En observant la fonction sigmoïde représentée sur la figure \ref{fig:sigmoid_function}, on se rend compte que le problème provient de $\sigma'\left(z\right)$.
 En effet, la seconde initialisation ayant une erreur initiale très importante ($a$ proche de 1), on se retrouve dans la 
 partie droite de la courbe, où la pente est très faible. Cela provient du fait que $\sigma'\left(z\right) = a\left(1-a\right)$.
+L'apprentissage n'en est que ralenti, ce qui n'est évidemment pas souhaitable. 
 
 \begin{figure}[h]
  \centering
@@ -264,8 +265,8 @@ partie droite de la courbe, où la pente est très faible. Cela provient du fait
 \subsubsection{Une solution à ce problème d'apprentissage}
 \label{subsubsection:etablissement-eq-entropiecroisee}
 
-L'apprentissage n'en est que ralenti, ce qui n'est évidemment pas souhaitable. Pour rendre le réseau moins sensible à une mauvaise initialisation,
-il faut donc changer ce comportement. A nouveau, cela revient à utiliser une analogie avec le comportement humain, puisque l'humain a tendance à apprendre
+Pour rendre le réseau moins sensible à une mauvaise initialisation,
+il faut changer le comportement observé précédemment. A nouveau, cela revient à utiliser une analogie avec le comportement humain, puisque l'humain a tendance à apprendre
 plus vite lorsque il commet de fortes erreurs. On veut donc garder un apprentissage plus lent lorsque l'on se rapproche du minimum de la fonction
 d'erreur. Ainsi, on aimerait obtenir ces équations :
 
@@ -327,7 +328,7 @@ La formule de l'entropie d'une variable aléatoire $X$ est une somme sur les év
  H(X) = -\sum_{i=1}^{n} p_i\log\left(p_i\right)
 \end{equation}
 
-L'entropie est une mesure de l'incertitude d'une loi de probabilité. Par exemple, si on réalise une expérience de boules et que l'on considère
+L'entropie est une mesure de l'incertitude d'une loi de probabilité. Par exemple, si on réalise une expérience de tirage de boules et que l'on considère
 la couleur de la boule tirée, alors l'entropie sera maximale lorsque les différentes éventualités sont équiprobables.
 
 En traitement de l'information, cette grandeur permet de coder efficacement les symboles à transmettre. Si on a des symboles équiprobables,
@@ -388,9 +389,9 @@ différentes. XOR est une fonction relativement simple qui a la particularité d
 couche cachée. Cela nous permet donc d'en tirer nos premières conclusions.
 
 Pour cela, nous configurons notre réseau de la manière suivante. La couche d'entrée ainsi que la couche cachée contiennent 2 neurones tandis que la couche externe
-est constituée d'un neurone. La couche cachée et la couche de sortie sont chacun suivie d'une fonction d'activation. Nous avons utilisé une tangente hyperbolique
+est constituée d'un neurone. La couche cachée et la couche de sortie sont chacune suivies d'une fonction d'activation. Nous avons utilisé une tangente hyperbolique
 pondérée, reprenant des valeurs utilisées par Yann \textsc{LeCun} et al : $ x \mapsto 1.7159\tanh{\frac{2x}{3}}$. Nous avons évalué l'apprentissage en utilisant différents
-taux d'apprentissage.
+taux.
 
 \begin{figure}[h]
  \centering
@@ -417,14 +418,14 @@ s'en rapprocher suffisamment. Si le taux d'apprentissage est trop important, on 
 d'apprentissage est un facteur déterminant de la convergence de notre réseau.
 
 La figure \ref{fig:xor2D-30} a, quant à elle, été tracée en utilisant 30 neurones dans la couche cachée. Cela nous permet d'étudier les capacités d'un réseau
-``trop intelligent'' par rapport à la tâche qu'il doit apprendre. On remarque que le réseau a beaucoup plus de difficulté à trouver le minimum. Les courbes sont
+``trop intelligent'' par rapport à la tâche qu'il doit apprendre. On remarque que le réseau a beaucoup plus de difficultés à trouver le minimum. Les courbes sont
 globalement très bruitées. Néanmoins, cette fois-ci, tous les réseaux ont convergé même à haut taux d'apprentissage. Mais ce sont les taux les plus bas qui ont été
-le moins affecté par cette modification. Augmenter la taille du réseau permettrait alors de contrer les problèmes de divergence. Le bruit introduit peut être atténué
+le moins affectés par cette modification. Augmenter la taille du réseau permettrait alors de contrer les problèmes de divergence. Le bruit introduit peut être atténué
 avec un taux d'apprentissage relativement faible (la convergence est alors même accélérée).
 
 \subsection{MNIST}
 
-MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d'apprendre à notre perception à reconnaître le chiffre en analysant les 784 pixels
+MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d'apprendre à notre perceptron à reconnaître le chiffre en analysant les 784 pixels
 de l'image. Nous avons utilisé la configuration suivante : la couche d'entrée (784 neurones) est reliée à une première couche intermédiaire de 16 neurones. Celle-ci
 mène à une autre couche de même configuration. Enfin la sortie se fait par une couche de 10 neurones. Nous avons conservé la fonction d'activation $\tanh$ pondérée utilisée
 sur le XOR puisque celle-ci avait donné des résultats très satisfaisants (meilleure convergence que la sigmoïde).
@@ -459,7 +460,7 @@ Afin d'évaluer l'influence du taux d'apprentissage, nous réalisons l'entraîne
 On remarque qu'un fort taux d'apprentissage augmente également l'écart-type des données. L'apprentissage est alors plus sensible à l'initialisation. On préfère
 naturellement éviter un faible taux pour garder une vitesse de convergence convenable. En comparant toutes ces données, nous avons évalué que 0.003 était un des taux 
 les plus intéressants de ces points de vue, la convergence étant rapide et avec un faible écart-type. Néanmoins, l'impact sur les performances est assez négligeable
-(moins de 1\% de différences).
+(moins de 1\% de différence).
 
 
 \subsection{Un laïus sur les différents optimiseurs Paul ?}

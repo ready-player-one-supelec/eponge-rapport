@@ -1,4 +1,4 @@
-\section{Deep Q-Learning}
+\section{Le Deep Q-Learning}
 
 \subsection{Principe du Deep Q-Learning}
 
@@ -13,7 +13,7 @@ On a alors un réseau neuronal qui reçoit en entrée un état et une action pou
 notre algorithme favorisant la plus grande satisfaction, il est nécessaire de connaître la valeur du réseau lorsqu'excité par toutes les actions. Ainsi
 le nombre d'évaluations du réseau est égal au nombre d'actions possibles. Cela est d'autant plus inefficace qu'il sera nécessaire d'exécuter cette opération très
 régulièrement. Pour régler ce problème, notre réseau ne reçoit plus que l'état en question en entrée. En sortie, le réseau nous donne les satisfactions associées à chaque 
-état, de sorte qu'une seule évaluation du réseau suffise à choisir l'action à effectuer.
+action, de sorte qu'une seule évaluation du réseau suffise à choisir l'action à effectuer.
 
 \begin{figure}[h]
  \centering
@@ -27,7 +27,7 @@ toutes les satisfactions, il est important de veiller à ce que le réseau ne r�
 effectué en remplaçant la valeur voulue pour les autres actions par la valeur calculée, de sorte que l'erreur soit nulle, sauf pour l'action de la transition.
 Pour cette dernière, on conserve l'équation \ref{eq:bellman} pour l'expression voulue de la fonction de satisfaction.
 
-Pour faciliter la réalisation de notre algorithme et nous débarasser des grosses difficultés posées par le réseau neuronal telles que la rétropropagation, il 
+Pour faciliter la réalisation de notre algorithme et nous débarrasser des grosses difficultés posées par le réseau neuronal telles que la rétropropagation, il 
 a été convenu d'utiliser TensorFlow. Cette bibliothèque Python simplifie considérablement la conception d'un tel algorithme. Néanmoins, pour ne pas trop occulter 
 ce qu'il se passe dans le réseau, nous voulons rester suffisamment bas niveau. Ainsi, nous nous interdisons toute surcouche de TensorFlow telle que Keras.
 
@@ -35,7 +35,7 @@ ce qu'il se passe dans le réseau, nous voulons rester suffisamment bas niveau. 
 \subsection{Jeu des bâtonnets}
 
 Pour valider notre implémentation du Deep $Q$-Learning, on le teste sur un jeu simple que l'on sait résoudre : le jeu des bâtonnets. Les règles du jeu sont les mêmes 
-que précedemment. Pour la rétropropagation, nous utilisons l'optimiseur Adam particulièrement efficace, avec le taux d'apprentissage 0.001. Le facteur d'actualisation
+que précédemment. Pour la rétropropagation, nous utilisons l'optimiseur Adam particulièrement efficace, avec le taux d'apprentissage 0.001. Le facteur d'actualisation
 est conservé, de même que les taux d'exploration. On stocke un maximum de 10000 transitions. Après chaque partie jouée, on apprend sur \emph{toutes} les transitions
 enregistrées jusqu'à lors (par minibatch de 32 transitions). Le réseau utilisé possède 4 neurones d'entrée (chaque état est codé binairement), 10 neurones de couche cachée
 puis 3 neurones de sortie pour les 3 différentes actions fournies par le jeu. Ce réseau sert à la fois à apprendre sur les transitions et à générer la cible, 
@@ -139,7 +139,7 @@ différents.
 
 \subsubsection{Apprentissage}
 
-Nous retenons un échantillon d'un million de transitions sur lesquelles nous effectuons notre apprentissage. Lorsque nous dépassons ce quotat, les transitions les 
+Nous retenons un échantillon d'un million de transitions sur lesquelles nous effectuons notre apprentissage. Lorsque nous dépassons ce quota, les transitions les 
 plus anciennes sont oubliées. À chaque coup réalisé, nous apprenons sur un minibatch de 32 transitions choisies aléatoirement parmi toutes les transitions disponibles.
 L'apprentissage n'est réalisé qu'à partir de la 50000ème transition, nous jugeons ne pas avoir assez de données pour apprendre avant ce seuil.
 
@@ -153,7 +153,7 @@ la machine, nous avons stocké chaque image sous la forme d'un entier non signé
 Ainsi, notre programme consomme moins de 50 GB de RAM par processus lancé. 
 
 Une autre méthode consisterait à corriger le fait que la plupart des images sont stockées deux fois. En effet, l'état final d'une transition correspond à l'état
-initial de la transition suivante. Il y aurait moyen de diviser les ressources consommées par deux en corrigeant ce problème. Toute façon, cela risquait d'en entraîner
+initial de la transition suivante. Il y aurait moyen de diviser les ressources consommées par deux en corrigeant ce problème. Toutefois, cela risquait d'en entraîner
 d'autres. Il faut en effet s'assurer du bon stockage de la transition sans trop complexifier l'accès aux données pour ne pas sacrifier la vitesse de calcul. 
 Finalement, les ressources du serveur le permettant, cette solution n'a pas été mise en place bien que nous aurions pu y avoir recours si nécessaire.
 
@@ -170,7 +170,7 @@ la bibliothèque Python Atari[gym].
 \subsubsection{Apprentissage sur 3000 parties}
 
 Tout d'abord nous avons entraîné notre IA sur 3000 parties. Bien que celle-ci n'arrive pas à vaincre son adversaire, les résultats au bout de 2000 parties sont
-encourageants. En effet, vers environ 2000 parties apprises, notre IA marque entre 7 et 12 points à chaque partie. Elle a même réussi à marquer 16 points lors d'une
+encourageants. En effet, aux environs de 2000 parties apprises, notre IA marque entre 7 et 12 points à chaque partie. Elle a même réussi à marquer 16 points lors d'une
 partie. Ces résultats encourageants tendent à valider notre algorithme bien que très imparfait. On remarque que ces résultats sont tirés de l'apprentissage, 
 ansi notre IA obtient ces scores malgré le fait qu'elle soit handicapée par un fort taux d'exploration (40\%).
 
@@ -205,7 +205,7 @@ long ou un taux d'apprentissage plus élevé. Nous n'augmentons pas le taux d'ap
 allons explorer par la suite est de rallonger l'apprentissage (à 15000 parties jouées). 
 
 Avant cela, nous voulons étudier dans le même contexte (donc 7000 parties) un réseau plus modeste. Il s'agit du réseau avec les couches de max pooling. La dimension
-de l'espace étant beaucoup plus faible, nous espérons une convergence plus rapide, et donc de meilleures résultats après 7000 parties.
+de l'espace étant beaucoup plus faible, nous espérons une convergence plus rapide, et donc de meilleurs résultats après 7000 parties.
 
 \begin{figure}[h]
  \centering

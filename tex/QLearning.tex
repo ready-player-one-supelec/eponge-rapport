@@ -19,7 +19,7 @@ Dans l'équation \ref{eq:bellman}, $s$ représente l'état actuel, $a$ l'action 
 après avoir effectué l'action $a$. Ainsi, la satisfaction obtenue en effectuant l'action $a$ depuis l'état $s$ correspond à la fois à la récompense obtenue immédiatement
 ainsi que la meilleure satisfaction que l'on puisse espérer à l'avenir (on recherche un maximum car l'action $a'$ sera choisie par notre agent). $\gamma$ est le facteur
 d'actualisation. Il mesure la préférence à obtenir une récompense à l'instant présent plutôt qu'à l'avenir. Pour ne pas que la satisfaction diverge, il faut que $\gamma$
-soit plus petit que 1. Plus il est proche de 1, plus le réseau prend en compte des instants éloignés et établis des stratégies sur le long terme. La valeur du facteur
+soit plus petit que 1. Plus il est proche de 1, plus le réseau prend en compte des instants éloignés et établit des stratégies sur le long terme. La valeur du facteur
 d'actualisation dépend alors de l'environnement dans lequel est plongé notre agent.
 
 Le principe du $Q$-Learning repose sur l'apprentissage autonome par l'IA de ces différentes valeurs de $Q$ (que nous autres humains ne connaissons pas). 
@@ -128,7 +128,7 @@ des états. Elle ne peut donc pas trouver quelle est la meilleure stratégie car
 La rapidité de convergence est néanmoins intéressante. On peut alors imaginer commencer l'apprentissage contre un joueur très compétent pour vite cerner les quelques
 principes fondamentaux du jeu, puis finir l'apprentissage contre un joueur apprenant en même temps pour pouvoir explorer la totalité de l'espace des états et continuer
 d'apprendre relativement efficacement. Néanmoins, la simplicité du jeu en question joue probablement en faveur de cette convergence. On peut se demander si cette 
-caractéristique demeurerait sur un jeu plus complexe où l'espace des états est beaucoup plus importants.
+caractéristique demeurerait sur un jeu plus complexe où l'espace des états est beaucoup plus important.
 
 
 \subsection{Le labyrinthe}
@@ -144,7 +144,7 @@ défaite instantanée.
  \label{fig:labyrinthe}
 \end{figure}
 
-La figure \ref{fig:labyrinthe} représente le chemin choisi par l'IA lorsque celle-ci est confronté à un labyrinthe particulier, en serpentin. On remarque l'IA choisit
+La figure \ref{fig:labyrinthe} représente le chemin choisi par l'IA lorsque celle-ci est confrontée à un labyrinthe particulier, en serpentin. On remarque que l'IA choisit
 un chemin qui l'amène à l'arrivée, tout en maximisant les récompenses obtenues sur le chemin. L'apprentissage sur d'autres labyrinthes générés aléatoirement
 font également apparaître un apprentissage réussi et donc une capacité à atteindre la sortie du labyrinthe.
 
