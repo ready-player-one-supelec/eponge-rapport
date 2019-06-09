@@ -2,11 +2,11 @@
 
 \subsection{Principe du Deep Q-Learning}
 
-Le $Q$-Learning requiert de stocker les valeurs de la $Q$-function de quelque manière que ce soit. Notamment, on a utilisé un tableau (la $Q$-table) dans le jeu des
+Le Q-Learning requiert de stocker les valeurs de la Q-function de quelque manière que ce soit. Notamment, on a utilisé un tableau (la Q-table) dans le jeu des
 bâtonnets. Néanmoins, on peut être confronté à des espaces des états de très grande taille : par exemple si les états sont des images (même de taille raisonnable), 
 alors on peut imaginer des milliards d'états possibles. Bien que généralement plus restreint, le nombre d'actions est également à l'origine de ce problème puisque la
 taille de la matrice est le produit entre le nombre d'états différents et le nombre d'actions possibles. Puisque notre IA jouant à Pong doit recevoir des images du jeu,
-il est impensable de stocker chaque valeur en mémoire. Le Deep $Q$-Learning résout ce problème en remplaçant la $Q$-table par un réseau neuronal. Son objectif est alors 
+il est impensable de stocker chaque valeur en mémoire. Le Deep Q-Learning résout ce problème en remplaçant la Q-table par un réseau neuronal. Son objectif est alors 
 d'interpoler la fonction de satisfaction. Cette approximation nous permet d'économiser une importante quantité de mémoire.
 
 On a alors un réseau neuronal qui reçoit en entrée un état et une action pour retourner la satisfaction qui y est associée. Pour pouvoir choisir une action selon
@@ -18,7 +18,7 @@ action, de sorte qu'une seule évaluation du réseau suffise à choisir l'action
 \begin{figure}[h]
  \centering
  \includegraphics[width=0.7\textwidth]{img/schema_dql.png}
- \caption{Schéma du Deep $Q$-Network}
+ \caption{Schéma du Deep Q-Network}
 \end{figure}
 
 
@@ -34,7 +34,7 @@ ce qu'il se passe dans le réseau, nous voulons rester suffisamment bas niveau. 
 
 \subsection{Jeu des bâtonnets}
 
-Pour valider notre implémentation du Deep $Q$-Learning, on le teste sur un jeu simple que l'on sait résoudre : le jeu des bâtonnets. Les règles du jeu sont les mêmes 
+Pour valider notre implémentation du Deep Q-Learning, on le teste sur un jeu simple que l'on sait résoudre : le jeu des bâtonnets. Les règles du jeu sont les mêmes 
 que précédemment. Pour la rétropropagation, nous utilisons l'optimiseur Adam particulièrement efficace, avec le taux d'apprentissage 0.001. Le facteur d'actualisation
 est conservé, de même que les taux d'exploration. On stocke un maximum de 10000 transitions. Après chaque partie jouée, on apprend sur \emph{toutes} les transitions
 enregistrées jusqu'à lors (par minibatch de 32 transitions). Le réseau utilisé possède 4 neurones d'entrée (chaque état est codé binairement), 10 neurones de couche cachée
@@ -42,7 +42,7 @@ puis 3 neurones de sortie pour les 3 différentes actions fournies par le jeu. C
 conformément à l'équation \ref{eq:bellman}. Bien que cela ne soit pas l'implémentation la plus optimale, elle suffit pour un jeu aussi simple que celui des bâtonnets.
 
 Notre réseau apprend sur 2000 parties (contre une IA qui est également en train d'apprendre). Pour nous persuader de l'efficacité de notre algorithme, nous reconstituons
-la $Q$-table à l'issue de l'apprentissage en interrogeant le réseau sur les différents états accessibles lors d'une partie. Le résultat est le suivant :
+la Q-table à l'issue de l'apprentissage en interrogeant le réseau sur les différents états accessibles lors d'une partie. Le résultat est le suivant :
 
 \begin{figure}[h]
 \centering
@@ -82,7 +82,7 @@ Bâtonnets restants & Prendre 1 bâtonnet & Prendre 2 bâtonnets & Prendre 3 bâ
 Le tableau \ref{tab:Qfunction} nous prouve que le réseau neuronal a compris la stratégie et l'applique. En effet, pour chaque état, la satisfaction maximale est donnée
 au coup prédit par la stratégie. Certaines lignes n'ont pas de maximum évident, car cela correspond à des états où la stratégie nous donne perdant, ainsi les différents
 coups se valent. On remarque que la satisfaction dépasse parfois en valeur absolue la récompense effectivement perçue par l'IA, cela peut paraître absurde puisque cette 
-récompense est l'objectif final, mais peut s'expliquer par le fait que le réseau ne fait qu'une approximation, et ne calcule donc pas la $Q$-function exactement.
+récompense est l'objectif final, mais peut s'expliquer par le fait que le réseau ne fait qu'une approximation, et ne calcule donc pas la Q-function exactement.
 Néanmoins l'erreur reste assez faible. Enfin, on remarque que la satisfaction accordée aux bons coups est meilleure lorsque l'on est proche de la fin de la partie.
 Cela provient du fait que la propagation de la récompense favorise les états proches de celui où la satisfaction est effectivement attribuée. Quoiqu'il en soit, notre IA
 respecte parfaitement la stratégie, qu'elle a pu apprendre en moins de 10 minutes malgré une implémentation imparfaite.
@@ -90,16 +90,17 @@ respecte parfaitement la stratégie, qu'elle a pu apprendre en moins de 10 minut
 
 \subsection{Changements effectués pour le passage à Pong}
 
-Maintenant que nous nous sommes assurés de la fiabilité de notre implémentation du Deep $Q$-Learning sur le jeu des bâtonnets, nous voulons l'appliquer sur Pong.
+Maintenant que nous nous sommes assurés de la fiabilité de notre implémentation du Deep Q-Learning sur le jeu des bâtonnets, nous voulons l'appliquer sur Pong.
 Pong est bien plus compliqué que le jeu des bâtonnets, ainsi plusieurs modifications seront nécessaires.
 
 \subsubsection{Deux Deep Q-Networks}
+\label{section:2networks}
 
 Lorsque nous réalisons la rétropropagation, nous devons connaître l'objectif de notre réseau. Celui-ci est donné par l'équation \ref{eq:bellman}. Ainsi, il est
 nécessaire de faire une propagation vers l'avant pour évaluer l'objectif de notre réseau. Notre réseau se ``pourchasse'' donc lui-même. Cela peut mener à de gros 
 problèmes de convergence, voire à une instabilité du réseau. Cela n'avait pas été observé précédemment à cause de la simplicité du jeu en question.
 
-L'instabilité du réseau se caractérise par deux choses d'après nos observations. Tout d'abord, le Deep $Q$-Network ignore totalement l'entrée qui lui est donnée,
+L'instabilité du réseau se caractérise par deux choses d'après nos observations. Tout d'abord, le Deep Q-Network ignore totalement l'entrée qui lui est donnée,
 il retourne toujours les mêmes satisfactions (précision de $10^{-6}$ pourtant !). De plus, les satisfactions accordées à chaque action diffèrent très peu
 (une différence de quelques unités de $10^{-6}$). Ainsi, notre réseau ne sait pas quelle action choisir, l'une est choisie par défaut. Et pourtant, notre réseau
 décide de s'y tenir quoiqu'il arrive. Cela se conclut par, ou bien, une immobilité de notre IA, ou bien, une insistance sur l'un des mouvements (c'est-à-dire notre
@@ -179,7 +180,7 @@ ansi notre IA obtient ces scores malgré le fait qu'elle soit handicapée par un
 Nous entraînons maintenant notre IA sur 7000 parties. Pour la tester, nous n'utilisons plus les logs de l'apprentissage car ceux-ci sont très imparfaits (IA handicapée par 
 un taux d'exploration qui évolue constamment, et le réseau change à chaque coup). Nous utilisons alors une session de test séparée. Pour cela, nous reprenons le réseau
 obtenu à l'issu de l'apprentissage et le testons sur 5000 parties sans exploration et sans entraînement. Cela nous permet d'évaluer plus justement les capacités
-de notre Deep $Q$-Network. Pour obtenir une mesure des résultats plus fine que le simple taux de victoire, nous nous intéressons à un score ``relatif''. Celui-ci 
+de notre Deep Q-Network. Pour obtenir une mesure des résultats plus fine que le simple taux de victoire, nous nous intéressons à un score ``relatif''. Celui-ci 
 est défini par le nombre de buts marqués auquel on retire le nombre de buts concédés. Ainsi, une défaite totale donne un score relatif de $\num{-21}$ et une victoire totale 
 de $+\num{21}$. Entre les deux, chaque entier relatif peut être atteint sauf 0 (il faut obligatoirement un vainqueur). Les résultats sont présentés sous la forme
 d'un histogramme.
@@ -189,7 +190,7 @@ Nous étudions deux configurations de réseaux : sans maxpooling avec une couche
 \begin{figure}[h]
  \centering
  \includegraphics[width = \textwidth]{img/DQL_7000_withoutMax.png}
- \caption{Entraînement du Deep $Q$-Network sur 7000 parties sans Max pooling}
+ \caption{Entraînement du Deep Q-Network sur 7000 parties sans Max pooling}
  \label{fig:DQL_7000_withoutMax}
 \end{figure}
 
@@ -210,7 +211,7 @@ de l'espace étant beaucoup plus faible, nous espérons une convergence plus rap
 \begin{figure}[h]
  \centering
  \includegraphics[width  = \textwidth]{img/DQL_7000_withMax.png}
- \caption{Entraînement du Deep $Q$-Network sur 7000 parties avec Max pooling}
+ \caption{Entraînement du Deep Q-Network sur 7000 parties avec Max pooling}
  \label{fig:DQL_7000_withMax}
 \end{figure}
 
@@ -221,20 +222,98 @@ plus la moyenne vers $\num{-8}$ (soit une défaite 13--21). En outre, les scores
 globalement mieux dans l'environnement Pong. Elle a mieux appris (probablement car la dimension de l'espace est bien plus faible) et est par suite bien plus forte
 à ce jeu.
 
-Notre objectif principal de ce projet est accompli ! Nous avons réussi à gagner à Pong grâce au Deep $Q$-Learning. Nos résultats demeurant toutefois imparfaits, nous
-allons étudier plus en profondeur l'apprentissage. Par exemple, nous pouvons prolonger ce dernier. Ou alors nous pouvons tester notre réseau plus régulièrement. Jusqu'à
-présent, les tests sont réalisés avec le réseau final et nous laissent peu d'informations pour interpréter la totalité de l'apprentissage. Une solution serait de 
-récupérer le réseau à différentes étapes de l'entraînement et de le tester de la sorte pour obtenir des informations plus riches sur l'entraînement de notre IA.
+Notre objectif principal de ce projet est accompli ! Nous avons réussi à gagner à Pong grâce au Deep Q-Learning. Nos résultats demeurant toutefois imparfaits, nous
+voulons étudier plus en profondeur l'apprentissage. Étant donné qu'un apprentissage sur Pong peut être très long, il nous est difficile de tester différentes
+configurations pour mieux comprendre comme fonctionne le Deep Q-Learning. C'est pourquoi nous décidons de nous concentrer sur d'autres jeux que Pong.
 
 
+\subsection{CartPole}
+
+\subsubsection{Principe du jeu}
+
+CartPole est un jeu disponible sur gym, représenté Figure \ref{fig:schema-cartpole}. Le principe est le suivant : on dispose d'un pendule simple fixé à sa base à un chariot. L'objectif est de stabiliser
+le pendule en équilibre instable en déplaçant ledit chariot. Étant donné qu'apprendre un jeu à partir de photographies de l'écran est une contrainte très forte 
+qui ralentit énormément l'apprentissage, nous préférons obtenir un espace des états plus petits pour pouvoir faire les tests voulus. CartPole nous donne un 
+état à 4 dimensions (Figure \ref{fig:schema-cartpole-network}) composé de l'angle et la vitesse angulaire du pendule, et de la position et la vitesse du chariot.
+Nous disposons de deux actions : aller à gauche ou à droite. Ne rien faire ne fait pas partie des actions disponibles.
+
+CartPole est un jeu de survie. Pour survivre à une étape, le pendule ne doit pas être trop incliné, et le chariot ne doit pas être trop éloigné de sa position
+initiale. Si notre IA survit 500 étapes, alors le jeu est réinitialisé. Cela permet de la remettre en difficulté dans le cas où l'IA a trouvé un
+point stable. On considère que l'IA a réussi à jouer à CartPole si elle est capable de survivre 195 étapes. Cette limite est arbitraire mais souvent utilisée sur
+Internet pour CartPole. Reprendre cette même convention nous permet de nous situer par rapport à autres réalisations que l'on peut trouver sur GitHub.
+
+Pour résoudre ce jeu, il convient de trouver une fonction de satisfaction adéquate. Si l'on meurt, on reçoit bien évidemment une récompense négative, que nous
+avons situé à $-1$. Nous voulons encourager notre IA à survivre, c'est pourquoi nous lui offrons une satisfaction pour le simple fait de rester en vie. Nous avons
+décidé de donner une récompense de $1$ à chaque étape survécue.
 
 
+\begin{figure}[h]
+\centering
+\begin{subfigure}{.3\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{img/schema_cartpole.png}
+  \caption{Schéma du jeu CartPole}
+  \label{fig:schema-cartpole}
+\end{subfigure}%
+\begin{subfigure}{.6\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{img/schema_cartpole_network.png}
+  \caption{Espace des états sur CartPole}
+  \label{fig:schema-cartpole-network}
+\end{subfigure}
+\caption{Représentation du jeu CartPole}
+\label{fig:cartpole}
+\end{figure}
+
+\subsubsection{Apprentissage de CartPole}
+
+Nous réalisons l'apprentissage sur CartPole. Le réseau utilisé est constitué de deux couches intermédiaires, toutes deux composées de 24 neurones. Les hyperparamètres
+utilisés sont détaillés sur la figure \ref{fig:cartpole-2reseaux}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width  = \textwidth]{img/cartpole_2reseaux.png}
+ \caption{Apprentissage de CartPole}
+ \label{fig:cartpole-2reseaux}
+\end{figure}
 
 
+On remarque que la barre des 195 étapes survécues a été franchi, ce qui signifie que l'on peut considérer que notre IA a réussi à apprendre CartPole.
+Afin de pouvoir nous situer par rapport aux réalisations d'autres personnes sur GitHub, nous superposons notre courbe à celle obtenue avec un code disponible
+sur GitHub.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width  = \textwidth]{img/gsurma.png}
+ \caption{Comparaison des performances avec d'autres codes publics}
+ \label{fig:gsurma}
+\end{figure}
+
+Le code public dépasse brièvement (et dans le meilleur des cas) la barre des 195 étapes survécues mais ne maintient pas ce résultat.
+À l'instar de beaucoup d'articles scientifiques, seul le meilleur des cas permet de satisfaire les conditions de réussite, l'expérience étant arrêtée dès
+que le jeu est résolu. En ce qui nous concerne, nous continuons l'expérience, ce qui nous permet de conclure sur la stabilité de notre algorithme. En outre,
+nous moyennons nos résultats (en l'occurrence sur 140 réalisations) pour résoudre le jeu en moyenne et pas dans le meilleur des cas.
+
+\subsubsection{Apprentissage avec un seul réseau}
+
+Dans la section \ref{section:2networks}, nous avions expliqué que deux réseaux aidaient à stabiliser l'apprentissage, et qu'un seul réseau pouvait parfois mener à des
+oscillations voire une instabilité de notre IA. Pour confirmer cela, nous avons voulu tester un apprentissage avec un seul réseau sur CartPole.
+Le résultat est représenté figure \ref{fig:cartpole-1reseau}.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width = \textwidth]{img/cartpole_1reseau.png}
+ \caption{Apprentissage de CartPole avec un seul réseau}
+ \label{fig:cartpole-1reseau}
+\end{figure}
+
+Nous remarquons une importante chute du temps de survie à la fin de l'apprentissage. Cela marque donc la forte instabilité de notre IA induite par le fait que le réseau
+est unique. On remarque toutefois que le jeu est résolu et que l'on atteint des scores très élevées. Cela provient du fait que CartPole est un jeu suffisamment simple
+pour qu'un seul réseau ne soit pas trop handicapant. Il est néanmoins suffisamment complexe pour faire apparaître l'intérêt d'un second réseau.
 
 
-
-
+Puisqu'un apprentissage sur CartPole est relativement rapide, nous avons pu tester différentes configurations, et ainsi avoir une meilleure intuition des hyperparamètres
+à choisir. Nous pouvons donc mettre cela en application avec un jeu un peu plus complexe : Flappy Bird.
 
 
 
