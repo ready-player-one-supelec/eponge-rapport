@@ -294,6 +294,9 @@ Le code public dépasse brièvement (et dans le meilleur des cas) la barre des 1
 que le jeu est résolu. En ce qui nous concerne, nous continuons l'expérience, ce qui nous permet de conclure sur la stabilité de notre algorithme. En outre,
 nous moyennons nos résultats (en l'occurrence sur 140 réalisations) pour résoudre le jeu en moyenne et pas dans le meilleur des cas.
 
+Sur GitHub, on a disposé deux vidéos après victoire de notre IA. La première montre un pendule qui survit mais demeure relativement chancelant. En poursuivant
+l'apprentissage, on obtient la seconde vidéo. On remarque alors que notre IA trouve assez rapidement un point d'équilibre du pendule.
+
 \subsubsection{Apprentissage avec un seul réseau}
 
 Dans la section \ref{section:2networks}, nous avions expliqué que deux réseaux aidaient à stabiliser l'apprentissage, et qu'un seul réseau pouvait parfois mener à des
@@ -316,10 +319,41 @@ Puisqu'un apprentissage sur CartPole est relativement rapide, nous avons pu test
 à choisir. Nous pouvons donc mettre cela en application avec un jeu un peu plus complexe : Flappy Bird.
 
 
+\subsection{Flappy Bird}
 
+\subsubsection{Principe}
 
+Pour pouvoir manipuler la difficulté du jeu comme on le souhaite et pour avoir accès à l'espace des états que l'on veut, on a recrée le jeu Flappy Bird en C.
+Notre IA dispose de deux actions possibles : bondir ou ne rien faire (et donc se laisser tomber).
 
+Nous avons défini l'espace des états comme représenté figure \ref{fig:flappy-states}. Notre oiseau voit les données suivantes : la distance horizontale qui le sépare 
+du prochain tuyau, les distances verticales qui le séparent du haut et du bas du passage, ainsi que du haut et du bas de l'écran, et sa vitesse verticale.
+Toutes ces données ont été normalisées en prenant en compte les dimensions caractéristiques du jeu. 
 
+\begin{figure}[h]
+ \centering
+ \includegraphics[scale = 0.3]{img/flappy_state.png}
+ \caption{Illustration de l'espace des états de Flappy Bird}
+ \label{fig:flappy-states}
+\end{figure}
+
+Nous devons également définir une fonction de récompense. Si l'oiseau meurt (sort de l'écran ou entre en collision avec un mur), la récompense est égale à $-1$.
+Si l'on passe une porte, notre score est incrémenté et la récompense est égale à 1. Toutefois, pour que l'oiseau soit capable d'apprendre à passer les portes, il doit
+tout d'abord réussir à en passer quelques unes par hasard afin qu'il comprenne que cette action rapporte des récompenses. Or, il est assez difficile d'avoir un 
+score non-nul à Flappy Bird lorsqu'on joue aléatoirement. Pour encourager notre IA à vouloir rester en vie, on ajoute une composante survie à notre fonction de 
+récompense. Ainsi, à chaque étape survécue, la récompense est de $0.1$.
+
+\subsubsection{Apprentissage}
+
+On réalise l'apprentissage du Flappy Bird que nous avons réalisé. Le réseau utilisé est constitué d'une couche intermédiaire de 16 neurones. Les hyperparamètres
+utilisés sont les suivants : taux d'apprentissage à $0.001$, facteur d'actualisation à $0.99$, synchronisation des deux réseaux toutes les 500 étapes et décroissance
+exponentielle du taux d'exploration.
+
+On remarque que l'apprentissage est un succès. On obtient une IA capable de survivre à l'infini. On remarque également une certaine instabilité du réseau 
+qui disparaît et ré-apparaît régulièrement à mesure que l'on poursuit l'apprentissage.
+
+Ce résultat étant arrivé en fin de projet, nous n'avons pu tracer de courbes permettant de mieux cerner comme s'est déroulé l'apprentissage.
+Toutefois, une vidéo de l'apprentissage est disponible sur GitHub.
 
 
 
