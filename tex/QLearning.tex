@@ -2,10 +2,10 @@
 
 \subsection{Qu'est-ce que le Q-Learning ?}
 
-L'objectif du $Q$-Learning est de permettre à un agent (notre IA) d'évoluer efficacement dans un environnement (par exemple un jeu). Pour cela, on utilise un système de
+L'objectif du Q-Learning est de permettre à un agent (notre IA) d'évoluer efficacement dans un environnement (par exemple un jeu). Pour cela, on utilise un système de
 récompense. Dans un état donné, l'IA choisit l'action qui lui rapporte le plus de récompense. Néanmoins, on ne veut pas que notre IA choisisse une action parce qu'elle
 lui offre une récompense immédiatement. L'IA doit prendre en compte les récompenses qu'elle obtiendrait plus tard en effectuant certaines actions. Cette 
-caractéristique du $Q$-Learning permet l'établissement de stratégies.
+caractéristique du Q-Learning permet l'établissement de stratégies.
 
 Pour pouvoir suivre ces stratégies, notre IA se donne des récompenses $Q$ (imaginaires) qui reflètent à la fois la satisfaction obtenue immédiatement mais également
 la satisfaction que l'on peut espérer obtenir à l'avenir. Il faut alors que notre système de récompense satisfasse l'équation de \textsc{Bellman} : 
@@ -22,7 +22,7 @@ d'actualisation. Il mesure la préférence à obtenir une récompense à l'insta
 soit plus petit que 1. Plus il est proche de 1, plus le réseau prend en compte des instants éloignés et établit des stratégies sur le long terme. La valeur du facteur
 d'actualisation dépend alors de l'environnement dans lequel est plongé notre agent.
 
-Le principe du $Q$-Learning repose sur l'apprentissage autonome par l'IA de ces différentes valeurs de $Q$ (que nous autres humains ne connaissons pas). 
+Le principe du Q-Learning repose sur l'apprentissage autonome par l'IA de ces différentes valeurs de $Q$ (que nous autres humains ne connaissons pas). 
 Pour cela, on distingue deux phases.
 La phase d'exploration correspond à agir de manière aléatoire sans prendre en compte la satisfaction. Cela permet de découvrir des voies jusqu'à lors inconnues et 
 potentiellement trouver de meilleures stratégies que celles connues à cet instant. Puis, lors de l'exploitation, on utilise les valeurs de satisfaction trouvées
@@ -56,16 +56,16 @@ Pour un espace des états réduits et un nombre d'actions limité, les valeurs d
 décrite précédemment.
 
 Lors d'un apprentissage, la transition est choisie aléatoirement. En effet, si on apprend sur les transitions dans l'ordre d'apparition, on augmente le poids de la
-dernière transition obtenue. Or, puisqu'un faible changement de $Q$-table peut engendrer un important changement de stratégies, on veut éviter ce genre de dépendance,
+dernière transition obtenue. Or, puisqu'un faible changement de Q-table peut engendrer un important changement de stratégies, on veut éviter ce genre de dépendance,
 c'est pourquoi la transition sur laquelle on apprend est choisie aléatoirement dans l'ensemble des transitions obtenues.
 
 
 \subsection{Jeu des bâtonnets}
 
-Pour tester le $Q$-Learning, on utilise le jeu des bâtonnets. Il y a deux joueurs et douze bâtonnets sur la table. Alternativement, chaque joueur peut prendre
+Pour tester le Q-Learning, on utilise le jeu des bâtonnets. Il y a deux joueurs et douze bâtonnets sur la table. Alternativement, chaque joueur peut prendre
 1, 2 ou 3 bâtonnets. Le joueur contraint de prendre le dernier bâtonnet a perdu. Ce jeu a l'avantage d'avoir un petit espace des états. En effet, l'état est entièrement
 décrit par le nombre de bâtonnets restants qui est un entier compris entre 1 et 12. Le nombre d'action est également très faible (3). Ainsi ce jeu se prête parfaitement à
-l'utilisation d'une $Q$-table pour représenter la fonction $Q$.
+l'utilisation d'une Q-table pour représenter la fonction $Q$.
 
 On remarque qu'il existe une stratégie imbattable pour gagner une partie. Si vous commencez la partie, il suffit de prendre 3 bâtonnets puis 4-$x$ bâtonnets à chaque coup
 où $x$ est le nombre de bâtonnets pris par l'adversaire. Notre objectif est donc que notre IA découvre cette stratégie et s'y tienne. 
@@ -89,12 +89,12 @@ appliquant la stratégie gagnante. Dans tous les cas, les tests sont fait contre
 \end{figure}
 
 La figure \ref{fig:learnWithAI} nous présente les résultats lorsque notre IA apprend contre une autre IA apprenant également à jouer à ce jeu. On remarque plusieurs choses.
-La convergence à 98.15\% ainsi que la $Q$-table nous confirme que notre IA a réussi à apprendre quelle était la stratégie parfaite pour jouer à ce jeu. L'apprentissage 
+La convergence à 98.15\% ainsi que la Q-table nous confirme que notre IA a réussi à apprendre quelle était la stratégie parfaite pour jouer à ce jeu. L'apprentissage 
 est donc réussi. On remarque également que la courbe semble être en escalier. Cela provient du fait que pour choisir une action lors de l'exploitation, on choisit celle
-avec la meilleure satisfaction mais leurs valeurs respectives n'ont pas plus d'incidence. Ainsi, deux $Q$-table différentes mais ayant la même action préféré à chaque état
-auront des taux de victoires similaires. La modification de la $Q$-table n'entraîne pas nécessairement un changement de stratégie, c'est pourquoi on observe ces plateaux.
+avec la meilleure satisfaction mais leurs valeurs respectives n'ont pas plus d'incidence. Ainsi, deux Q-table différentes mais ayant la même action préféré à chaque état
+auront des taux de victoires similaires. La modification de la Q-table n'entraîne pas nécessairement un changement de stratégie, c'est pourquoi on observe ces plateaux.
 Pour la même raison, on observe des sauts. Même si deux actions procurent presque la même satisfaction, on choisit toujours celle qui en procure le plus. Ainsi, un faible
-changement de la $Q$-table peut entraîner un changement radical dans la stratégie adoptée par notre IA. Ce changement se ressent alors fortement dans le taux de victoires
+changement de la Q-table peut entraîner un changement radical dans la stratégie adoptée par notre IA. Ce changement se ressent alors fortement dans le taux de victoires
 lorsque l'IA est confrontée au joueur aléatoire. Vu la simplicité du jeu, un nombre raisonnable de parties (quelques milliers) est nécessaire pour comprendre la stratégie,
 ce qui s'effectue très rapidement (en quelques minutes).
 
