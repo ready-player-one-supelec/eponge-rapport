@@ -72,8 +72,156 @@ Dans le principe, un CNN est comme un perceptron (à part pour la couche de pool
 \subsection{Application pratique}
 
 Afin de mieux comprendre le principe du CNN, nous avons réalisé un exemple simple mais clair : 
+On cherche à reconnaître le motif d'une croix. 
+Pour cela, on prend les filtres $f_1$ (diagonale droite), $f_2$ (diagonale gauche) et $f_3$ (croix centrale).
+Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on obtient le résultat suivant:
+
 \begin{figure}[h]
- \centering
- \includegraphics[width=0.7\textwidth]{img/cnn_exemple/}
- \caption{Image à reconnaître}
+    \center
+    \includegraphics[width=0.5\textwidth]{img/cnn_exemple/cross/image_croix.png}
+    \caption{image à détecter}
 \end{figure}
+
+
+\begin{figure}[!htb]
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/filtre_1.png}
+        \caption{filtre 1}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/filtre_2.png}
+        \caption{filtre 2}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/filtre_3.png}
+        \caption{filtre 3}
+    \endminipage
+\end{figure}
+
+\newpage
+
+\begin{figure}[h]
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/convolution_filtre_1.png}
+        \caption{convolution filtre 1}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/convolution_filtre_2.png}
+        \caption{convolution filtre 2}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/convolution_filtre_3.png}
+        \caption{convolution filtre 3}
+    \endminipage
+\end{figure}
+
+\begin{figure}[h]
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/activation_relu_1.png}
+        \caption{activation relu 1}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/activation_relu_2.png}
+        \caption{activation relu 2}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/activation_relu_3.png}
+        \caption{activation relu 3}
+    \endminipage
+\end{figure}
+
+\begin{figure}[h]
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/stride_1_max.png}
+        \caption{stride 1 (max)}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/stride_2_max.png}
+        \caption{stride 2 (max)}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/cross/stride_3_max.png}
+        \caption{stride 3 (max)}
+    \endminipage
+\end{figure}
+
+
+
+On aperçoit alors l'apparition d'endroit à score élevé par rapport au reste.
+On passe ensuite ces résultats dans un "réseau complètement connecté" (fully connected network) 
+afin de pouvoir exploiter le contraste que ce réseau convolutionnel a mis en valeur.
+Si on applique le même traitement à une autre figure (ici un carré), on remarque que le résultat est beacoup moins contrasté : 
+
+\begin{figure}[h]
+    \center
+    \includegraphics[width=0.5\textwidth]{img/cnn_exemple/square/image_carre.png}
+    \caption{image à détecter}
+\end{figure}
+
+\newpage
+
+\begin{figure}[!htb]
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/filtre_1.png}
+        \caption{filtre 1}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/filtre_2.png}
+        \caption{filtre 2}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/filtre_3.png}
+        \caption{filtre 3}
+    \endminipage
+\end{figure}
+
+\newpage
+
+\begin{figure}[h]
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_1.png}
+        \caption{convolution filtre 1}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_2.png}
+        \caption{convolution filtre 2}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_3.png}
+        \caption{convolution filtre 3}
+    \endminipage
+\end{figure}
+
+\begin{figure}[h]
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_1.png}
+        \caption{activation relu 1}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_2.png}
+        \caption{activation relu 2}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_3.png}
+        \caption{activation relu 3}
+    \endminipage
+\end{figure}
+
+\begin{figure}[h]
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/stride_1_max.png}
+        \caption{stride 1 (max)}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/stride_2_max.png}
+        \caption{stride 2 (max)}
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/stride_3_max.png}
+        \caption{stride 3 (max)}
+    \endminipage
+\end{figure}
+
+En pratique, ces "filtres" sont appris comme des paramètres standarts d'un réseau de neurones.
+
+
