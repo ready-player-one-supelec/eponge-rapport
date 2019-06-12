@@ -24,7 +24,7 @@ Elle va ensuite lui appliquer M filtres de dimension (h', l', N) :
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=0.7\textwidth]{img/CNN_filtres.png}
+ \includegraphics[width=0.7\textwidth]{img/CNN_filtre.png}
  \caption{Principe des filtres de convolution}
 \end{figure}
 
@@ -73,7 +73,7 @@ Dans le principe, un CNN est comme un perceptron (à part pour la couche de pool
 
 Afin de mieux comprendre le principe du CNN, nous avons réalisé un exemple simple mais clair : 
 On cherche à reconnaître le motif d'une croix. 
-Pour cela, on prend les filtres $f_1$ (diagonale droite), $f_2$ (diagonale gauche) et $f_3$ (croix centrale).
+Pour cela, on prend les filtres $f_1$ (diagonale gauche), $f_2$ (diagonale droite) et $f_3$ (croix centrale).
 Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on obtient le résultat suivant:
 
 \begin{figure}[h]
@@ -115,6 +115,10 @@ Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on o
     \endminipage
 \end{figure}
 
+On remarque que les filtres en question réalisent bien l'action voulue : pour la première convolution, les positions des 
+diagonales gauches sont mises en valeur, pour la seconde convolution, les diagonales droites sont mises en valeurs, 
+et pour la troisième convolution, la croix centrale est mise en valeur.
+
 \begin{figure}[h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/activation_relu_1.png}
@@ -129,6 +133,11 @@ Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on o
         \caption{activation relu 3}
     \endminipage
 \end{figure}
+
+Après l'activation, on remarque peut de changement quand aux positions des motifs recherchés : 
+ces positions sont toujours bien présentes, tandis dans que le reste de l'image où les motifs ne se trouvent pas, 
+les valeurs sont "mises à niveau" pour bien insister sur le fait qu'elles n'apporteront pas d'informations pertinentes 
+lors du traitement par perceptron.
 
 \begin{figure}[h]
     \minipage{0.32\textwidth}
@@ -145,12 +154,14 @@ Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on o
     \endminipage
 \end{figure}
 
-
+On peut ainsi réduire les dimensions de l'image, tout en conservant une postion globales des caractéristiques intéressantes.
 
 On aperçoit alors l'apparition d'endroit à score élevé par rapport au reste.
 On passe ensuite ces résultats dans un "réseau complètement connecté" (fully connected network) 
 afin de pouvoir exploiter le contraste que ce réseau convolutionnel a mis en valeur.
 Si on applique le même traitement à une autre figure (ici un carré), on remarque que le résultat est beacoup moins contrasté : 
+
+\newpage
 
 \begin{figure}[h]
     \center
@@ -158,7 +169,6 @@ Si on applique le même traitement à une autre figure (ici un carré), on remar
     \caption{image à détecter}
 \end{figure}
 
-\newpage
 
 \begin{figure}[!htb]
     \minipage{0.32\textwidth}
@@ -175,7 +185,6 @@ Si on applique le même traitement à une autre figure (ici un carré), on remar
     \endminipage
 \end{figure}
 
-\newpage
 
 \begin{figure}[h]
     \minipage{0.32\textwidth}
@@ -192,6 +201,8 @@ Si on applique le même traitement à une autre figure (ici un carré), on remar
     \endminipage
 \end{figure}
 
+\newpage
+
 \begin{figure}[h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_1.png}
@@ -206,6 +217,7 @@ Si on applique le même traitement à une autre figure (ici un carré), on remar
         \caption{activation relu 3}
     \endminipage
 \end{figure}
+
 
 \begin{figure}[h]
     \minipage{0.32\textwidth}
@@ -222,6 +234,54 @@ Si on applique le même traitement à une autre figure (ici un carré), on remar
     \endminipage
 \end{figure}
 
-En pratique, ces "filtres" sont appris comme des paramètres standarts d'un réseau de neurones.
+On remarque que le résultat final est beaucoup plus flouté, et n'apporte pas d'informations pertinentes pour le réseau de 
+neurones arrivant derrière.
 
+Dans le cas présenté ci-dessus, nous avons choisi nous-même les paramètres des filtres appliqués pour la convolution,
+en se basant sur l'intuition.
+En pratique, ces "filtres" sont appris comme des paramètres standards d'un réseau de neurones.
 
+\subsection{Résultats}
+
+Nous avons comparé les performances du CNN en comparaison avec un réseau de neurones complètement connecté sur la base de 
+données MNIST.
+
+Les entraînements on été réalisé sur 60000 éléments, par minibatches de 32.
+
+Les réseaux considérés sont les suivants : 
+\begin{itemize}
+    \item Un perceptron de petite dimension (une couche cachée de taille 512)
+    \item Un perceptron de grande dimension (deux couches cachées, de taille 4096 et 64)
+    \item Un CNN (32 filtres de tailles 3$\times$3, 64 filtres de tailles 3$\times$3, un pooling max de taille 2$\times$ 2, une couche cachée de taille 128)
+\end{itemize}
+
+Le perceptron de grande dimension a été choisi de façon à avoir un nombre équivalent de paramètres avec le CNN.
+
+\newpage
+
+\begin{figure}[h]
+    \center 
+    \includegraphics{img/fc_vs_cnn.png}
+    \caption{Comparaisons des performances pour des perceptrons et pour un CNN en fonction du nombres d'epochs. 
+    CNN en vert, perceptron de petite dimension en bleu, perceptron de grande dimension en orange}
+\end{figure}
+
+On voit qu'au bout d'un passage complet sur les données (par minibatches de 32), le CNN obtient de meilleurs résultats que les 
+perceptrons. De plus, on remarque que le perceptron de grande dimensions converge plus lentement que le réseau de petite dimension.
+Le CNN sert alors à obtenir une convergence plus rapide (comme un perceptron de petite taille),
+et obtient de meilleurs résultats à termes car il n'est pas limité par son nombre de paramètre (comme un perceptron de grande dimension).
+
+La taille de filtres a une influence sur l'entraînement du CNN. En effet, les filtres ont pour bur de trouver des "motifs" dans l'image 
+et de le mettre en valeur par rapport au reste de l'image. Plus le motif est petit, plus il sera facile d'entraîner le filtre, mais 
+le motif alors trouvé ne sera pas forcement pertinent pour la classification. Inversement, plus le filtre est de grande dimension, plus 
+il pourra rechercher des motifs complexes, mais la convergence sera alors plus compliquée et pas aussi stable.
+
+\newpage
+
+\begin{figure}[h]
+    \center 
+    \includegraphics{img/comparaison_filtres.png}
+    \caption{Comparaisons des performances pour des perceptrons et pour un CNN en fonction du nombres d'epochs}
+\end{figure}
+
+En observant les résultats, on remarque que les filtres de 5$\times$5 ont un bon rapport performance/vitesse de convergence.
