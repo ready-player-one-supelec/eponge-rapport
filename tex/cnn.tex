@@ -4,11 +4,11 @@
 
 \subsection{Le modèle du CNN}
 
-Bien qu'étant un modèle efficace, le perceptron reste cependant coûteux en calcul : il faut réaliser les opérations matricielles sur tous les neurones de chaque couche.
-Les réseaux neuronaux convolutifs (convolutional neural network (CNN) en anglais) permettent de réduire le nombre de calculs réalisés. Ils se basent sur la structure de données à classifier.
+Bien qu'étant un modèle efficace, le perceptron reste coûteux en calcul : il faut réaliser les opérations matricielles sur tous les neurones de chaque couche.
+Les réseaux neuronaux convolutifs (en anglais Convolutional Neural Network, CNN) permettent de réduire le nombre de calculs réalisés. Ils se basent sur la structure des données à classifier.
 Les images sont un bon exemple de structure permettant de diminuer le nombre de calculs à réaliser. En effet, une image peut être caractérisée par les motifs locaux qui la constituent. Ces motifs sont en général localisés. Il n'est donc pas nécessaire de chercher un lien entre deux points éloignés d'une image.
 
-Les CNN (Convolutionnal Neural Networks) sont entraînés à chercher des motifs sur une partie restreinte de l'image.
+Les CNN sont entraînés à chercher des motifs sur une partie restreinte de l'image.
 Le principe est le même que celui des perceptrons, sauf qu'au lieu d'appliquer un réseau entièrement connectés sur toutes les couches, on va réaliser une convolution par différents filtres sur l'image. Chaque filtre aura pour but de détecter un motif dans l'image.
 
 Une couche d'un CNN est typiquement constituée de 3 éléments : 
@@ -21,8 +21,7 @@ Une couche d'un CNN est typiquement constituée de 3 éléments :
 
 
 La couche de convolution prend en entrée une image de dimension (H, L, N) avec H la hauteur de l'image, L sa largeur et N le nombre de channels (pour une image RGB, on aura N = 3). 
-On applique en parallèle sur cette images M filtres de dimension identique (h, l, n) avec n = N.
-La sortie de chaque filtre correspondra à un des M channels de l'image de sortie.
+On applique en parallèle sur cette image M filtres qui donneront M images de dimension deux. Ces filtres sont de même dimension (h, l, n) avec $h<H$, $l<N$ et $n=N$. On obtient donc M images de même dimension en sortie. Ces M images peuvent être vues comme une image à trois dimensions avec M channels. On peut alors répété le processus en considérant cette nouvelle image comme une entrée pour les M' filtres suivants.
 
 \begin{figure}[h]
  \centering
@@ -49,35 +48,34 @@ $$
 reLU(x) = \left\{
     \begin{array}{ll}
         x & \mbox{si } x > 0 \\
-        0
+        0 & \mbox{sinon}
     \end{array}
 \right.
 $$
 
 \newpage 
 
-Cette partie sert à ramener le résultat dans les réels positifs pour éviter une divergence au niveau des calculs, et pour augmenter l'écart relatif entre un bon score et un mauvais score : un score de 0 et en score de -1 obtenu lors de la convolution sont alors considéré comme tout aussi mauvais.
+Cette fonction sert à ramener le résultat dans les réels positifs pour éviter une divergence au niveau des calculs, et pour augmenter l'écart relatif entre un bon score et un mauvais score : un score de 0 et en score de -1 obtenu lors de la convolution sont alors considéré comme tout aussi mauvais.
 
 Enfin, on applique une couche de pooling, qui sert à réduire le nombre de données obtenues en sortie des 2 couches précédentes.
 Le pooling cherche à "résumer" les scores d'une partie de l'image, en donnant un score qui dépend des pixels de cette partie.
-Il existe plusieurs méthode de pooling, comme par exemple le pooling par moyenne, ou le pooling par maximum, qui est plus utilisé en pratique :
-pour une image J, on choisi un paramètre S (S < L, H), et on otient la sortie K telle que :
+Il existe plusieurs méthode de pooling, comme par exemple le pooling par moyenne ou le pooling par maximum. C'est ce dernier qui est le plus utilisé en pratique :
+pour une image J, on choisi un paramètre ``stride'' S (S < L, H) et on prend la sortie K telle que :
 
 \begin{equation}
     K(x, y) = max_{i,j \in [0, S-1] ^2 } { J(x \times S + i , y \times S + j ) }
 \end{equation}
 
 
-On peut ainsi enchainer les couches de convolution jusqu'à une couche finale, qui sera ensuite reliée à un réseau complètement connecté (qui n'est rien d'autre qu'un simple perceptron), pour pouvoir exploiter les résultats obtenus jusque là.
-Les poids à optimiser sont alors les poids des matrices "filtres", et les poids de la couche entièrement connectée.
-Dans le principe, un CNN est comme un perceptron (à part pour la couche de pooling, on pourrait construire un CNN avec un perceptron), à l'exception que certains poids sont liés lors de l'apprentissage. 
+On enchaîne ainsi les couches de convolution jusqu'à une couche finale, qui sera reliée à un réseau complètement connecté (qui n'est rien d'autre qu'un simple perceptron).
+Les poids à optimiser sont alors les poids des matrices qui définissent les filtres et les poids de la couche entièrement connectée.
+Dans le principe, un CNN est comme un perceptron (à part pour la couche de pooling, on pourrait construire un CNN avec un perceptron), à l'exception que seulement certains poids sont liés lors de l'apprentissage.
 
 \subsection{Application pratique}
 
-Afin de mieux comprendre le principe du CNN, nous avons réalisé un exemple simple mais clair : 
-On cherche à reconnaître le motif d'une croix. 
+Afin de mieux comprendre le principe du CNN, nous avons réalisé un exemple simple mais clair : on cherche à reconnaître le motif d'une croix.
 Pour cela, on prend les filtres $f_1$ (diagonale gauche), $f_2$ (diagonale droite) et $f_3$ (croix centrale).
-Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on obtient le résultat suivant:
+Alors en appliquant la convolution, l'activation reLU et un stride à S = 2, on obtient le résultat suivant (figure \ref{fig:convolution_filtre}) :
 
 \begin{figure}[h]
     \center
@@ -125,6 +123,7 @@ Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on o
     \endminipage
     \center 
     \caption{Résultats de la convolution de l'image par les différents filtres}
+    \label{fig:convolution_filtre}
 \end{figure}
 
 On remarque que les filtres en question réalisent bien l'action voulue : pour la première convolution, les positions des 
@@ -176,12 +175,14 @@ On applique ensuite une étape de pooling.
     \caption{Pooling max des différents channels avec S = 2}
 \end{figure}
 
-On peut ainsi réduire les dimensions de l'image, tout en conservant une postion globales des caractéristiques intéressantes.
+On peut ainsi réduire les dimensions de l'image, tout en conservant une position globale des caractéristiques intéressantes.
 
-On aperçoit alors l'apparition d'endroit à score élevé par rapport au reste.
+On aperçoit alors l'apparition de zones à scores élevés par rapport au reste.
 On passe ensuite ces résultats dans un "réseau complètement connecté" (fully connected network) 
-afin de pouvoir exploiter le contraste que ce réseau convolutionnel a mis en valeur.
-Si on applique le même traitement à une autre figure (ici un carré), on remarque que le résultat est beacoup moins contrasté : 
+afin de pouvoir exploiter le contraste que ce réseau à convolution a mis en valeur.
+
+
+Si on applique le même traitement à une autre figure (ici un carré), on remarque que le résultat est beaucoup moins contrasté :
 
 \begin{figure}[h]
     \center
@@ -278,16 +279,15 @@ neurones arrivant derrière.
 
 Dans le cas présenté ci-dessus, nous avons choisi nous-même les paramètres des filtres appliqués pour la convolution,
 en se basant sur l'intuition.
-En pratique, ces "filtres" sont appris comme des paramètres standards d'un réseau de neurones.
+En pratique, les poids des matrices composants les filtres sont appris comme des paramètres standards d'un réseau de neurones.
 
 \newpage
 
 \subsection{Résultats}
 
-Nous avons comparé les performances du CNN en comparaison avec un réseau de neurones complètement connecté sur la base de 
-données MNIST.
+Nous avons comparé les performances du CNN avec un réseau de neurones complètement connecté sur la base de données MNIST.
 
-Les entraînements on été réalisé sur 60000 éléments, par minibatches de 32.
+Les entraînements ont été réalisé sur 60000 éléments, par minibatches de 32.
 
 Les réseaux considérés sont les suivants : 
 \begin{itemize}
@@ -307,21 +307,18 @@ Le perceptron de grande dimension a été choisi de façon à avoir un nombre é
 \end{figure}
 
 On voit qu'au bout d'un passage complet sur les données (par minibatches de 32), le CNN obtient de meilleurs résultats que les 
-perceptrons. De plus, on remarque que le perceptron de grande dimensions converge plus lentement que le réseau de petite dimension.
+perceptrons. De plus, on remarque que le perceptron de grande dimension converge plus lentement que le réseau de petite dimension.
 Le CNN sert alors à obtenir une convergence plus rapide (comme un perceptron de petite taille),
-et obtient de meilleurs résultats à termes car il n'est pas limité par son nombre de paramètre (comme un perceptron de grande dimension).
+et obtient de meilleurs résultats à termes car il n'est pas limité par son nombre de paramètres (comme un perceptron de grande dimension).
 
 \newpage
-La taille de filtres a également une influence sur l'entraînement du CNN. En effet, les filtres ont pour bur de trouver des "motifs" dans l'image 
-et de le mettre en valeur par rapport au reste de l'image. Plus le motif est petit, plus il sera facile d'entraîner le filtre, mais 
-le motif alors trouvé ne sera pas forcement pertinent pour la classification. Inversement, plus le filtre est de grande dimension, plus 
-il pourra rechercher des motifs complexes, mais la convergence sera alors plus compliquée et pas aussi stable.
+La taille de filtres a également une influence sur l'entraînement du CNN. En effet, les filtres ont pour but de trouver des "motifs" dans l'image et de le mettre en valeur par rapport au reste de l'image. Plus le motif est petit, plus il sera facile d'entraîner le filtre, mais le motif alors trouvé ne sera pas forcement pertinent pour la classification. Inversement, plus le filtre est de grande dimension, plus il pourra rechercher des motifs complexes, mais la convergence sera alors plus compliquée et pas aussi stable.
 
 
 \begin{figure}[h]
     \center 
     \includegraphics[width=0.6\textwidth]{img/comparaison_filtres.png}
-    \caption{Comparaisons des performances pour des perceptrons et pour un CNN en fonction du nombres d'epochs}
+    \caption{Comparaison des performances pour des perceptrons et pour un CNN en fonction du nombres d'epochs}
 \end{figure}
 
 En observant les résultats, on remarque que les filtres de 5$\times$5 ont un bon rapport performance/vitesse de convergence.
@@ -343,7 +340,7 @@ Cependant, en plus de réduire grandement le temps nécessaire pour programmer u
 \end{figure}
 
 
-L'exploitation des résultats a posteriori s'avère plus compliquée. L'interface de TensorFlow offrant des fonctionnalités plutôt limitées, l'utilisation d'un post-traitement est indispensable. Il est par exemple impossible de réaliser des moyennes sur plusieurs runs. Après quelques recherches, nous avons réussi a extraire le taux de réussite en fonction du nombre d'apprentissages à partir des données brutes générées par TensorFlow. L'extraction du taux de réussite en fonction du temps de calcul s'est avéré plus compliquée. Nous remercions Julien \textsc{Gérard} qui nous a beaucoup aidé sur ce point. Il nous a en effet indiqué avoir trouvé dans le code source de TensorFlow la fonction $wall\_time$ qui permet d'extraire le temps écoulé depuis le lancement des calculs pour chaque relevé du taux de réussite.
+L'exploitation des résultats a posteriori s'avère plus compliquée. L'interface de TensorFlow offrant des fonctionnalités plutôt limitées, l'utilisation d'un post-traitement est indispensable. Il est par exemple impossible de réaliser des moyennes sur plusieurs runs. Après quelques recherches, nous avons réussi a extraire le taux de réussite en fonction du nombre d'apprentissages à partir des données brutes générées par TensorFlow. L'extraction du taux de réussite en fonction du temps de calcul s'est avérée plus compliquée. Nous remercions Julien \textsc{Gérard} qui nous a beaucoup aidé sur ce point. Il nous a en effet indiqué avoir trouvé dans le code source de TensorFlow la fonction $wall\_time$ qui permet d'extraire le temps écoulé depuis le lancement des calculs pour chaque relevé du taux de réussite.
 
 Nous avons testé TensorFlow avec un CNN pour MNIST. Grâce au post-traitement, nous avons pu tracer une moyenne du taux de réussite en fonction du nombre d'apprentissages réalisées (figure \ref{fig:tb_post_traitement}).
 
