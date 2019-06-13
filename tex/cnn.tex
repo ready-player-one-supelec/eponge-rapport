@@ -45,13 +45,14 @@ On devrait avoir J(x,y) < 0 si la partie de l'image I en (x,y) est très différ
 On applique ensuite la couche d'activation. On utilise une fonction non-linéaire comme dans le cas du perceptron. 
 Généralement, la fonction utilisée pour les couches de convolution intermédiaires est la fonction reLU :
 
-\begin{equation}
-    reLU (x) = x
-\end{equation} si x > 0
-\begin{equation}
-    reLU (x) = 0 
-\end{equation} sinon
-
+$$
+reLU(x) = \left\{
+    \begin{array}{ll}
+        x & \mbox{si } x > 0 \\
+        0
+    \end{array}
+\right.
+$$
 
 \newpage 
 
@@ -81,79 +82,98 @@ Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on o
 \begin{figure}[h]
     \center
     \includegraphics[width=0.5\textwidth]{img/cnn_exemple/cross/image_croix.png}
-    \caption{image à détecter}
+    \caption{Image à détecter}
 \end{figure}
 
-
-\begin{figure}[!htb]
+\begin{figure}[h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/filtre_1.png}
-        \caption{filtre 1}
+        \center
+        (a) Filtre 1
     \endminipage\hfill
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/filtre_2.png}
-        \caption{filtre 2}
+        \center
+        (b) Filtre 2
     \endminipage\hfill
     \minipage{0.32\textwidth}%
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/filtre_3.png}
-        \caption{filtre 3}
+        \center
+        (c) Filtre 3
     \endminipage
+    \caption{Choix des filtres pour la convolution}
 \end{figure}
+
 
 \newpage
 
 \begin{figure}[h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/convolution_filtre_1.png}
-        \caption{convolution filtre 1}
+        \center
+        (a) Convolution par le filtre 1
     \endminipage\hfill
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/convolution_filtre_2.png}
-        \caption{convolution filtre 2}
+        \center
+        (b) Convolution par le filtre 2
     \endminipage\hfill
     \minipage{0.32\textwidth}%
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/convolution_filtre_3.png}
-        \caption{convolution filtre 3}
+        \center
+        (c) Convolution par le filtre 3
     \endminipage
+    \center 
+    \caption{Résultats de la convolution de l'image par les différents filtres}
 \end{figure}
 
 On remarque que les filtres en question réalisent bien l'action voulue : pour la première convolution, les positions des 
 diagonales gauches sont mises en valeur, pour la seconde convolution, les diagonales droites sont mises en valeurs, 
-et pour la troisième convolution, la croix centrale est mise en valeur.
-
+et pour la troisième convolution, la croix centrale est mise en valeur. On obtient ainsi 3 channels.
 \begin{figure}[h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/activation_relu_1.png}
-        \caption{activation relu 1}
+        \center
+        (a) Activation reLU pour le channel 1
     \endminipage\hfill
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/activation_relu_2.png}
-        \caption{activation relu 2}
+        \center
+        (b) Activation reLU pour le channel 2
     \endminipage\hfill
     \minipage{0.32\textwidth}%
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/activation_relu_3.png}
-        \caption{activation relu 3}
-    \endminipage
+        \center
+        (c) Activation reLU pour le channel 3
+    \endminipage 
+    \caption{Activation par la fonction reLU des différents channels.}
 \end{figure}
 
-Après l'activation, on remarque peut de changement quand aux positions des motifs recherchés : 
+Après l'activation, on remarque peu de changement quand aux positions des motifs recherchés : 
 ces positions sont toujours bien présentes, tandis dans que le reste de l'image où les motifs ne se trouvent pas, 
 les valeurs sont "mises à niveau" pour bien insister sur le fait qu'elles n'apporteront pas d'informations pertinentes 
 lors du traitement par perceptron.
+On applique ensuite une étape de pooling.
+
+\newpage
 
 \begin{figure}[h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/stride_1_max.png}
-        \caption{stride 1 (max)}
+        \center 
+        (a) Pooling du channel 1
     \endminipage\hfill
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/stride_2_max.png}
-        \caption{stride 2 (max)}
+        \center 
+        (b) Pooling du channel 2
     \endminipage\hfill
     \minipage{0.32\textwidth}%
         \includegraphics[width=\textwidth]{img/cnn_exemple/cross/stride_3_max.png}
-        \caption{stride 3 (max)}
+        \center
+        (c) Pooling du channel 3
     \endminipage
+    \caption{Pooling max des différents channels avec S = 2}
 \end{figure}
 
 On peut ainsi réduire les dimensions de l'image, tout en conservant une postion globales des caractéristiques intéressantes.
@@ -163,85 +183,104 @@ On passe ensuite ces résultats dans un "réseau complètement connecté" (fully
 afin de pouvoir exploiter le contraste que ce réseau convolutionnel a mis en valeur.
 Si on applique le même traitement à une autre figure (ici un carré), on remarque que le résultat est beacoup moins contrasté : 
 
-\newpage
-
 \begin{figure}[h]
     \center
     \includegraphics[width=0.5\textwidth]{img/cnn_exemple/square/image_carre.png}
-    \caption{image à détecter}
+    \caption{Image à éviter}
 \end{figure}
 
 
 \begin{figure}[!htb]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/filtre_1.png}
-        \caption{filtre 1}
+        \center 
+        (a) Filtre 1
     \endminipage\hfill
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/filtre_2.png}
-        \caption{filtre 2}
+        \center 
+        (b) Filtre 2
     \endminipage\hfill
     \minipage{0.32\textwidth}%
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/filtre_3.png}
-        \caption{filtre 3}
+        (c) Filtre 3
     \endminipage
-\end{figure}
-
-
-\begin{figure}[h]
-    \minipage{0.32\textwidth}
-        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_1.png}
-        \caption{convolution filtre 1}
-    \endminipage\hfill
-    \minipage{0.32\textwidth}
-        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_2.png}
-        \caption{convolution filtre 2}
-    \endminipage\hfill
-    \minipage{0.32\textwidth}%
-        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_3.png}
-        \caption{convolution filtre 3}
-    \endminipage
+    \caption{Choix des filtres pour la convolution}
 \end{figure}
 
 \newpage
 
 \begin{figure}[h]
     \minipage{0.32\textwidth}
-        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_1.png}
-        \caption{activation relu 1}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_1.png}
+        \center 
+        (a) Convolution du carré par le filtre 1
     \endminipage\hfill
     \minipage{0.32\textwidth}
-        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_2.png}
-        \caption{activation relu 2}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_2.png}
+        \center 
+        (b) Convolution du carré par le filtre 2
     \endminipage\hfill
     \minipage{0.32\textwidth}%
-        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_3.png}
-        \caption{activation relu 3}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_3.png}
+        \center 
+        (c) Convolution du carré par le filtre 
     \endminipage
+    \caption{Résultats de la convolution de l'image par les différents filtres}
 \end{figure}
 
 
 \begin{figure}[h]
     \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_1.png}
+        \center 
+        (a) Activation reLU pour le channel 1
+    \endminipage\hfill
+    \minipage{0.32\textwidth}
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_2.png}
+        \center 
+        (b) Activation reLU pour le channel 2
+    \endminipage\hfill
+    \minipage{0.32\textwidth}%
+        \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_3.png}
+        \center 
+        (c) Activation reLU pour le channel 3
+    \endminipage
+    \caption{Activation par la fonction reLU des différents channels.}
+\end{figure}
+
+\newpage
+
+\begin{figure}[h]
+    \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/stride_1_max.png}
-        \caption{stride 1 (max)}
+        \center 
+        (a) Pooling du channel 1
     \endminipage\hfill
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/stride_2_max.png}
-        \caption{stride 2 (max)}
+        \center 
+        (b) Pooling du channel 2
     \endminipage\hfill
     \minipage{0.32\textwidth}%
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/stride_3_max.png}
-        \caption{stride 3 (max)}
+        \center 
+        (c) Pooling du channel 3
     \endminipage
+    \caption{Pooling max des différents channels avec S = 2} 
 \end{figure}
+
+
 
 On remarque que le résultat final est beaucoup plus flouté, et n'apporte pas d'informations pertinentes pour le réseau de 
 neurones arrivant derrière.
 
+
 Dans le cas présenté ci-dessus, nous avons choisi nous-même les paramètres des filtres appliqués pour la convolution,
 en se basant sur l'intuition.
 En pratique, ces "filtres" sont appris comme des paramètres standards d'un réseau de neurones.
+
+\newpage
 
 \subsection{Résultats}
 
@@ -259,11 +298,10 @@ Les réseaux considérés sont les suivants :
 
 Le perceptron de grande dimension a été choisi de façon à avoir un nombre équivalent de paramètres avec le CNN.
 
-\newpage
 
 \begin{figure}[h]
     \center 
-    \includegraphics{img/fc_vs_cnn.png}
+    \includegraphics[width=0.6\textwidth]{img/fc_vs_cnn.png}
     \caption{Comparaisons des performances pour des perceptrons et pour un CNN en fonction du nombres d'epochs. 
     CNN en vert, perceptron de petite dimension en bleu, perceptron de grande dimension en orange}
 \end{figure}
@@ -273,22 +311,21 @@ perceptrons. De plus, on remarque que le perceptron de grande dimensions converg
 Le CNN sert alors à obtenir une convergence plus rapide (comme un perceptron de petite taille),
 et obtient de meilleurs résultats à termes car il n'est pas limité par son nombre de paramètre (comme un perceptron de grande dimension).
 
-La taille de filtres a une influence sur l'entraînement du CNN. En effet, les filtres ont pour bur de trouver des "motifs" dans l'image 
+\newpage
+La taille de filtres a également une influence sur l'entraînement du CNN. En effet, les filtres ont pour bur de trouver des "motifs" dans l'image 
 et de le mettre en valeur par rapport au reste de l'image. Plus le motif est petit, plus il sera facile d'entraîner le filtre, mais 
 le motif alors trouvé ne sera pas forcement pertinent pour la classification. Inversement, plus le filtre est de grande dimension, plus 
 il pourra rechercher des motifs complexes, mais la convergence sera alors plus compliquée et pas aussi stable.
 
-\newpage
 
 \begin{figure}[h]
     \center 
-    \includegraphics{img/comparaison_filtres.png}
+    \includegraphics[width=0.6\textwidth]{img/comparaison_filtres.png}
     \caption{Comparaisons des performances pour des perceptrons et pour un CNN en fonction du nombres d'epochs}
 \end{figure}
 
 En observant les résultats, on remarque que les filtres de 5$\times$5 ont un bon rapport performance/vitesse de convergence.
 
-\newpage
 
 \subsection{Utilisation de TensorFlow}
 
