@@ -79,7 +79,6 @@ Pour cela, on prend les filtres $f_1$ (diagonale gauche), $f_2$ (diagonale droit
 Alors en applicant la convolution, l'activation reLU et un stride à S = 2, on obtient le résultat suivant:
 
 \begin{figure}[h]
-<<<<<<< HEAD
     \center
     \includegraphics[width=0.5\textwidth]{img/cnn_exemple/cross/image_croix.png}
     \caption{image à détecter}
@@ -297,15 +296,26 @@ TensorFlow a été utilisé pour coder le CNN. Un codage à la main du CNN aurai
 
 TensorFlow est facile d'installation sous Linux et sa prise en main est plutôt aisée. Il existe de nombreux tutoriels pour construire des CNN. Cependant, le développement de TensorFlow évolue rapidement et la documentation n'est pas forcément très complète. L'implémentation de fonctionnalités précises est donc parfois difficile. Il est nécessaire de faire de longues recherches pour trouver les fonctions désirées.
 
-Cependant, en plus de réduire grandement le temps nécessaire pour programmer un CNN efficace, TensorFlow offre une interface graphique très utile pour suivre en direct la convergence du CNN. On peut ainsi détecter rapidement le mauvais paramétrage de notre CNN et le modifier sans attendre d'avoir mis à jour notre CNN sur les $n$ batches prévus à l'avance.
+Cependant, en plus de réduire grandement le temps nécessaire pour programmer un CNN efficace, TensorFlow offre une interface graphique (figure \ref{fig:interface_TF}) très utile pour suivre en direct la convergence du CNN. On peut ainsi détecter rapidement le mauvais paramétrage du CNN et le modifier sans attendre d'avoir mis à jour le CNN sur les $n$ batches prévus à l'avance.
 
-%\begin{figure}[h]
-% \centering
-% \includegraphics[width=0.7\textwidth]{img/interface_TF.png}
-% \caption{Image à reconnaître}
-%\end{figure}
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.7\textwidth]{img/interface_TF.png}
+ \caption{TensorBoard avec visualisation en direct des performances du réseau de neurones}
+ \label{fig:interface_TF}
+\end{figure}
 
-L'exploitation des résultats a posteriori s'est avérée plus compliquée. L'interface de TensorFlow offrant des fonctionnalités plutôt limitées, l'utilisation d'un post-traitement s'est avéré indispensable. Il est par exemple impossible de réaliser des moyennes sur plusieurs runs. Après quelques recherches, nous avons réussi a extraire le taux de réussite en fonction du nombre d'apprentissages à partir des données brutes générées par TensorFlow. L'extraction du taux de réussite en fonction du temps de calcul s'est avéré plus compliquée. Nous remercions Julien \textsc{Gérard} qui nous a beaucoup aidé sur ce point. Il nous a en effet indiqué avoir trouvé dans le code source de TensorFlow la fonction $wall\_time$ qui permet d'extraire le temps écoulé depuis le lancement des calculs pour chaque relevé du taux de réussite.
 
-Le post-traitement nous a permis de travailler sur l'évolution du taux de réussite en fonction du nombre d'apprentissage et en fonction du temps.
+L'exploitation des résultats a posteriori s'avère plus compliquée. L'interface de TensorFlow offrant des fonctionnalités plutôt limitées, l'utilisation d'un post-traitement est indispensable. Il est par exemple impossible de réaliser des moyennes sur plusieurs runs. Après quelques recherches, nous avons réussi a extraire le taux de réussite en fonction du nombre d'apprentissages à partir des données brutes générées par TensorFlow. L'extraction du taux de réussite en fonction du temps de calcul s'est avéré plus compliquée. Nous remercions Julien \textsc{Gérard} qui nous a beaucoup aidé sur ce point. Il nous a en effet indiqué avoir trouvé dans le code source de TensorFlow la fonction $wall\_time$ qui permet d'extraire le temps écoulé depuis le lancement des calculs pour chaque relevé du taux de réussite.
 
+Nous avons testé TensorFlow avec un CNN pour MNIST. Grâce au post-traitement, nous avons pu tracer une moyenne du taux de réussite en fonction du nombre d'apprentissages réalisées (figure \ref{fig:tb_post_traitement}).
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.7\textwidth]{img/tb_post_traitement.png}
+ \caption{Taux de réussite en fonction du nombre d'apprentissages pour notre CNN sous TensorFlow}
+ \label{fig:tb_post_traitement}
+\end{figure}
+
+Le post-traitement pourraient être utilisé pour déterminer les effets de la taille des batchs ou encore du dropout. Se pose alors la question de la nature de l’abscisse. Est-il préférable de d'utiliser le nombre d'apprentissages ou le temps ?
+Nous avons choisi de ne pas traiter en profondeur ces questions pour nous concentrer sur le c\oe ur de notre sujet, le Q Learning. Cette question reste cependant une piste qui pourrait être explorée dans un futur projet.
