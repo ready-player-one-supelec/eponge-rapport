@@ -375,7 +375,7 @@ nous avons réalisé cet apprentissage 280 fois (280 runs). Le taux d'apprentiss
 D'après la figure \ref{fig:MNIST}, le taux d'erreur sur l'échantillon d'apprentissage est toujours inférieur à celui sur l'échantillon de test. Cela est normal car l'apprentissage du réseau consiste à coller au mieux aux données. On cherche à minimiser l'erreur sur l'échantillon de test pour éviter le sur-apprentissage, qui consiste à apprendre par c\oe ur les exemples au lieu d'apprendre les propriétés généralisables. Sur MNIST, cela a relativement peu d'importance car la base de données contient beaucoup d'exemples variés ce qui nous protège de la sur-interprétation. On converge assez rapidement (une dizaine d'itérations) vers 94\% de réussite, ce qui est
 un résultat très satisfaisant de notre perceptron. Un réseau avec 32 neurones sur la première couche cachée change assez peu le résultat, si ce n'est que l'on converge vers une valeur légèrement meilleure : 96\% de réussite sur l'échantillon de test.
 
-Afin d'évaluer l'influence du taux d'apprentissage, nous réalisons l'entraînement sur 19 taux d'apprentissage différents (régulièrement placés de 0,001 à 0,01). Chaque apprentissage étant constitué de 50 itérations et étant moyenné sur 140 réalisations. Nous obtenons alors la figure \ref{fig:MNIST_difLR} avec un intervalle de confiance à 95\%.
+Afin d'évaluer l'influence du taux d'apprentissage, nous réalisons l'entraînement sur 19 taux d'apprentissage différents (régulièrement placés de 0,001 à 0,01). Chaque apprentissage étant constitué de 50 itérations et étant moyenné sur 140 réalisations. Nous obtenons alors la figure \ref{fig:MNIST_difLR} avec un intervalle de confiance à 95\% (notamment visibles sur la dernière case).
 
 \begin{figure}[ht]
  \centering
