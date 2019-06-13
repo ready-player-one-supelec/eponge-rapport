@@ -3,9 +3,7 @@
 
 \subsection{Modèle du perceptron}
 
-Le perceptron est un des algorithmes de base du machine learning. Son invention remonte aux années 70, mais l'algorithme a été abandonné en 
-raison de son exécution trop coûteuse pour les performances des ordinateurs de l’époque. Ce n’est que récemment qu’il a pu resurgir, grâce 
-à l’amélioration des processeurs et des cartes graphiques particulièrement adaptées aux calculs matriciels.
+Le perceptron est un des algorithmes de base du machine learning. Son invention remonte aux années 70, mais l'algorithme a été abandonné en raison de son exécution trop coûteuse pour les performances des ordinateurs de l’époque. Ce n’est que récemment qu’il a pu resurgir, grâce à l’amélioration des processeurs et des cartes graphiques particulièrement adaptées aux calculs matriciels.
 
 Le modèle du neurone est le suivant : 
 
@@ -26,9 +24,9 @@ Le neurone est composé de différents élements :
  \item La sortie $a$
 \end{itemize}
 
-Ainsi, on associe les entrées et les poids par un produit scalaire, pour en sortir une valeur qui caractérise l'entrée, le niveau d'activation.
-On ajoute un biais pour régler l'importance accordée au niveau d'activation. On peut utiliser une notation matricielle pour simplifier les calculs.
-On pose alors $\mathbf{w_1} = 
+On associe les entrées et les poids par un produit scalaire pour obtenir le niveau d'activation. Cette valeur caractérise l'entrée.
+On ajoute un biais pour régler l'importance accordée à ce niveau d'activation. On peut utiliser une notation matricielle pour simplifier les calculs.
+On pose $\mathbf{w_1} =
 \begin{pmatrix}
   w_{1,1} & w_{1,2} & \ldots & w_{1,R}\\
 \end{pmatrix}^T $ 
@@ -37,26 +35,21 @@ $ \mathbf{p} =
 \begin{pmatrix}
  p_1 & p_2 & \ldots & p_R \\
 \end{pmatrix}^T $, 
-les vecteurs colonnes représentant respectivement les entrées et les poids du neurone. On a alors :
+les vecteurs colonnes représentant respectivement les entrées et les poids du neurone. On obtient :
 
 \begin{equation} 
 n = \sum_{i=1}^{R} w_{1,i} p_i - b = \mathbf{w_1}^T \mathbf{p} - b
 \end{equation}
 
-On cherche alors à discriminer les différentes possibilités pour le niveau d'activation. C'est le rôle de la fonction d'activation. Si l'on souhaite séparer
-le cas d'un $n$ supérieur ou non à un seuil donné, alors on utilise la fonction seuil $ f : x \mapsto \mathds{1}_{n \geq 0} $. On remarquera qu'il n'est 
-pas nécessaire de changer le seuil de la fonction car c'est le rôle incarné par le biais. Néanmoins, d'autres fonctions peuvent être utilisées à la place
-du seuil telles que la sigmoïde ($\sigma : x \mapsto \frac{1}{1+e^{-x}}$) ou encore la tangente hyperbolique. 
-On préfère généralement des fonctions différentiables pour permettre au réseau d'apprendre sur les données fournies.
+On cherche alors à discriminer les différentes valeurs que peut prendre le niveau d'activation. C'est le rôle de la fonction d'activation. Par exemple, si l'on souhaite séparer les cas où $n$ est supérieur ou inférieur à un seuil donné, on utilise la fonction seuil $ f : x \mapsto \mathds{1}_{n \geq 0} $. On remarquera qu'il n'est pas nécessaire de changer le seuil de la fonction car c'est le rôle incarné par le biais. Néanmoins, d'autres fonctions peuvent être utilisées à la place du seuil telles que la sigmoïde ($\sigma : x \mapsto \frac{1}{1+e^{-x}}$) ou encore la tangente hyperbolique.
+On préfère généralement utiliser des fonctions différentiables. On verra en effet dans la suite que ces fonctions permettent au réseau d'apprendre sur les données fournies.
 
-On a alors : 
+Finalement on obtient :
 \begin{equation}
  a = f\left(\mathbf{w_1}^T \mathbf{p} - b\right)
 \end{equation}
 
-Si on revient au cas de la fonction seuil, on remarquera qu'elle permet de séparer le plan en deux espaces : l'un où la sortie est nulle, l'autre où
-la sortie est égale à 1. Puisque le niveau d'activation résulte d'un produit matriciel, cela définit l'équation d'un hyperplan, la séparation
-est donc linéaire.
+Si on revient au cas de la fonction seuil, on remarquera qu'elle permet de séparer le plan en deux espaces : l'un où la sortie est nulle, l'autre où la sortie vaut 1. Puisque le niveau d'activation résulte d'un produit matriciel, cela définit l'équation d'un hyperplan. La séparation est donc linéaire.
 
 \begin{figure}[h]
  \centering
@@ -64,13 +57,10 @@ est donc linéaire.
  \caption{Domaine de séparation du neurone}
 \end{figure}
 
-Ce neurone n'est capable de traiter que les données qui peuvent être séparées linéairement (par un hyperplan). Pour des jeux de données plus complexes,
-on a parfois besoin de définir des ensembles plus élaborés.
+Ce neurone n'est capable de traiter que les données qui peuvent être séparées linéairement (par un hyperplan). Pour des jeux de données plus complexes, on a parfois besoin de définir des ensembles plus élaborés.
 Pour cela on utilise plusieurs neurones sur une même couche. Tous les neurones reçoivent la même entrée, mais chacun possède ses propres poids et son propre biais.
 Ainsi, chaque neurone de la couche définit un hyperplan de séparation des données. On peut alors à nouveau représenter le modèle de manière matricielle.
-Un vecteur de sortie définit les différentes valeurs des neurones, une matrice de poids définit les poids pour chaque neurone (à chaque neurone est associée
-une ligne de la matrice). De la même manière, on retrouve un vecteur de biais (qui sont essentiellement des poids dont l'entrée est constante à $-1$), et 
-un vecteur de niveaux d'activation. Finalement, on retrouve ce modèle : 
+Un vecteur de sortie définit les différentes valeurs des neurones, une matrice de poids définit les poids pour chaque neurone (à chaque neurone est associée une ligne de la matrice). De la même manière, on retrouve un vecteur de biais (qui peuvent être vus comme des poids dont l'entrée est constante à $-1$), et un vecteur de niveaux d'activation. Finalement, on retrouve le modèle suivant :
 
 \begin{figure}[h]
  \centering
@@ -78,10 +68,7 @@ un vecteur de niveaux d'activation. Finalement, on retrouve ce modèle :
  \caption[Modèle d'une couche de neurones]{Représentation matricielle d'une couche de S neurones recevant R entrées}
 \end{figure}
 
-Pour pouvoir définir des ensembles de solutions plus complexes, on ajoute d'autres couches de neurones. Chaque couche prend en entrée le vecteur de sortie
-de la couche qui la précède. Cela permet donc de traiter les différents hyperplans de la première couche, et de les lier (par exemple pour en faire
-l'intersection). Ainsi, avec deux couches, le réseau peut représenter n'importe quel ensemble convexe. Une troisième couche permet de représenter des
-ensembles non convexes.
+Pour pouvoir définir des ensembles de solutions plus complexes, on ajoute d'autres couches de neurones. Chaque couche prend en entrée le vecteur de sortie de la couche qui la précède. Cela permet donc de traiter les différents hyperplans de la première couche, et de les lier (par exemple pour en faire l'intersection). Ainsi, avec deux couches, le réseau peut représenter n'importe quel ensemble convexe. Une troisième couche permet de représenter des ensembles non convexes.
 
 \begin{figure}[h]
  \centering
@@ -92,37 +79,30 @@ ensembles non convexes.
 
 \subsection{Apprentissage}
 
-L'intérêt du modèle serait limité s'il devait être calculé manuellement. L'objectif est d'avoir un algorithme qui trouve lui-même les paramètres du réseau
-(poids et biais) pour s'adapter à un jeu de données collectées au préalable. Il existe plusieurs méthodes pour réaliser l'apprentissage. Dans le cas du 
-perceptron, on utilise souvent un apprentissage supervisé. Cela signifie que les données collectées contiennent la ``bonne'' réponse pour que 
-le réseau puisse apprendre en conséquence. D'autres méthodes comme l'apprentissage non supervisé existent, ce dernier reposant uniquement sur les jeux 
-d'entrées ; dans ce cas, le réseau doit les discriminer lui-même sans connaître la ``bonne'' réponse.
+L'intérêt du modèle serait limité si l'on devait trouver ses paramètres manuellement. L'objectif est d'avoir un algorithme qui trouve lui-même les paramètres du réseau (poids et biais) pour s'adapter à un jeu de données collectées au préalable. Il existe plusieurs méthodes pour réaliser cet apprentissage. Dans le cas du perceptron, on utilise souvent un apprentissage supervisé. Cela signifie que les données collectées contiennent la ``bonne'' réponse pour que le réseau puisse apprendre en conséquence. Il existe d'autres méthodes comme l'apprentissage non supervisé. Ce dernier repose uniquement sur les jeux d'entrées. Le réseau doit donc les discriminer lui-même sans connaître la ``bonne'' réponse.
 
-Pour réaliser cela, on présente à notre réseau une entrée ; dans la mesure où l'on dispose de la sortie attendue, il est possible de quantifier l'erreur
-faite par le réseau.
-C'est le rôle de la fonction d'erreur. Plus celle-ci est importante, moins le réseau est adapté pour cette donnée. Il existe différentes fonctions
-d'erreur. Une des plus utilisées est la somme des carrés des écarts entre la valeur attendue et la valeur calculée : 
+Pour réaliser un apprentissage supervisé, on présente à notre réseau une entrée. Dans la mesure où l'on dispose de la sortie attendue, il est possible de quantifier l'erreur faite par le réseau.
+C'est le rôle de la fonction d'erreur. Plus l'erreur est importante, moins le réseau est adapté pour cette donnée. C'est-à-dire que les poids du réseau ne permettent pas de déduire la bonne réponse à partir de l'entrée.
+
+Il existe différentes fonctions d'erreur. Une des plus utilisées est la somme des carrés des écarts entre la valeur attendue et la valeur calculée :
 
 \begin{equation}
 \displaystyle F\left(\mathbf{x}\right) = \mathbf{e\left(x\right)}^T\mathbf{e\left(x\right)} 
 \end{equation}
 
 où $\displaystyle \mathbf{e\left(x\right)} = \mathbf{d\left(x\right)} - \mathbf{a\left(x\right)} $,
-$\mathbf{d\left(x\right)}$ la valeur attendue et $\mathbf{a\left(x\right)}$ la valeur calculée.
+$\mathbf{d\left(x\right)}$ étant la valeur attendue et $\mathbf{a\left(x\right)}$ la valeur calculée.
 
 
-L'apprentissage consiste donc en la minimisation de cette fonction de coût $F$. À chaque calcul d'erreur, on modifie les différents poids du réseau.
+L'apprentissage consiste donc à minimiser cette fonction de coût $F$. À chaque calcul d'erreur, on modifie les différents poids du réseau.
 À une couche $k$ donnée, le poids entre l'entrée $j$ et le neurone $i$ est modifié de la manière suivante : 
 \begin{equation}
  \Delta w^k_{i,j}\left(t\right) = - \eta \frac{\partial F}{\partial w^k_{i,j}}
 \end{equation}
  
-En se plaçant dans l'espace des poids (cela inclut les biais qui sont des poids particuliers), cela revient à chercher la direction dans laquelle l'erreur
-est diminuée de la manière la plus significative. Le facteur $\eta$ est le taux d'apprentissage (Learning Rate en anglais). Il représente le pas de
-chaque itération vers le minimum de la fonction de coût. C'est un paramètre du réseau que nous devons choisir en amont de l'apprentissage.
+En se plaçant dans l'espace des poids (cela inclut les biais qui sont des poids particuliers), cela revient à chercher la direction dans laquelle l'erreur est diminuée de la manière la plus significative. Le facteur $\eta$ est le taux d'apprentissage (Learning Rate en anglais). Il représente le pas de chaque itération vers le minimum de la fonction de coût. C'est un paramètre du réseau que nous devons fixer en amont de l'apprentissage.
 
-Marc \textsc{Paruzeau} démontre en 2004 les formules de rétropropagation que nous avons utilisées. Pour cela il introduit un paramètre % pas vraiment un paramère quand pensez-vous ? je ne trouve aps le mot juste
-intermédiaire. Les sensibilités sont définies ainsi :
+Marc \textsc{Paruzeau} a démontré en 2004 les formules de rétropropagation que nous avons utilisées. Pour cela il introduit une variable intermédiaire, la sensibilité. La sensibilité est définie par :
 \begin{equation}
  \mathbf{s}^k = \frac{\partial F}{\partial \mathbf{n}^k}
 \end{equation}
@@ -164,33 +144,27 @@ Pour un réseau de $M$ couches, la rétropropagation se déroule de la manière 
 
 \subsection{La fonction d'erreur}
 
-Puisque l'on réalise un apprentissage supervisé, on suppose qu'à chaque jeu de données, on connaît la sortie attendue. Il est alors nécessaire
-de mesurer l'erreur entre la sortie attendue et la sortie calculée par le réseau neuronal.
+Puisque l'on réalise un apprentissage supervisé, on suppose qu'à chaque jeu de données, on connaît la sortie attendue. Il est alors nécessaire de mesurer l'erreur entre la sortie attendue et la sortie calculée par le réseau neuronal.
 
-Il existe plusieurs formulations de cette erreur, telles que l'erreur quadratique (norme euclidienne du vecteur d'erreur), l'erreur moyenne (norme 1 du vecteur d'erreur)... 
-Pour obtenir l'erreur d'un groupe de données (batch), on somme les erreurs de chaque donnée. Par souci de simplicité, nous avons décidé d'utiliser
-l'erreur quadratique pour notre perceptron. Néanmoins il existe une autre fonction d'erreur : l'entropie croisée. Nous allons voir dans ce rapport pourquoi 
-cette fonction possède de meilleures propriétés que l'erreur quadratique.
+Il existe plusieurs formulations de cette erreur, telles que l'erreur quadratique (norme euclidienne du vecteur d'erreur) ou l'erreur moyenne (norme 1 du vecteur d'erreur).
+Pour obtenir l'erreur d'un groupe de données, appelé batch, on somme les erreurs de chaque donnée. Par souci de simplicité, nous avons décidé d'utiliser l'erreur quadratique pour notre perceptron. Néanmoins il existe une autre fonction d'erreur : l'entropie croisée. Nous allons voir dans la suite pourquoi cette fonction possède de meilleures propriétés que l'erreur quadratique.
 
 La formule de l'entropie croisée est la suivante : 
 \begin{equation}
- C = -\frac{1}{n}\sum_x\left(y\ln\left(a\right) + \left(1-y\right)\ln\left(1-a\right)\right)\; \text{, \parbox[t]{15em}{$n$ la taille du batch\\ $x$ les exemples du batch\\
+ C = -\frac{1}{n}\sum_x\left(y\ln\left(a\right) + \left(1-y\right)\ln\left(1-a\right)\right)\; \text{, avec \parbox[t]{15em}{$n$ la taille du batch\\ $x$ les exemples du batch\\
  $a$ la sortie calculée\\$y$ la sortie attendue}}
  \label{eq:formule-entropiecroisee}
 \end{equation}
 
 \subsubsection{Comportement pour une erreur quadratique}
 
-Pour comprendre l'intérêt de cette formule, nous devons comprendre pourquoi la norme euclidienne échoue. Le concept d'entropie provenant 
-directement de la théorie des probabilités, on doit donc choisir judicieusement la fonction d'activation de notre couche de sortie. On 
-considère souvent que l'entropie correspond naturellement à une fonction d'activation de sortie de type sigmoïde. 
+Pour comprendre l'intérêt de l'entropie croisée, nous devons comprendre pourquoi la norme euclidienne n'est pas satisfaisante.
 
-Pour simplifier le raisonnement, nous utilisons un réseau neuronal trivial (un neurone à une entrée et une sortie) de fonction d'erreur quadratique. 
-Néanmoins, les phénomènes observés sur ce neurone unique restent vrais pour des réseaux plus complexes. On dispose donc d'un neurone, avec une entrée (et un biais) et 
-une sortie, auquel on souhaite apprendre le comportement suivant~: lorsque l'entrée vaut 1, la sortie doit valoir 0.
-Les poids du neurone sont initialisés de manière aléatoire. D'après la figure \ref{fig:initialisation1-entropiecroisee-schema}, on a, après initialisation,
-un neurone qui renvoit 0.82 lorsque l'entrée vaut 1. On entraîne ce neurone et obtient la courbe d'apprentissage 
-\ref{fig:initialisation1-entropiecroisee-courbe}.
+Le concept d'entropie provient directement de la théorie des probabilités, on doit donc choisir judicieusement la fonction d'activation de notre couche de sortie. On considère souvent que l'entropie correspond naturellement à une fonction d'activation de sortie de type sigmoïde.
+
+Pour simplifier le raisonnement, on considèrera un réseau neuronal trivial (un neurone à une entrée et une sortie) avec une fonction d'erreur quadratique.
+Les phénomènes observés sur ce neurone simple pourront être généralisés aux réseaux plus complexes. On dispose donc d'un neurone, avec une entrée (avec un biais) et une sortie. On souhaite lui faire apprendre le comportement suivant~: lorsque l'entrée vaut 1, la sortie doit valoir 0.
+Les poids du neurone sont initialisés de manière aléatoire. D'après la figure \ref{fig:initialisation1-entropiecroisee-schema}, on a, après initialisation, un neurone qui renvoie 0,82 lorsque l'entrée vaut 1. On entraîne ce neurone et obtient la courbe d'apprentissage \ref{fig:initialisation1-entropiecroisee-courbe}.
 
 
 \begin{figure}[h]
@@ -212,17 +186,11 @@ un neurone qui renvoit 0.82 lorsque l'entrée vaut 1. On entraîne ce neurone et
 \end{figure}
 
 
-Sur la courbe \ref{fig:initialisation1-entropiecroisee-courbe}, 
-on ne pose pas de valeur concernant le coût. En effet, les informations pertinentes de cette courbe ne sont pas les valeurs initiales 
-et finales (augmenter le nombre d'itérations permettrait de réduire cela de manière arbitrairement faible). On s'intéresse plutôt à l'allure générale de 
-la courbe. L'apprentissage sur cet exemple est très satisfaisant. 
+Sur la courbe \ref{fig:initialisation1-entropiecroisee-courbe}, le coût est en unité arbitraire. Sa valeur en soit n'a pas beaucoup d'importance. En effet, les informations pertinentes de cette courbe ne sont pas les valeurs initiales et finales mais plutôt son allure générale. Augmenter le nombre d'itérations permettrait en effet de réduire ces valeurs de manière arbitrairement faible. L'apprentissage sur cet exemple est très satisfaisant.
 
-On considère maintenant un second exemple. Le même réseau est utilisé, mais avec 
-une initialisation différente, de sorte que la sortie soit plus proche de 1. On est donc plus éloigné de l'objectif, puisque l'on cherche à retrouver 0.
+On considère maintenant un second exemple. Le même réseau est utilisé, mais avec une initialisation différente, de sorte que la sortie soit plus proche de 1. On est donc plus éloigné de l'objectif, puisque l'on cherche à retrouver 0.
 Les données et résultats de cet exemple sont illustrés par la figure \ref{fig:initialisation2-entropiecroisee-courbe}.
-On remarque que l'apprentissage est de qualité moindre. En effet, juste après l'initialisation, le neurone commettait une erreur plus importante,
-mais l'apprentissage est beaucoup plus lent. On doit donc réaliser un nombre d'itérations supérieur pour retrouver le cas
-\ref{fig:initialisation1-entropiecroisee} et pouvoir apprendre correctement.
+On remarque que l'apprentissage est de moins bonne qualité. En effet, juste après l'initialisation, le neurone commet une erreur plus importante et l'apprentissage est beaucoup plus lent. On doit donc réaliser un nombre plus d'itérations pour retrouver le cas \ref{fig:initialisation1-entropiecroisee} et pouvoir apprendre correctement.
 
 \begin{figure}[h]
 \centering
@@ -251,9 +219,8 @@ Puisque $C = \frac{(y-a)^2}{2}$, on peut vérifier que l'on a :
 \end{align}
 
 En observant la fonction sigmoïde représentée sur la figure \ref{fig:sigmoid_function}, on se rend compte que le problème provient de $\sigma'\left(z\right)$.
-En effet, la seconde initialisation ayant une erreur initiale très importante ($a$ proche de 1), on se retrouve dans la 
-partie droite de la courbe, où la pente est très faible. Cela provient du fait que $\sigma'\left(z\right) = a\left(1-a\right)$.
-L'apprentissage n'en est que ralenti, ce qui n'est évidemment pas souhaitable. 
+En effet, la seconde initialisation ayant une erreur initiale très importante ($a$ proche de 1), on se retrouve dans la partie à droite de la courbe, où la pente est très faible. Cela provient du fait que $\sigma'\left(z\right) = a\left(1-a\right)$.
+L'apprentissage est alors très ralenti, ce qui n'est évidemment pas souhaitable.
 
 \begin{figure}[h]
  \centering
@@ -265,10 +232,7 @@ L'apprentissage n'en est que ralenti, ce qui n'est évidemment pas souhaitable.
 \subsubsection{Une solution à ce problème d'apprentissage}
 \label{subsubsection:etablissement-eq-entropiecroisee}
 
-Pour rendre le réseau moins sensible à une mauvaise initialisation,
-il faut changer le comportement observé précédemment. A nouveau, cela revient à utiliser une analogie avec le comportement humain, puisque l'humain a tendance à apprendre
-plus vite lorsque il commet de fortes erreurs. On veut donc garder un apprentissage plus lent lorsque l'on se rapproche du minimum de la fonction
-d'erreur. Ainsi, on aimerait obtenir ces équations :
+Pour rendre le réseau moins sensible à une mauvaise initialisation, il faut corriger le comportement observé précédemment. Si l'on fait une analogie avec le comportement humain, l'humain a tendance à apprendre plus vite lorsqu'il commet de fortes erreurs. On veut donc garder un apprentissage plus lent lorsque l'on se rapproche du minimum de la fonction d'erreur. Ainsi, on aimerait obtenir ces équations :
 
 \begin{align}
   \label{eq:comportementvoulu-poids}
@@ -288,17 +252,9 @@ En utilisant l'expression voulue (équation \ref{eq:comportementvoulu-biais}), o
  C &= -y\ln\left(a\right) - \left(1-y\right)\ln\left(1-a\right) + Const
 \end{align}
 
-On comprend alors que la formule de l'entropie croisée n'est pas simplement une formule qui se trouve avoir des propriétés intéressantes, mais que l'on peut
-construire cette fonction de coût pour respecter les conditions des équations \ref{eq:comportementvoulu-poids} et \ref{eq:comportementvoulu-biais}. 
-L'expression \ref{eq:formule-entropiecroisee} est alors une condition suffisante et quasiment nécessaire au respect desdites contraintes. 
-Le ``quasiment'' provient de la constante d'intégration. Puisque ce n'est pas la fonction de coût en elle-même qui est intéressante mais plutôt
-ses variations et ses dérivées partielles, alors on peut se contenter d'une constante nulle, ce qui conserve la positivité de $C$. On s'attend alors
-à une amélioration considérable de l'apprentissage observé figure \ref{fig:initialisation2-entropiecroisee}. La courbe d'apprentissage
-\ref{fig:initialisation3-entropiecroisee-courbe} montre effectivement un comportement beaucoup plus intéressant. La pente à l'origine est bien plus importante
-lorsque le réseau commet une forte erreur. On a ainsi un réseau moins sensible à l'initialisation et qui apprend d'autant plus qu'il commet une
-erreur importante. Ce comportement est parfois obtenu en faisant varier le taux d'apprentissage au cours du temps. Sur ces exemples, le taux d'apprentissage
-est constant. Ce comportement souhaité étant un artéfact de la fonction de coût, on s'attend à des performances supérieures de la part des réseaux
-utilisant l'entropie croisée.
+On comprend alors que la formule de l'entropie croisée n'est pas simplement une formule qui se trouve avoir des propriétés intéressantes, mais que l'on peut construire cette fonction de coût pour respecter les conditions des équations \ref{eq:comportementvoulu-poids} et \ref{eq:comportementvoulu-biais}.
+L'expression \ref{eq:formule-entropiecroisee} est alors une condition suffisante et quasiment nécessaire au respect desdites contraintes.
+Le ``quasiment'' provient de la constante d'intégration. Puisque ce n'est pas la fonction de coût en elle-même qui est intéressante mais plutôt ses variations et ses dérivées partielles, alors on peut se contenter d'une constante nulle, ce qui conserve la positivité de $C$. On s'attend alors à une amélioration considérable de l'apprentissage observé figure \ref{fig:initialisation2-entropiecroisee}. La courbe d'apprentissage \ref{fig:initialisation3-entropiecroisee-courbe} montre effectivement un comportement beaucoup plus intéressant. La pente à l'origine est bien plus importante lorsque le réseau commet une forte erreur. On a ainsi un réseau moins sensible à l'initialisation et qui apprend d'autant plus qu'il commet une erreur importante. Ce comportement est parfois obtenu en faisant varier le taux d'apprentissage au cours du temps. Sur ces exemples, le taux d'apprentissage est constant. Ce comportement souhaité étant un artéfact de la fonction de coût, on s'attend à des performances supérieures de la part des réseaux utilisant l'entropie croisée.
 
 \begin{figure}[h]
 \centering
@@ -328,31 +284,22 @@ La formule de l'entropie d'une variable aléatoire $X$ est une somme sur les év
  H(X) = -\sum_{i=1}^{n} p_i\log\left(p_i\right)
 \end{equation}
 
-L'entropie est une mesure de l'incertitude d'une loi de probabilité. Par exemple, si on réalise une expérience de tirage de boules et que l'on considère
-la couleur de la boule tirée, alors l'entropie sera maximale lorsque les différentes éventualités sont équiprobables.
+L'entropie est une mesure de l'incertitude d'une loi de probabilité. Par exemple, si on réalise une expérience de tirage de boules et que l'on considère la couleur de la boule tirée, alors l'entropie sera maximale lorsque les différentes éventualités sont équiprobables.
 
-En traitement de l'information, cette grandeur permet de coder efficacement les symboles à transmettre. Si on a des symboles équiprobables,
-l'entropie est maximale. Dans ce cas, le nombre de bits nécessaires pour définir un symbole avec certitude est $\log_2\left(N\right)$, où $N$ est le nombre
-de symboles différents. Cependant, si l'on considère un texte en français, les lettres RSTLNE sont beaucoup plus fréquentes que WXYZ. La diminution de l'entropie
-caractérise le fait qu'un système de codage ingénieux utilise en moyenne moins de bits pour transmettre l'information avec certitude.
+En traitement de l'information, cette grandeur permet de coder efficacement les symboles à transmettre. Si on a des symboles équiprobables, l'entropie est maximale. Dans ce cas, le nombre de bits nécessaires pour définir un symbole avec certitude est $\log_2\left(N\right)$, où $N$ est le nombre de symboles différents. Cependant, si l'on considère un texte en français, les lettres RSTLNE sont beaucoup plus fréquentes que WXYZ. La diminution de l'entropie caractérise le fait qu'un système de codage ingénieux utilise en moyenne moins de bits pour transmettre l'information avec certitude.
 
-L'entropie croisée $-p\log\left(q\right)$ est, en mathématiques, une mesure de la distance entre deux distributions $p$ et $q$. On peut là encore y 
-retrouver une interprétation dans le domaine du traitement de signal. 
+L'entropie croisée $-p\log\left(q\right)$ est, en mathématiques, une mesure de la distance entre deux distributions $p$ et $q$. On peut là encore y retrouver une interprétation dans le domaine du traitement de signal.
 En effet, si on considère un système de codage adapté à un texte dans lequel chaque lettre apparaît selon une distribution $q$, alors
-l'entropie croisée $-p\log\left(q\right)$ quantifie l'adaptation de ce même système pour chiffrer un texte dans lequel 
-chaque lettre apparaît selon la distribution $p$.
+l'entropie croisée $-p\log\left(q\right)$ quantifie l'adaptation de ce même système pour chiffrer un texte dans lequel chaque lettre apparaît selon la distribution $p$.
 
-Ainsi, si on dispose d'un jeu de données dont les sorties attendues suivent une distribution empirique $p$, et d'un réseau neuronal dont les sorties
-à ces données suivent une distribution $q$, alors adapter le réseau pour qu'il puisse reproduire fidèlement les observations $p$ revient 
-à diminuer l'entropie croisée de ces deux distributions.
+Si on dispose d'un jeu de données dont les sorties attendues suivent une distribution empirique $p$, et d'un réseau neuronal dont les sorties pour ces données suivent une distribution $q$, alors adapter le réseau pour qu'il puisse reproduire fidèlement les observations $p$ revient à diminuer l'entropie croisée de ces deux distributions.
 
 \subsubsection{Estimateur de l'entropie croisée}
 
 On considère un batch de taille $n$ contenant $N$ données distinctes $\{x_1, x_2, \ldots, x_N\}$, chaque observation $x_i$ 
 (pour $i \in \intervalle{\llbracket}{1}{N}{\rrbracket}$) apparaît dans le batch $np_i$ fois.
 
-Notre réseau est alors ainsi constitué : la couche de sortie est composée d'un seul neurone (une somme de l'entropie sur les neurones peut être faite si 
-on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoïde donnant une sortie $q_i$ lorsque soumise à l'exemple $x_i$. On a alors :
+Notre réseau est alors ainsi constitué : la couche de sortie est composée d'un seul neurone (une somme de l'entropie sur les neurones peut être faite si on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoïde donnant une sortie $q_i$ lorsque soumise à l'exemple $x_i$. On a alors :
 
 \begin{equation}
  \mathbb{P}\left(X=y_i\right) = \begin{cases}q_i &\text{ si $y_i=1$}\\1-q_i &\text{ si $y_i=0$}\end{cases} \text{, \parbox[t]{20em}{où $X$ représente notre réseau\\
@@ -360,8 +307,7 @@ on a une couche de plusieurs neurones) et d'une fonction d'activation sigmoïde 
  \label{eq:proba}
 \end{equation}
 
-$\mathbb{P}$, tel que défini par l'équation \ref{eq:proba}, représente la probabilité que notre réseau trouve la bonne solution. Sa densité de probabilité
-est donnée sous une forme différente par l'équation \ref{eq:ddp}
+$\mathbb{P}$, tel que défini par l'équation \ref{eq:proba}, représente la probabilité que notre réseau trouve la bonne solution. Sa densité de probabilité est donnée sous une forme différente par l'équation \ref{eq:ddp}
 \begin{equation}
  \label{eq:ddp}
  \mathbb{P}\left(X=y_i\right) = q_i{^{y_i}}\left(1-q_i\right)^{1-y_i}
@@ -384,14 +330,11 @@ Notre système est donc d'autant plus performant que son entropie croisée est f
 
 \subsection{La fonction XOR}
 
-Pour tester notre perceptron, nous utilisons la fonction XOR prenant deux valeurs binaires et retournant 1 si et seulement si les deux valeurs binaires sont
-différentes. XOR est une fonction relativement simple qui a la particularité d'être non linéaire. Ainsi, on ne peut se contenter d'un réseau qui ne contient aucune
-couche cachée. Cela nous permet donc d'en tirer nos premières conclusions.
+Nous avons coder notre propre perceptron en Python à partir des équations vues plus haut.
 
-Pour cela, nous configurons notre réseau de la manière suivante. La couche d'entrée ainsi que la couche cachée contiennent 2 neurones tandis que la couche externe
-est constituée d'un neurone. La couche cachée et la couche de sortie sont chacune suivies d'une fonction d'activation. Nous avons utilisé une tangente hyperbolique
-pondérée, reprenant des valeurs utilisées par Yann \textsc{LeCun} et al : $ x \mapsto 1.7159\tanh{\frac{2x}{3}}$. Nous avons évalué l'apprentissage en utilisant différents
-taux.
+Pour le tester, nous avons utilisé la fonction XOR. Elle prend en entrée deux valeurs binaires et retourne 1 si et seulement si les deux valeurs binaires sont différentes. XOR est une fonction relativement simple qui a la particularité d'être non linéaire. Ainsi, on ne peut se contenter d'un réseau qui ne contient aucune couche cachée. Il faut que notre réseau possède une couche intermédiaire.
+
+Nous configurons notre réseau de la manière suivante. La couche d'entrée ainsi que la couche cachée contiennent deux neurones tandis que la couche externe est constituée d'un neurone. La couche cachée et la couche de sortie sont chacune suivies d'une fonction d'activation. Nous avons utilisé une tangente hyperbolique pondérée, reprenant des valeurs utilisées par Yann \textsc{LeCun} et al : $ x \mapsto 1.7159\tanh{\frac{2x}{3}}$. Nous avons évalué l'apprentissage en utilisant différents taux. Cela nous permet de tirer nos premières conclusions.
 
 \begin{figure}[h]
  \centering
@@ -411,27 +354,16 @@ taux.
  \label{fig:xor2D}
 \end{figure}
  
-La figure \ref{fig:xor2D-2} représente l'évolution de la norme euclidienne de l'erreur du réseau en fonction du nombre d'itérations. On remarque qu'un taux 
-d'apprentissage trop faible ralentit fortement la vitesse d'apprentissage. Au contraire, un taux d'apprentissage trop important peut faire échouer l'apprentissage.
-Cela s'explique par le fait que le réseau n'arrive pas à converger vers le minimum global car ses pas sont trop importants. Il oscille alors autour du minimum sans
-s'en rapprocher suffisamment. Si le taux d'apprentissage est trop important, on peut même s'écarter de la solution ! On comprend alors que le choix du taux 
-d'apprentissage est un facteur déterminant de la convergence de notre réseau.
+La figure \ref{fig:xor2D-2} représente l'évolution de la norme euclidienne de l'erreur du réseau en fonction du nombre d'itérations. On remarque qu'un taux d'apprentissage trop faible ralentit fortement la vitesse d'apprentissage. Au contraire, un taux d'apprentissage trop important peut faire échouer l'apprentissage.
+Cela s'explique par le fait que le réseau n'arrive pas à converger vers le minimum global car ses pas sont trop importants. Il oscille alors autour du minimum sans s'en rapprocher suffisamment. Si le taux d'apprentissage est trop important, on peut même s'écarter de la solution ! On comprend alors que le choix du taux d'apprentissage est un facteur déterminant de la convergence de notre réseau.
 
-La figure \ref{fig:xor2D-30} a, quant à elle, été tracée en utilisant 30 neurones dans la couche cachée. Cela nous permet d'étudier les capacités d'un réseau
-``trop intelligent'' par rapport à la tâche qu'il doit apprendre. On remarque que le réseau a beaucoup plus de difficultés à trouver le minimum. Les courbes sont
-globalement très bruitées. Néanmoins, cette fois-ci, tous les réseaux ont convergé même à haut taux d'apprentissage. Mais ce sont les taux les plus bas qui ont été
-le moins affectés par cette modification. Augmenter la taille du réseau permettrait alors de contrer les problèmes de divergence. Le bruit introduit peut être atténué
-avec un taux d'apprentissage relativement faible (la convergence est alors même accélérée).
+La figure \ref{fig:xor2D-30} a, quant à elle, été tracée en utilisant 30 neurones dans la couche cachée. Cela nous permet d'étudier les capacités d'un réseau ``trop intelligent'' par rapport à la tâche qu'il doit apprendre. On remarque que le réseau a beaucoup plus de difficultés à trouver le minimum. Les courbes sont globalement très bruitées. Néanmoins, cette fois-ci, tous les réseaux ont convergé même lorsque le taux d'apprentissage était élevé. C'est cependant les taux les plus bas qui ont été le moins affectés par cette modification. Augmenter la taille du réseau permettrait alors de contrer les problèmes de divergence. Le bruit introduit peut être atténué avec un taux d'apprentissage relativement faible (la convergence est alors même accélérée).
 
 \subsection{MNIST}
 
-MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d'apprendre à notre perceptron à reconnaître le chiffre en analysant les 784 pixels
-de l'image. Nous avons utilisé la configuration suivante : la couche d'entrée (784 neurones) est reliée à une première couche intermédiaire de 16 neurones. Celle-ci
-mène à une autre couche de même configuration. Enfin la sortie se fait par une couche de 10 neurones. Nous avons conservé la fonction d'activation $\tanh$ pondérée utilisée
-sur le XOR puisque celle-ci avait donné des résultats très satisfaisants (meilleure convergence que la sigmoïde).
-Pour tester notre perceptron, nous avons tracé le taux d'erreur sur l'échantillon test en fonction du nombre d'itérations. Afin de ``moyenner'' la courbe et 
-d'annuler les fluctuations statistiques de l'apprentissage (provenant de l'initialisation aléatoire du réseau et de l'ordre de présentation aléatoire des exemples),
-nous avons réalisé cet apprentissage 280 fois. Le taux d'apprentissage utilisé est 0.005.
+MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d'apprendre à notre perceptron à reconnaître le chiffre dans l'image en analysant ses 784 pixels. Nous avons utilisé la configuration suivante : la couche d'entrée (784 neurones) est reliée à une première couche intermédiaire de 16 neurones. Celle-ci mène à une autre couche de même configuration. Enfin la sortie se fait par une couche de 10 neurones (les 10 chiffres possibles). Nous avons conservé la fonction d'activation $\tanh$ pondérée utilisée sur le XOR puisque celle-ci avait donné des résultats très satisfaisants (meilleure convergence que la sigmoïde).
+Pour tester notre perceptron, nous avons tracé le taux d'erreur sur l'échantillon test en fonction du nombre d'itérations. Afin de moyenner les résultats et d'annuler les fluctuations statistiques de l'apprentissage (provenant de l'initialisation aléatoire du réseau et de l'ordre de présentation aléatoire des exemples),
+nous avons réalisé cet apprentissage 280 fois (280 runs). Le taux d'apprentissage utilisé est 0.005.
 
 \begin{figure}[h]
  \centering
@@ -440,27 +372,19 @@ nous avons réalisé cet apprentissage 280 fois. Le taux d'apprentissage utilis�
  \label{fig:MNIST}
 \end{figure}
 
-D'après la figure \ref{fig:MNIST}, le taux d'erreur sur l'échantillon d'apprentissage est toujours inférieur à celui sur l'échantillon de test. Cela est normal car
-l'apprentissage du réseau consiste à coller au mieux aux données. Afin d'éviter le sur-apprentissage (on apprend par coeur les exemples mais n'est plus capable de
-généraliser les propriétés), on cherche à minimiser l'erreur sur l'échantillon de test. Sur MNIST, cela a relativement peu d'incidence car la base de données contient
-beaucoup d'exemples variés ce qui nous protège de la sur-interprétation. On converge assez rapidement (une dizaine d'itérations) vers 94\% de réussite, ce qui est
-un résultat très satisfaisant de notre perceptron. Un réseau avec 32 neurones sur la première couche cachée change assez peu le résultat, si ce n'est que 
-l'on converge vers une valeur légèrement meilleure : 96\% de réussite sur l'échantillon de test.
+D'après la figure \ref{fig:MNIST}, le taux d'erreur sur l'échantillon d'apprentissage est toujours inférieur à celui sur l'échantillon de test. Cela est normal car l'apprentissage du réseau consiste à coller au mieux aux données. On cherche à minimiser l'erreur sur l'échantillon de test pour éviter le sur-apprentissage, qui consiste à apprendre par c\oe ur les exemples au lieu d'apprendre les propriétés généralisables. Sur MNIST, cela a relativement peu d'importance car la base de données contient beaucoup d'exemples variés ce qui nous protège de la sur-interprétation. On converge assez rapidement (une dizaine d'itérations) vers 94\% de réussite, ce qui est
+un résultat très satisfaisant de notre perceptron. Un réseau avec 32 neurones sur la première couche cachée change assez peu le résultat, si ce n'est que l'on converge vers une valeur légèrement meilleure : 96\% de réussite sur l'échantillon de test.
 
-Afin d'évaluer l'influence du taux d'apprentissage, nous réalisons l'entraînement sur 19 taux d'apprentissage différents (régulièrement placés de 0.001 à 0.01). Chaque apprentissage
-étant constitué de 50 itérations et étant moyenné sur 140 réalisations. Nous obtenons alors la figure \ref{fig:MNIST_difLR} avec un intervalle de confiance à 95\%.
+Afin d'évaluer l'influence du taux d'apprentissage, nous réalisons l'entraînement sur 19 taux d'apprentissage différents (régulièrement placés de 0,001 à 0,01). Chaque apprentissage étant constitué de 50 itérations et étant moyenné sur 140 réalisations. Nous obtenons alors la figure \ref{fig:MNIST_difLR} avec un intervalle de confiance à 95\%.
 
 \begin{figure}[ht]
  \centering
  \includegraphics[width=\textwidth]{img/MNIST_difLR.png}
- \caption{Apprentissage MNIST avec différents taux d'apprentissage}
+ \caption{Apprentissage MNIST avec différents taux d'apprentissage (régulièrement placés de 0,001 à 0,01)}
  \label{fig:MNIST_difLR}
 \end{figure}
 
-On remarque qu'un fort taux d'apprentissage augmente également l'écart-type des données. L'apprentissage est alors plus sensible à l'initialisation. On préfère
-naturellement éviter un faible taux pour garder une vitesse de convergence convenable. En comparant toutes ces données, nous avons évalué que 0.003 était un des taux 
-les plus intéressants de ces points de vue, la convergence étant rapide et avec un faible écart-type. Néanmoins, l'impact sur les performances est assez négligeable
-(moins de 1\% de différence).
+On remarque qu'un fort taux d'apprentissage augmente également l'écart-type des données. L'apprentissage est alors plus sensible à l'initialisation. On préfère naturellement éviter un faible taux pour garder une vitesse de convergence convenable. En comparant toutes ces données, nous avons évalué que 0.003 était un des taux les plus intéressants, la convergence étant rapide et avec un faible écart-type. Néanmoins, l'impact sur les performances est assez négligeable (moins de 1\% de différence).
 
 
 \subsection{Un laïus sur les différents optimiseurs Paul ?}
