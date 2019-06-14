@@ -9,7 +9,7 @@ Le modèle du neurone est le suivant :
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=0.5\textwidth]{img/neurone.png}
+ \includegraphics[width=0.4\textwidth]{img/neurone.png}
  \caption{Modèle d'un neurone artificiel}
 \end{figure}
 
@@ -53,7 +53,7 @@ Si on revient au cas de la fonction seuil, on remarquera qu'elle permet de sépa
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=0.5\textwidth]{img/separation_lineaire_du_plan.png}
+ \includegraphics[width=0.25\textwidth]{img/separation_lineaire_du_plan.png}
  \caption{Domaine de séparation du neurone}
 \end{figure}
 
@@ -64,7 +64,7 @@ Un vecteur de sortie définit les différentes valeurs des neurones, une matrice
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=0.55\textwidth]{img/couche.png}
+ \includegraphics[width=0.3\textwidth]{img/couche.png}
  \caption[Modèle d'une couche de neurones]{Représentation matricielle d'une couche de S neurones recevant R entrées}
 \end{figure}
 
@@ -72,7 +72,7 @@ Pour pouvoir définir des ensembles de solutions plus complexes, on ajoute d'aut
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=\textwidth]{img/modele_perceptron_multicouches.png}
+ \includegraphics[width=0.9\textwidth]{img/modele_perceptron_multicouches.png}
  \caption{Modèle du perceptron multicouches}
 \end{figure}
 
@@ -198,9 +198,9 @@ du batch. De plus le gradient a tendance à beaucoup osciller, rendant la conver
 
 Dans les faits, il est préférable d'utiliser des mini-batchs d'une taille de l'ordre de la dizaine d'éléments. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
- \includegraphics[width=0.9\textwidth]{img/time_vs_batchsize.png}
+ \includegraphics[width=0.5\textwidth]{img/time_vs_batchsize.png}
  \caption{Erreur en test sur MNIST en fonction du temps d'entraînement pour différentes tailles de batch}
  \label{fig:time_vs_batchsize.png}
 \end{figure}
@@ -214,8 +214,8 @@ Plus le taux d'apprentissage est petit, plus la convergence est longue, mais si 
 
 \begin{figure}[ht]
  \centering
- \includegraphics[width=1.1\textwidth]{img/learning_rates.png}
- \caption{Erreur en test sur MNIST en fonction de l'epoch pour différents taux d'apprentissage}
+ \includegraphics[width=1\textwidth]{img/learning_rates.png}
+ \caption{Erreur en test sur MNIST en fonction de l'époque pour différents taux d'apprentissage}
  \label{fig:learning_rates.png}
 \end{figure}
 
@@ -266,7 +266,7 @@ et finalement on met à jour les poids
  \label{fig:sgd_rmsprop_adam}
 \end{figure}
 
-On remarque que dans le cas du modèle de la figure \ref{fig:sgd_rmsprop_adam} ADAM est beaucoup plus performant que la descente de gradient simple et que RMSprop. Ça n'est cependant pas toujours le cas.
+On remarque que, dans le cas du modèle de la figure \ref{fig:sgd_rmsprop_adam}, ADAM est beaucoup plus performant que la descente de gradient simple et que RMSprop. Ça n'est cependant pas toujours le cas.
 
 
 \subsection{La fonction d'erreur}
@@ -492,7 +492,7 @@ MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d
 Pour tester notre perceptron, nous avons tracé le taux d'erreur sur l'échantillon test en fonction du nombre d'itérations. Afin de moyenner les résultats et d'annuler les fluctuations statistiques de l'apprentissage (provenant de l'initialisation aléatoire du réseau et de l'ordre de présentation aléatoire des exemples),
 nous avons réalisé cet apprentissage 280 fois (280 runs). Le taux d'apprentissage utilisé est 0.005.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
  \includegraphics[width=0.5\textwidth]{img/MNIST.png}
  \caption{Taux d'erreur sur MNIST}
