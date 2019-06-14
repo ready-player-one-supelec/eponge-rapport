@@ -92,6 +92,8 @@ ensembles non convexes.
 
 \subsection{Apprentissage}
 
+\subsubsection{Rétropropagation}
+
 L'intérêt du modèle serait limité s'il devait être calculé manuellement. L'objectif est d'avoir un algorithme qui trouve lui-même les paramètres du réseau
 (poids et biais) pour s'adapter à un jeu de données collectées au préalable. Il existe plusieurs méthodes pour réaliser l'apprentissage. Dans le cas du 
 perceptron, on utilise souvent un apprentissage supervisé. Cela signifie que les données collectées contiennent la ``bonne'' réponse pour que 
@@ -161,6 +163,112 @@ Pour un réseau de $M$ couches, la rétropropagation se déroule de la manière 
  \end{align}
 
 \end{itemize}
+
+\\
+La rétropropagation permet de calculer le gradient de chacun des poids relatifs à l'erreur pour chacuns des couples du set d'entraînement. Il faut ensuite soustraire ce gradient
+aux poids du réseaux de neurone pour minimiser l'erreur. Mais la méthode triviale n'est pas nécessairement celle qui va faire converger le réseau de neurone le plus rapidement vers le meilleur minimum.
+
+\subsubsection{L'apprentissage par batch}
+
+Le but étant de diminuer l'erreur totale sur l'ensemble d'entraînement, on pourrait penser que la solution optimale serait de calculer le gradient sur l'ensemble des éléments avant de le soustraire,
+mais cette méthode a plusieurs désavantages:
+\begin{itemize}
+ \item Il faut faire une étape rétropropagation sur l'ensemble des éléments de l'ensemble d'entraînement à chaque mise à jour à jour le réseau, ce qui est couteux
+ \item On reste dans le premier minimum local dans lequel on tombe (pour peu qu'il soit plus grand que le pas avec on avance ie. le learning rate)
+\end{itemize}
+
+En effet la descente de gradient ne garantie pas de la convergence vers un minimum global, et peut très bien se contenter d'un mauvais minimum local.
+Il existe donc de nombreuses heuristiques visant à améliorer la vitesse de convergence, et la qualité du minimum trouvé.
+\\
+Le but de l'apprentissage par batch est de ségmenter l'apprentissage sur l'ensemble de donné d'entraînement pour accélérer l'apprentissage, et introduire une 
+composante aléatoire dans la manière dont le modèle converge vers un minimum.\\
+Pour un apprentissage par batch de taille $N$, on découpe l'ensemble d'entraînement en groupes de $N$ éléments choisis au hasard  appelé un batch.\\
+Pour chacun des batchs:
+\begin{itemize}
+ \item on calcule \textit{sans mettre à jour le réseau de neurone} le gradient pour chacun des $N$ éléments du batch
+ \item on moyenne le gradient sur les $N$ éléments du batch.
+ \item on applique le gradient moyenné au réseau de neurone.
+\end{itemize}
+
+On ne calcule donc pas le gradient sur l'entièreté de l'ensemble de test, mais sur seulement des parties tirées au hasard.
+Cela a deux conséquence: 
+\begin{itemize}
+ \item On fait seulement l'étape de rétropropagation sur $N$ éléments pour chaque mise à jour du réseau
+ \item Le fait que le batch soit tiré au sort permet de ne pas aller directement dans le sens du gradient totale, mais d'osciller légérement autour de celui-ci.
+ Ces oscillations permettent d'éviter de rester dans un mauvais minimum local trop peu profond.
+\end{itemize}
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.3\textwidth]{img/oscillations_stochastique.png}
+ \caption{Illustration des oscillations du gradient}
+ \label{fig:oscillations_stochastique.png}
+\end{figure}
+
+\newpage
+
+Evidemment, la taille $N$ du batch est un paramètre important à considérer. \\
+Si $N$ est gros, l'apprentissage prend plus de temps car il faut faire la rétropropagation sur un plus grand nombre d'éléments avant de mettre à jour le modèle.\\
+Si $N$ est petit, il est plus difficile d'utiliser les capacités de calcul du hardware (CPU ou GPU) pour faire la rétropropagation en parralèlle pour les $N$ éléments
+du batch. De plus le gradient à tendance à beaucoup osciller, rendant la convergence moins rapide.
+\\
+
+Dans les faits, il est recommandable d'utiliser des mini-batchs de tailles de l'ordre de la dizaine d'éléments. 
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.9\textwidth]{img/time_vs_batchsize.png}
+ \caption{erreur en test sur MNIST en fonction temps d'entraînement pour différentes tailles de batch}
+ \label{fig:time_vs_batchsize.png}
+\end{figure}
+
+\subsubsection{Learning rate adaptatif}
+
+Pour l'instant nous nous contentons de soustraire le gradient aux poids, multiplié par un facteur $\eta$ , le learning rate.\\
+Dans ce processus, il est important de choisir un learning rate adapté au modèle, et à l'ensemble d'entraînement.
+Plus le learning rate est petit, plus la convergence est longue, mais si le learning rate est trop grand on a du mal à converger en fin d'apprentissage
+vers un bon minimum, parce qu'on fait des pas trops grands
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=1.1\textwidth]{img/learning_rates.png}
+ \caption{erreur en test sur MNIST en fonction de l'epoch pour différents learning rates}
+ \label{fig:learning_rates.png}
+\end{figure}
+
+On remarque \ref{fig:learning_rates.png} qu'il existe pour ce modèle un learning optimale de $0.03$, et qu'en fonction du learning rate on peut avoir
+des différences de l'ordre du pourcent dans le taux d'erreur.
+\\
+Il est donc peut-être intéressant de faire varier le learning rate au long de l'apprentissage de manière à aller vite au début et plus lentement à la fin, et deuxièmement
+de faire varier le learning rate de manière individuel pour chacun des paramètres du modèle.
+
+\paragraph{RMSprop}
+
+RMSprop est l'une de ces méthodes. Le but de RMSprop est de seulement se préocupper du sens du gradient, et pas de sa valeur. \\
+Si on note $g_t$ le gradient du modèle au $t$-ième apprentissage, $\eta$ le learning rate, $\epsilon = 1e-8$, $\theta_t$ les poids du modèle.
+On pose:
+\begin{align*}
+E[g^2]_{t+1} = 0.9 E[g^2]_{t} + 0.1 g_t^2 \\
+\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{E[g^2]_{t} + \epsilon }} g_t \\
+\end{align*}
+
+RMSprop est censé normaliser chaque paramètre du gradient pour qu'il ne soit ni trop gros ni trop petit.
+
+\paragraph{ADAM}
+ADAM est une seconde méthode de gradient adaptatif.
+
+\newpage
+
+\begin{figure}[ht]
+ \centering
+ \includegraphics[width=0.8\textwidth]{img/sgd_rmsprop_adam.png}
+ \caption{erreur en test sur MNIST pour différents optimiseur (SGD vs RMSprop vs ADAM)}
+ \label{fig:sgd_rmsprop_adam}
+\end{figure}
+
+On remarque que sur dans le cas du modèle de la figure \ref{fig:sgd_rmsprop_adam} ADAM est beaucoup plus performant que la descente de gradient simple et que RMSprop
+mais ça n'est pas toujours le cas.
+
 
 \subsection{La fonction d'erreur}
 
@@ -461,112 +569,6 @@ On remarque qu'un fort taux d'apprentissage augmente également l'écart-type de
 naturellement éviter un faible taux pour garder une vitesse de convergence convenable. En comparant toutes ces données, nous avons évalué que 0.003 était un des taux 
 les plus intéressants de ces points de vue, la convergence étant rapide et avec un faible écart-type. Néanmoins, l'impact sur les performances est assez négligeable
 (moins de 1\% de différence).
-
-\newpage
-
-\subsection{Différentes heuristiques d'optimisation}
-
-La rétropropagation permet de calculer le gradient de chacun des poids relatifs à l'erreur pour chacuns des couples du set d'entraînement. Il faut ensuite soustraire ce gradient
-aux poids du réseaux de neurone pour minimiser l'erreur. Mais la méthode triviale n'est pas nécessairement celle qui va faire converger le réseau de neurone le plus rapidement vers le meilleur minimum.
-\\
-Le but étant de diminuer l'erreur totale sur l'ensemble d'entraînement, on pourrait penser que la solution optimale serait de calculer le gradient sur l'ensemble des éléments avant de le soustraire,
-mais cette méthode a plusieurs désavantages:
-\begin{itemize}
- \item Il faut faire une étape rétropropagation sur l'ensemble des éléments de l'ensemble d'entraînement à chaque mise à jour à jour le réseau, ce qui est couteux
- \item On reste dans le premier minimum local dans lequel on tombe (pour peu qu'il soit plus grand que le pas avec on avance ie. le learning rate)
-\end{itemize}
-
-En effet la descente de gradient ne garantie pas de la convergence vers un minimum global, et peut très bien se contenter d'un mauvais minimum local.
-Il existe donc de nombreuses heuristiques visant à améliorer la vitesse de convergence, et la qualité du minimum trouvé.
-
-\subsubsection{L'apprentissage par batch}
-
-Le but de l'apprentissage par batch est de ségmenter l'apprentissage sur l'ensemble de donné d'entraînement pour accélérer l'apprentissage, et introduire une 
-composante aléatoire dans la manière dont le modèle converge vers un minimum.\\
-Pour un apprentissage par batch de taille $N$, on découpe l'ensemble d'entraînement en groupes de $N$ éléments choisis au hasard  appelé un batch.\\
-Pour chacun des batchs:
-\begin{itemize}
- \item on calcule \textit{sans mettre à jour le réseau de neurone} le gradient pour chacun des $N$ éléments du batch
- \item on moyenne le gradient sur les $N$ éléments du batch.
- \item on applique le gradient moyenné au réseau de neurone.
-\end{itemize}
-
-On ne calcule donc pas le gradient sur l'entièreté de l'ensemble de test, mais sur seulement des parties tirées au hasard.
-Cela a deux conséquence: 
-\begin{itemize}
- \item On fait seulement l'étape de rétropropagation sur $N$ éléments pour chaque mise à jour du réseau
- \item Le fait que le batch soit tiré au sort permet de ne pas aller directement dans le sens du gradient totale, mais d'osciller légérement autour de celui-ci.
- Ces oscillations permettent d'éviter de rester dans un mauvais minimum local trop peu profond.
-\end{itemize}
-
-\begin{figure}[h]
- \centering
- \includegraphics[width=0.3\textwidth]{img/oscillations_stochastique.png}
- \caption{Illustration des oscillations du gradient}
- \label{fig:oscillations_stochastique.png}
-\end{figure}
-
-Evidemment, la taille $N$ du batch est un paramètre important à considérer. \\
-Si $N$ est gros, l'apprentissage prend plus de temps car il faut faire la rétropropagation sur un plus grand nombre d'éléments avant de mettre à jour le modèle.\\
-Si $N$ est petit, il est plus difficile d'utiliser les capacités de calcul du hardware (CPU ou GPU) pour faire la rétropropagation en parralèlle pour les $N$ éléments
-du batch. De plus le gradient à tendance à beaucoup osciller, rendant la convergence moins rapide.
-\\
-
-Dans les faits, il est recommandable d'utiliser des mini-batchs de tailles de l'ordre de la dizaine d'éléments. 
-
-\begin{figure}[h]
- \centering
- \includegraphics[width=0.9\textwidth]{img/time_vs_batchsize.png}
- \caption{erreur en test sur MNIST en fonction temps d'entraînement pour différentes tailles de batch}
- \label{fig:time_vs_batchsize.png}
-\end{figure}
-
-\subsubsection{Learning rate adaptatif}
-
-Pour l'instant nous nous contentons de soustraire le gradient aux poids, multiplié par un facteur $\eta$ , le learning rate.\\
-Dans ce processus, il est important de choisir un learning rate adapté au modèle, et à l'ensemble d'entraînement.
-Plus le learning rate est petit, plus la convergence est longue, mais si le learning rate est trop grand on a du mal à converger en fin d'apprentissage
-vers un bon minimum, parce qu'on fait des ``pas'' trops grands
-
-\newpage
-
-\begin{figure}[ht]
- \centering
- \includegraphics[width=1.1\textwidth]{img/learning_rates.png}
- \caption{erreur en test sur MNIST en fonction de l'epoch pour différents learning rates}
- \label{fig:learning_rates.png}
-\end{figure}
-
-On remarque \ref{fig:learning_rates.png} qu'il existe pour ce modèle un learning optimale de $0.03$, et qu'en fonction du learning rate on peut avoir
-des différences de l'ordre du pourcent dans le taux d'erreur.
-\\
-Il est donc peut-être intéressant de faire varier le learning rate au long de l'apprentissage de manière à aller vite au début et plus lentement à la fin, et deuxièmement
-de faire varier le learning rate de manière individuel pour chacun des paramètres du modèle.
-
-\paragraph{RMSprop}
-
-RMSprop est l'une de ces méthodes. Le but de RMSprop est de seulement se préocupper du sens du gradient, et pas de sa valeur. \\
-Si on note $g_t$ le gradient du modèle au $t$-ième apprentissage, $\eta$ le learning rate, $\epsilon = 1e-8$, $\theta_t$ les poids du modèle.
-On pose:
-\begin{align*}
-E[g^2]_{t+1} = 0.9 E[g^2]_{t} + 0.1 g_t^2 \\
-\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{E[g^2]_{t} + \epsilon }} g_t \\
-\end{align*}
-
-RMSprop est censé normaliser chaque paramètre du gradient pour qu'il ne soit ni trop gros ni trop petit.
-
-\paragraph{ADAM}
-ADAM est une seconde méthode de gradient adaptatif.
-
-\begin{figure}[ht]
- \centering
- \includegraphics[width=0.8\textwidth]{img/sgd_rmsprop_adam.png}
- \caption{erreur en test sur MNIST pour différents optimiseur (SGD vs RMSprop vs ADAM)}
- \label{fig:sgd_rmsprop_adam}
-\end{figure}
-
-On remarque que sur dans le cas du modèle de la figure \ref{fig:sgd_rmsprop_adam} ADAM est beaucoup plus performant que la descente de gradient simple et que RMSprop
-mais ça n'est pas toujours le cas.
 
 
 
