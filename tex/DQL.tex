@@ -42,7 +42,9 @@ puis 3 neurones de sortie pour les 3 différentes actions fournies par le jeu. C
 conformément à l'équation \ref{eq:bellman}. Bien que cela ne soit pas l'implémentation la plus optimale, elle suffit pour un jeu aussi simple que celui des bâtonnets.
 
 Notre réseau apprend sur 2000 parties (contre une IA qui est également en train d'apprendre). Pour nous persuader de l'efficacité de notre algorithme, nous reconstituons
-la Q-table à l'issue de l'apprentissage en interrogeant le réseau sur les différents états accessibles lors d'une partie. Le résultat est le suivant :
+la Q-table à l'issue de l'apprentissage en interrogeant le réseau sur les différents états accessibles lors d'une partie. 
+
+Le résultat est le suivant :
 
 \begin{figure}[h]
 \centering
@@ -230,7 +232,7 @@ voulons étudier plus en profondeur l'apprentissage. Cependant, il nous est diff
 
 \subsubsection{Principe du jeu}
 
-CartPole est un jeu disponible sur gym, représenté Figure \ref{fig:schema-cartpole}. Le principe est le suivant : on dispose d'un pendule simple fixé à sa base à un chariot. L'objectif est de stabiliser
+CartPole est un jeu disponible sur gym, représenté figure \ref{fig:schema-cartpole}. Le principe est le suivant : on dispose d'un pendule simple fixé à sa base à un chariot. L'objectif est de stabiliser
 le pendule en équilibre instable en déplaçant ledit chariot. Étant donné qu'apprendre un jeu à partir de photographies de l'écran est une contrainte très forte 
 qui ralentit énormément l'apprentissage, nous préférons obtenir un espace des états plus petits pour pouvoir faire les tests voulus. CartPole nous donne un 
 état à 4 dimensions (Figure \ref{fig:schema-cartpole-network}) composé de l'angle et la vitesse angulaire du pendule, et de la position et la vitesse du chariot.
@@ -279,9 +281,9 @@ utilisés sont détaillés sur la figure \ref{fig:cartpole-2reseaux}.
 
 On remarque que la barre des 195 étapes survécues a été franchi, ce qui signifie que l'on peut considérer que notre IA a réussi à apprendre CartPole.
 Afin de pouvoir nous situer par rapport aux réalisations d'autres personnes sur GitHub, nous superposons notre courbe à celle obtenue avec un code disponible
-sur GitHub.
+sur GitHub (figure \ref{fig:gsurma}).
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
  \includegraphics[width  = \textwidth]{img/gsurma.png}
  \caption{Comparaison des performances avec d'autres codes publics}

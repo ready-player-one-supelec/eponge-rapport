@@ -202,7 +202,7 @@ Si on applique le même traitement à une autre figure (ici un carré), on remar
     \caption{Choix des filtres pour la convolution}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/convolution_filtre_1.png}
         \center 
@@ -221,8 +221,9 @@ Si on applique le même traitement à une autre figure (ici un carré), on remar
     \caption{Résultats de la convolution de l'image par les différents filtres}
 \end{figure}
 
+\newpage
 
-\begin{figure}[h]
+\begin{figure}[!h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/activation_relu_1.png}
         \center 
@@ -241,7 +242,7 @@ Si on applique le même traitement à une autre figure (ici un carré), on remar
     \caption{Activation par la fonction reLU des différents canaux}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!h]
     \minipage{0.32\textwidth}
         \includegraphics[width=\textwidth]{img/cnn_exemple/square/stride_1_max.png}
         \center 
@@ -282,13 +283,14 @@ Les réseaux considérés sont les suivants :
 
 Le perceptron de grande dimension a été choisi de façon à avoir un nombre équivalent de paramètres avec le CNN.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \center 
-    \includegraphics[width=0.6\textwidth]{img/fc_vs_cnn.png}
-    \caption[Comparaisons des performances pour des perceptrons et pour un CNN]{Comparaisons des performances pour des perceptrons et pour un CNN en fonction du nombres d'époques. CNN en vert, perceptron de petite dimension en bleu, perceptron de grande dimension en orange}
+    \includegraphics[width=0.55\textwidth]{img/fc_vs_cnn.png}
+    \caption[Comparaison des performances pour des perceptrons et pour un CNN]{Comparaison des performances pour des perceptrons et pour un CNN en fonction du nombres d'époques. CNN en vert, perceptron de petite dimension en bleu, perceptron de grande dimension en orange}
+    \label{fig:perceptron-cnn}
 \end{figure}
 
-On voit qu'au bout d'un passage complet sur les données (par minibatches de 32), le CNN obtient de meilleurs résultats que les 
+On voit (figure \ref{fig:perceptron-cnn}) qu'au bout d'un passage complet sur les données (par minibatches de 32), le CNN obtient de meilleurs résultats que les 
 perceptrons. De plus, on remarque que le perceptron de grande dimension converge plus lentement que le réseau de petite dimension.
 Le CNN sert alors à obtenir une convergence plus rapide (comme un perceptron de petite taille),
 et obtient de meilleurs résultats à termes car il n'est pas limité par son nombre de paramètres (comme un perceptron de grande dimension).
@@ -311,7 +313,7 @@ TensorFlow a été utilisé pour développer le CNN. Un développement à la mai
 
 Cependant, en plus de réduire grandement le temps nécessaire pour programmer un CNN efficace, TensorFlow offre une interface graphique (figure \ref{fig:interface_TF}) très utile pour suivre en direct la convergence du CNN. On peut ainsi détecter rapidement le mauvais paramétrage du CNN et le modifier sans attendre d'avoir mis à jour le CNN sur les $n$ batches prévus à l'avance.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
  \includegraphics[width=0.7\textwidth]{img/interface_TF.png}
  \caption{TensorBoard avec visualisation en direct des performances du réseau de neurones}
@@ -330,5 +332,5 @@ Nous avons testé TensorFlow avec un CNN pour MNIST. Grâce au post-traitement, 
  \label{fig:tb_post_traitement}
 \end{figure}
 
-Le post-traitement pourraient être utilisé pour déterminer les effets de la taille des batchs ou encore du dropout. Se pose alors la question de la nature de l’abscisse. Est-il préférable de d'utiliser le nombre d'apprentissages ou le temps ?
-Nous avons choisi de ne pas traiter en profondeur ces questions pour nous concentrer sur le c\oe ur de notre sujet, le Q Learning. Cette question reste cependant une piste qui pourrait être explorée dans un futur projet.
+Le post-traitement pourraient être utilisé pour déterminer les effets de la taille des batchs ou encore du dropout. Se pose alors la question de la nature de l’abscisse. Est-il préférable d'utiliser le nombre d'apprentissages ou le temps ?
+Nous avons choisi de ne pas traiter en profondeur ces questions pour nous concentrer sur le c\oe ur de notre sujet, le Q-Learning. Cette question reste cependant une piste qui pourrait être explorée dans un futur projet.
