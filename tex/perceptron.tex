@@ -9,7 +9,7 @@ Le modèle du neurone est le suivant :
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=0.5\textwidth]{img/neurone.png}
+ \includegraphics[width=0.4\textwidth]{img/neurone.png}
  \caption{Modèle d'un neurone artificiel}
 \end{figure}
 
@@ -53,7 +53,7 @@ Si on revient au cas de la fonction seuil, on remarquera qu'elle permet de sépa
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=0.5\textwidth]{img/separation_lineaire_du_plan.png}
+ \includegraphics[width=0.25\textwidth]{img/separation_lineaire_du_plan.png}
  \caption{Domaine de séparation du neurone}
 \end{figure}
 
@@ -64,7 +64,7 @@ Un vecteur de sortie définit les différentes valeurs des neurones, une matrice
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=0.55\textwidth]{img/couche.png}
+ \includegraphics[width=0.3\textwidth]{img/couche.png}
  \caption[Modèle d'une couche de neurones]{Représentation matricielle d'une couche de S neurones recevant R entrées}
 \end{figure}
 
@@ -72,8 +72,8 @@ Pour pouvoir définir des ensembles de solutions plus complexes, on ajoute d'aut
 
 \begin{figure}[h]
  \centering
- \includegraphics[width=\textwidth]{img/modele_perceptron_multicouches.png}
- \caption{Modèle du perceptron multicouches}
+ \includegraphics[width=0.9\textwidth]{img/modele_perceptron_multicouches.png}
+ \caption{Modèle du perceptron multicouche}
 \end{figure}
 
 
@@ -153,23 +153,23 @@ aux poids du réseau de neurones pour minimiser l'erreur. Mais la méthode trivi
 
 \subsubsection{L'apprentissage par batch}
 
-Comme le but est de diminuer l'erreur totale sur l'ensemble d'entraînement, on peut penser que la solution optimale serait de calculer le gradient sur l'ensemble des éléments avant de le soustraire,
-mais cette méthode a plusieurs désavantages :
+Comme le but est de diminuer l'erreur totale sur l'ensemble d'entraînement, on peut penser que la solution optimale serait de calculer le gradient sur l'ensemble des éléments avant de le soustraire, mais cette méthode a plusieurs désavantages :
 \begin{itemize}
- \item Il faut faire une étape rétropropagation sur l'ensemble des éléments de l'ensemble d'entraînement à chaque mise à jour à jour des poids, ce qui est coûteux
- \item On reste dans le premier minimum local dans lequel on tombe (pour peu qu'il soit plus grand que le pas avec lequel on avance i.e. le learning rate)
+ \item Il faut calculer l'erreur sur tous les éléments de l'ensemble d'entraînement à chaque mise à jour à jour des poids, ce qui est coûteux
+ \item On reste dans le premier minimum local dans lequel on tombe (pour peu qu'il soit plus grand que le pas avec lequel on avance i.e. le taux d'apprentissage)
 \end{itemize}
 
 En effet la descente de gradient ne garantie pas la convergence vers un minimum global, et peut très bien se contenter d'un mauvais minimum local.
 Il existe donc de nombreuses heuristiques visant à améliorer la vitesse de convergence, et la qualité du minimum trouvé.
-\\
 
 Le but de l'apprentissage par batch est de segmenter les données d'apprentissage en groupe appelés batchs pour accélérer l'apprentissage, et introduire une 
-composante aléatoire dans la manière dont le modèle converge vers un minimum.\\
-Pour un apprentissage par batch de taille $N$, on découpe l'ensemble d'entraînement en groupes de $N$ éléments choisis au hasard.\\
+composante aléatoire dans la manière dont le modèle converge vers un minimum.
+
+Pour un apprentissage par batch de taille $N$, on découpe l'ensemble d'entraînement en groupes de $N$ éléments choisis au hasard.
+
 Pour chacun de ces batchs :
 \begin{itemize}
- \item on calcule \textit{sans mettre à jour le réseau de neurone} le gradient pour chacun des $N$ éléments du batch
+ \item on calcule \emph{sans mettre à jour le réseau de neurone} le gradient pour chacun des $N$ éléments du batch
  \item on moyenne le gradient sur les $N$ éléments du batch
  \item on applique le gradient moyenné au réseau de neurone
 \end{itemize}
@@ -177,7 +177,7 @@ Pour chacun de ces batchs :
 On ne calcule donc pas le gradient sur l’entièreté de l'ensemble de test, mais sur seulement des parties tirées au hasard.
 Cela a deux conséquence : 
 \begin{itemize}
- \item on fait l'étape de rétropropagation sur seulement $N$ éléments pour chaque mise à jour du réseau
+ \item on réalise le calcul de l'erreur sur seulement $N$ éléments pour chaque mise à jour du réseau
  \item le fait que le batch soit tiré au hasard permet de ne pas aller directement dans le sens du gradient global, mais d'osciller légérement autour de celui-ci.
  Ces oscillations permettent d'éviter de rester dans un mauvais minimum local trop peu profond.
 \end{itemize}
@@ -189,76 +189,75 @@ Cela a deux conséquence :
  \label{fig:oscillations_stochastique.png}
 \end{figure}
 
-\newpage
+Évidemment, la taille $N$ du batch est un paramètre important à considérer. 
 
-Évidemment, la taille $N$ du batch est un paramètre important à considérer. \\
-Si $N$ est grand, l'apprentissage prend plus de temps car il faut faire la rétropropagation sur un plus grand nombre d'éléments avant de mettre à jour le modèle.\\
-Si $N$ est petit, il est plus difficile d'utiliser les capacités de calcul du hardware (CPU ou GPU) pour faire la rétropropagation en parralèlle sur les $N$ éléments
-du batch. De plus le gradient à tendance à beaucoup osciller, rendant la convergence moins rapide.
-\\
+Si $N$ est grand, l'apprentissage prend plus de temps car il faut calculer l'erreur sur un plus grand nombre d'éléments avant de mettre à jour le modèle.
+
+Si $N$ est petit, il est plus difficile d'utiliser les capacités de calcul du hardware (CPU ou GPU) pour faire la rétropropagation en parallèle sur les $N$ éléments
+du batch. De plus le gradient a tendance à beaucoup osciller, rendant la convergence moins rapide.
 
 Dans les faits, il est préférable d'utiliser des mini-batchs d'une taille de l'ordre de la dizaine d'éléments. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
- \includegraphics[width=0.9\textwidth]{img/time_vs_batchsize.png}
+ \includegraphics[width=0.5\textwidth]{img/time_vs_batchsize.png}
  \caption{Erreur en test sur MNIST en fonction du temps d'entraînement pour différentes tailles de batch}
  \label{fig:time_vs_batchsize.png}
 \end{figure}
 
-\subsubsection{Learning rate adaptatif}
+\subsubsection{Taux d'apprentissage adaptatif}
 
-Pour l'instant nous nous contentons de soustraire le gradient aux poids, multiplié par un facteur $\eta$ , le learning rate.\\
-Dans ce processus, il est important de choisir un learning rate adapté au modèle, et à l'ensemble d'entraînement.
-Plus le learning rate est petit, plus la convergence est longue, mais si le learning rate est trop grand on a du mal à converger en fin d'apprentissage
-vers un bon minimum, parce qu'on fait des pas plus grands que le minimum vers lequel on voudrait converger.
+Pour l'instant nous nous contentons de soustraire le gradient aux poids, multiplié par un facteur $\eta$, le taux d'apprentissage.
+
+Dans ce processus, il est important de choisir un taux d'apprentissage adapté au modèle, et à l'ensemble d'entraînement.
+Plus le taux d'apprentissage est petit, plus la convergence est longue, mais si ce taux est trop grand, on peut avoir du mal à converger en fin d'apprentissage vers un bon minimum, parce qu'on fait des pas plus grands que le minimum vers lequel on voudrait converger.
 
 \begin{figure}[ht]
  \centering
- \includegraphics[width=1.1\textwidth]{img/learning_rates.png}
- \caption{Erreur en test sur MNIST en fonction de l'epoch pour différents learning rates}
+ \includegraphics[width=1\textwidth]{img/learning_rates.png}
+ \caption{Erreur en test sur MNIST en fonction de l'époque pour différents taux d'apprentissage}
  \label{fig:learning_rates.png}
 \end{figure}
 
-On remarque sur la figure \ref{fig:learning_rates.png} qu'il existe pour ce modèle un learning optimale de $0,03$, et qu'en fonction du learning rate on peut avoir
-des différences de l'ordre du pourcent dans le taux d'erreur.
-\\
-Il est donc intéressant premièrement de faire varier le learning rate au long de l'apprentissage de manière à aller vite au début et plus lentement à la fin, et deuxièmement
-de faire varier le learning rate de manière individuel pour chacun des paramètres du modèle.
+On remarque sur la figure \ref{fig:learning_rates.png} qu'il existe pour ce modèle un taux optimal de $0.003$, et que le taux d'apprentissage peut avoir 
+une légère influence sur le taux d'erreur, de l'ordre du pourcent.
+
+Il est donc intéressant premièrement de faire varier le taux d'apprentissage au long de l'apprentissage de manière à aller vite au début et plus lentement à la fin. En outre, on peut faire varier le taux d'apprentissage individuellement pour chacun des paramètres du modèle.
 
 \paragraph{RMSprop}
 
-RMSprop est l'une de ces méthodes. Le but de RMSprop est de se  uniquement du sens du gradient, et pas de sa valeur. \\
-On note $g_t$ le gradient du modèle au $t$-ième apprentissage, $\eta$ le learning rate, $\epsilon = 1e-8$, $\theta_t$ les poids du modèle et $\beta \in [0,1]$.
-On pose :
-\begin{align*}
-E[g^2]_{t+1} = \beta E[g^2]_{t} + (1-\beta) g_t^2 \\
-\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{E[g^2]_{t} + \epsilon }} g_t \\
-\end{align*}
+RMSprop est l'une de ces méthodes. Le but de RMSprop est de se pré-occuper uniquement du sens du gradient, et non de sa valeur. 
 
-RMSprop est censé normaliser chaque paramètre du gradient pour qu'il ne soit ni trop gros ni trop petit.
+On note $g_t$ le gradient du modèle au $t$-ième apprentissage, $\eta$ le taux d'apprentissage, $\epsilon = 1e-8$, $\theta_t$ les poids du modèle et $\beta \in [0,1]$.
+On pose :
+\begin{align}
+E[g^2]_{t+1} = \beta E[g^2]_{t} + (1-\beta) g_t^2 \\
+\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{E[g^2]_{t} + \epsilon }} g_t 
+\end{align}
+
+RMSprop est censé normaliser chaque paramètre du gradient de sorte qu'il ne soit ni trop important ni trop faible.
 
 \paragraph{ADAM}
 ADAM est une seconde méthode de gradient adaptatif. Avec les mêmes notations que précédemment, on a :
 
-\begin{align*}
+\begin{align}
 m_t = \beta_1 m_{t-1} + (1- \beta_1)g_t \\
-v_t = \beta_2 v_{t-1} + (1- \beta_2)g_t^2 \\
-\end{align*}
+v_t = \beta_2 v_{t-1} + (1- \beta_2)g_t^2 
+\end{align}
 
 $m_t$ et $v_t$ estiment respectivement le moment d'ordre 1 et 2 du gradient.
 Ils sont cependant biaisés, on pose donc
 
-\begin{align*}
+\begin{align}
 \hat{m}_t = \frac{m_t}{1 - \beta_1} \\
-\hat{v}_t = \frac{v_t}{1 - \beta_2} \\
-\end{align*}
+\hat{v}_t = \frac{v_t}{1 - \beta_2}
+\end{align}
 
 et finalement on met à jour les poids
 
-\begin{align*}
-\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{ \hat{v}_t } + \epsilon} \hat{m}_t \\
-\end{align*}
+\begin{align}
+\theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{ \hat{v}_t } + \epsilon} \hat{m}_t 
+\end{align}
 
 \begin{figure}[ht]
  \centering
@@ -267,7 +266,7 @@ et finalement on met à jour les poids
  \label{fig:sgd_rmsprop_adam}
 \end{figure}
 
-On remarque que dans le cas du modèle de la figure \ref{fig:sgd_rmsprop_adam} ADAM est beaucoup plus performant que la descente de gradient simple et que RMSprop. Ça n'est cependant pas toujours le cas.
+On remarque que, dans le cas du modèle de la figure \ref{fig:sgd_rmsprop_adam}, ADAM est beaucoup plus performant que la descente de gradient simple et que RMSprop. Ça n'est cependant pas toujours le cas.
 
 
 \subsection{La fonction d'erreur}
@@ -458,7 +457,7 @@ Notre système est donc d'autant plus performant que son entropie croisée est f
 
 \subsection{La fonction XOR}
 
-Nous avons coder notre propre perceptron en Python à partir des équations vues plus haut.
+Nous avons développé notre propre perceptron en Python à partir des équations vues plus haut.
 
 Pour le tester, nous avons utilisé la fonction XOR. Elle prend en entrée deux valeurs binaires et retourne 1 si et seulement si les deux valeurs binaires sont différentes. XOR est une fonction relativement simple qui a la particularité d'être non linéaire. Ainsi, on ne peut se contenter d'un réseau qui ne contient aucune couche cachée. Il faut que notre réseau possède une couche intermédiaire.
 
@@ -493,7 +492,7 @@ MNIST est une base de données d'images de chiffres manuscrits. L'objectif est d
 Pour tester notre perceptron, nous avons tracé le taux d'erreur sur l'échantillon test en fonction du nombre d'itérations. Afin de moyenner les résultats et d'annuler les fluctuations statistiques de l'apprentissage (provenant de l'initialisation aléatoire du réseau et de l'ordre de présentation aléatoire des exemples),
 nous avons réalisé cet apprentissage 280 fois (280 runs). Le taux d'apprentissage utilisé est 0.005.
 
-\begin{figure}[h]
+\begin{figure}[ht]
  \centering
  \includegraphics[width=0.5\textwidth]{img/MNIST.png}
  \caption{Taux d'erreur sur MNIST}
